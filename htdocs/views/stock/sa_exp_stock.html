@@ -1,0 +1,161 @@
+<div ng-controller='SaExportStockCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+	<h3>Reportes de Productos</h3>
+	<hr class="style1" />
+	<br />
+	<!--inicia div FORMULARIO ALTA/EDICION-->
+	<div>
+		<!--<div>
+			<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Reporte Stock Min Max <span class="glyphicon glyphicon-add" /></button>
+		</div>-->
+		<!-- inicio div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA/EDICION -->
+		<div collapse="false">
+			<!-- inicia div formulario alta/edicion -->
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="abmForm" autocomplete ="off">
+          <div class="form-group">
+            <label for="inDocumentType" class="col-md-2 control-label input-sm">
+               Familia: </label>
+         <div class="col-md-2">
+           <select class="form-control input-sm" id="modelo" required
+                   ng-options="i.idSa as i.descripcion for i in familias"
+                   ng-model="producto.familiaId"
+                   ng-change="changeMarca()">
+           </select>
+         </div>
+         <label for="inDocumentType" class="col-md-1 control-label input-sm">
+         Marca: </label>
+         <div class="col-md-2">
+           <select class="form-control input-sm" id="typeId" required
+                   ng-options="i.marca.idSa as i.marca.descripcion for i in marcafamilias"
+                   ng-model="producto.marcaId">
+           </select>
+         </div>
+
+  					</div>
+				<br>
+				<div class="form-group centrobot">
+					<button class="btn btn-default botonbus" type="button" ng-click="reporteproducto()">Exportar Excel</button>
+          <button class="btn btn-default botonbus" type="button" ng-click="clear()">Limpiar</button>
+				</div>
+			</form>
+		</div>
+		<!-- termina div formulario alta/edicion-->
+	</div>
+	 <!-- termina div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA/EDICION -->
+ </div>
+  <!-- termina div FORMULARIO ALTA/EDICION-->
+
+  <h3>Reportes Margen Marca / Familia</h3>
+  <hr class="style1" />
+  <br/>
+  <div collapse="false">
+    <!-- inicia div formulario alta/edicion -->
+    <div class="busqueda">
+      <form class="form-horizontal" role="form" name="abmForm2" autocomplete ="off">
+        <div class="form-group">
+          <label for="inDocumentType" class="col-md-2 control-label input-sm">
+             Familia: </label>
+             <div class="col-md-2">
+               <select class="form-control input-sm" id="modelo" required
+                  ng-options="i.idSa as i.descripcion for i in familias"
+                  ng-model="margen.familiaId"
+                  ng-change="changeMarcaMargen()">
+                </select>
+              </div>
+              <label for="inDocumentType" class="col-md-1 control-label input-sm">
+                Marca: </label>
+                <div class="col-md-2">
+                  <select class="form-control input-sm" id="typeId" required
+                    ng-options="i.marca.idSa as i.marca.descripcion for i in margenmarcafamilias"
+                    ng-model="margen.marcaId">
+                  </select>
+                </div>
+
+        </div>
+      <br>
+      <div class="form-group centrobot">
+        <button class="btn btn-default botonbus" type="button" ng-click="reportemargen()">Exportar Excel</button>
+        <button class="btn btn-default botonbus" type="button" ng-click="clearMargen()">Limpiar</button>
+      </div>
+    </form>
+  </div>
+  <!-- termina div formulario alta/edicion-->
+</div>
+
+<h3>Reportes Stock de Productos</h3>
+  <hr class="style1" />
+  <br/>
+  <div collapse="false">
+    <!-- inicia div formulario alta/edicion -->
+    <div class="busqueda">
+      <form class="form-horizontal" role="form" name="abmForm2" autocomplete ="off">
+        <div class="form-group">
+
+					<label for="inDocumentType" class="col-md-2 control-label input-sm">
+						 Familia: </label>
+			 <div class="col-md-2">
+				 <select class="form-control input-sm" id="modelo" required
+								 ng-options="i.idSa as i.descripcion for i in familias"
+								 ng-model="productostock.familiaId"
+								 ng-change="changeMarcaStock()">
+				 </select>
+			 </div>
+			 <label for="inDocumentType" class="col-md-1 control-label input-sm">
+			 Marca: </label>
+			 <div class="col-md-2">
+				 <select class="form-control input-sm" id="typeId" required
+								 ng-options="i.marca.idSa as i.marca.descripcion for i in stockmarcafamilias"
+								 ng-model="productostock.marcaId">
+				 </select>
+			 </div>
+
+        </div>
+      <br>
+      <div class="form-group centrobot">
+        <button class="btn btn-default botonbus" type="button" ng-click="reportestock()">Exportar Excel</button>
+      </div>
+    </form>
+  </div>
+  <!-- termina div formulario alta/edicion-->
+</div>
+
+<h3>Reportes Precio de Productos</h3>
+  <hr class="style1" />
+  <br/>
+  <div collapse="false">
+    <!-- inicia div formulario alta/edicion -->
+    <div class="busqueda">
+      <form class="form-horizontal" role="form" name="abmForm2" autocomplete ="off">
+        <div class="form-group">
+
+					<label for="inDocumentType" class="col-md-2 control-label input-sm">
+						 Familia: </label>
+			 <div class="col-md-2">
+				 <select class="form-control input-sm" id="modelo" required
+								 ng-options="i.idSa as i.descripcion for i in familias"
+								 ng-model="productoprecio.familiaId"
+								 ng-change="changeMarcaPrecio()">
+				 </select>
+			 </div>
+			 <label for="inDocumentType" class="col-md-1 control-label input-sm">
+			 Marca: </label>
+			 <div class="col-md-2">
+				 <select class="form-control input-sm" id="typeId" required
+								 ng-options="i.marca.idSa as i.marca.descripcion for i in preciomarcafamilias"
+								 ng-model="productoprecio.marcaId">
+				 </select>
+			 </div>
+
+        </div>
+      <br>
+      <div class="form-group centrobot">
+        <button class="btn btn-default botonbus" type="button" ng-click="reporteprecio()">Exportar Excel</button>
+      </div>
+    </form>
+  </div>
+  <!-- termina div formulario alta/edicion-->
+</div>
+
+</div>
+<!-- fin div SA_MARCACTRL -->

@@ -1,0 +1,244 @@
+		<div ng-controller="IngresoDocumentosCtrl" ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<h3>Ingreso de Nota de Crédito</h3>
+			
+			<hr>
+			<div>
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label for="inCompanyId" class="col-sm-2 control-label">Empresa Emisora:</label>
+						<div class="col-sm-3">
+							<select class="form-control" id="inCompanyId" ng-options="i.name for i in listEmitter" ng-model="company"></select>
+						</div>
+						<label for="moneda" class="col-sm-2 control-label">Moneda:</label>
+						<div class="col-sm-3">
+							<select class="form-control" id="moneda" ng-options="i.descripcion for i in listIdCurrency" ng-model="currency"></select>
+						</div>
+					</div>
+					<div class="form-group">
+						
+						<label for="inCompanyId" class="col-sm-2 control-label">Nro Nota:</label>
+						<div class="col-sm-3">
+							<input type="text" id="inClientId" class="form-control input-sm" ng-model="document.legalNumber">
+						</div>
+						<label for="inCompanyId" class="col-sm-3 control-label">Guia de Remisión:</label>
+						<div class="col-sm-2">
+							<input type="text" id="inClientId" class="form-control input-sm" ng-model="document.guide">
+						</div>
+					
+					</div>
+					
+					<div class="form-group" ng-controller="DatePickerController">
+						<label for="inBeginDate" class="col-sm-2 control-label">Fecha de Emisión:</label>
+
+						<div class="col-sm-2">
+							<p class="input-group">
+								<input id="inBeginDate" type="text" class="form-control input-sm" close-text="Cerrar" is-open="openedBeginDate" datepicker-options="dateParamOptions"   
+                                                    datepicker-popup="{{dateParamFormat}}" ng-model="document.issueDate" />
+								<span class="input-group-btn">
+									<button type="button"  class="btn btn-default input-sm"   ng-click="openBeginDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								</span>
+							</p>
+						</div>
+					</div>						
+					<hr>
+					<div class="form-group">
+						<label for="inTypeEmi" class="col-sm-2 control-label">Cliente:</label>
+						<div class="col-sm-3">
+							<select class="form-control"  ng-disabled="inInquiry || inEdit" id="inClientTypeId" ng-options="i.name for i in listCustomer" ng-model="customer"></select>
+						</div>
+						<label for="inCompanyId" class="col-sm-2 control-label">Identificación:</label>
+						<div class="col-sm-3">
+							<input  id="inClientId" class="form-control input-sm" disabled="disabled" ng_model="customer.identification"/>
+							<p ng_hide = "{{customer.identification}}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inTypeEmi" class="col-sm-2 control-label">Razón Social:</label>
+						<div class="col-sm-3">
+							<input type="text" id="inClientId" class="form-control input-sm" disabled="disabled" ng-model="customer.name">
+							<p ng_hide = "{{customer.name}}">
+						</div>
+						<label for="inCompanyId" class="col-sm-2 control-label">Dirección:</label>
+						<div class="col-sm-5">
+							<input type="text" id="inClientId" class="form-control input-sm" disabled="disabled" ng-model="customer.address">
+							<p ng_hide = "{{customer.address}}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inTypeEmi" class="col-sm-2 control-label">Correo Electónico</label>
+						<div class="col-sm-3">
+							<input type="text" id="inClientId" class="form-control input-sm" disabled="disabled" ng-model="customer.email">
+							<p ng_hide = "{{customer.email}}">
+						</div>
+						<label for="inCompanyId" class="col-sm-2 control-label">Teléfono:</label>
+						<div class="col-sm-3">
+							<input type="text" id="inClientId" class="form-control input-sm" disabled="disabled" ng-model="customer.phone">
+							<p ng_hide = "{{customer.phone}}">
+						</div>
+					</div>
+					<br/>
+					<hr>
+					<div class="form-group">
+						<label for="inTypeEmi" class="col-sm-2 control-label">Tipo Documento Modifica:</label>
+						<div class="col-sm-3">
+							<select class="form-control" id="inTypeEmi" ng-options="i.descr for i in listDocTypes" ng-model="documentTypeRelation"></select>
+						</div>
+						<div class="form-group" ng-controller="DatePickerController">
+						<label for="inBeginDate" class="col-sm-2 control-label">Fecha de Emisión:</label>
+
+						<div class="col-sm-2">
+							<p class="input-group">
+								<input id="inBeginDate" type="text" class="form-control input-sm" close-text="Cerrar" is-open="openedBeginDate" datepicker-options="dateParamOptions"   
+                                                    datepicker-popup="{{dateParamFormat}}" ng-model="document.issueDateDocumentRelation" />
+								<span class="input-group-btn">
+									<button type="button"  class="btn btn-default input-sm"   ng-click="openBeginDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								</span>
+							</p>
+						</div>
+					</div>			
+					<div class="form-group">
+						<label for="inTypeEmi" class="col-sm-2 control-label">Número Documento</label>
+						<div class="col-sm-3">
+							<input type="text" id="inClientId" class="form-control input-sm" ng-model="document.nroDocumentRelation">
+						</div>
+						<label for="inCompanyId" class="col-sm-2 control-label">Motivo:</label>
+						<div class="col-sm-3">
+							<textarea id="inClientId" class="form-control input-sm" ng-model="document.reason"></textarea>
+						</div>
+					</div>
+					
+						<br/>
+					<div class="form-group">
+				    <label class="col-md-2 control-label">item</label>
+				    <div class="col-md-4">
+				      <input type="text" class="form-control" name="item"
+				        ng-model="item" />
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label class="col-md-2 control-label">Código Producto</label>
+				    <div class="col-md-4">
+				      <input type="text" class="form-control" name="productCode"
+				        ng-model="productCode" />
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label class="col-md-2 control-label">Descripción</label>
+				    <div class="col-md-4">
+				      <input type="text" class="form-control" name="description"
+				        ng-model="description" />
+				    </div>
+				    </div>
+				    <div class="form-group">
+				    <label class="col-md-2 control-label">Cantidad</label>
+				    <div class="col-md-4">
+				      <input type="text" class="form-control" name="quantity"
+				        ng-model="quantity" />
+				    </div>
+				    </div>
+				    <div class="form-group">
+				    <label class="col-md-2 control-label">Precio</label>
+				    <div class="col-md-4">
+				      <input type="text" class="form-control" name="price"
+				        ng-model="price" />
+				    </div>
+				    </div>
+				    <div class="form-group">
+				    <label class="col-md-2 control-label">IGV</label>
+				    <div class="col-md-4">
+				      <input type="text" class="form-control" name="taxIGVUnit"
+				        ng-model="taxIGVUnit" />
+				    </div>
+				    </div>
+				     <div class="form-group">
+				    <label class="col-md-2 control-label">Valor Total</label>
+				    <div class="col-md-4">
+				      <input type="text" class="form-control" name="total"
+				        ng-model="total" />
+				    </div>
+				  </div>
+					  <br/>
+					 <div class="form-group">                
+					 <br/>
+                    <left><button class="btn btn-primary" ng-click="addRow()">Añadir Detalle</button></left>
+					 </div>
+
+
+
+					<table class="table">
+					  <tr>
+					    <th>item
+					    </th>
+					    <th>Código Producto
+					    </th>
+					    <th>Descripción
+					    </th>
+					     <th>Cantidad
+					    </th>
+					     <th>Precio
+					    </th>
+					     <th>IGV
+					    </th>
+					     <th>Valor Total
+					    </th>
+					  </tr>
+					 <tr ng-repeat="detail in details">
+    					<td>{{detail.item}}
+    					</td>
+    					<td>{{detail.productCode}}
+    					</td>
+    					<td>{{detail.description}}
+    					</td>
+    					<td>{{detail.quantity}}
+    					</td>
+    					<td>{{detail.price}}
+    					</td>
+    					<td>{{detail.taxIGVUnit}}
+    					</td>
+    					<td>{{detail.total}}
+						</td>
+					  </tr>
+					</table>
+					  <br/>	
+					<div class="form-group">
+					<label for="inSubTotal" class="col-sm-2 control-label">IGV 18%:</label>
+					<div class="col-sm-3">
+						<input type="text" id="inSubTotal" class="form-control input-sm" ng-model="document.taxIGV">
+					</div>
+					</div>
+					<div class="form-group">
+					<label for="inSubTotal" class="col-sm-2 control-label">ISC:</label>
+					<div class="col-sm-3">
+						<input type="text" id="inSubTotal" class="form-control input-sm" ng-model="document.taxISC">
+					</div>
+					</div>
+					<div class="form-group">
+					<label for="inSubTotal" class="col-sm-2 control-label">Otros Cargos:</label>
+					<div class="col-sm-3">
+						<input type="text" id="inSubTotal" class="form-control input-sm" ng-model="document.otherCharges">
+					</div>
+					</div>
+					<div class="form-group">
+					<label for="inSubTotal" class="col-sm-2 control-label">Total Descuentos:</label>
+					<div class="col-sm-3">
+						<input type="text" id="inSubTotal" class="form-control input-sm" ng-model="document.totalDiscount">
+					</div>
+				</div>
+				<hr>
+				<div class="form-group">
+					<label for="inSubTotal" class="col-sm-2 control-label">Total:</label>
+					<div class="col-sm-3">
+						<input type="text" id="inSubTotal" class="form-control input-sm" ng-model="document.amount">
+					</div>
+				</div>	
+				<br/>    
+					<br/>
+						<button class="btn btn-primary" ng-click="save()">Grabar</button>
+						<button class="btn btn-primary" ng-click="clear()">Limpiar</button
+
+					      
+						</form>
+				</div>
+			</div>
+
+				

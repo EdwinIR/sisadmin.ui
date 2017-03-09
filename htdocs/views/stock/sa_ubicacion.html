@@ -1,0 +1,137 @@
+<div ng-controller='SaUbicacionCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+	<h3>Catalogo Ubicaciones</h3>
+	<hr class="style1" />
+	<br />
+<div>
+	<div>
+		<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Ubicación <span class="glyphicon glyphicon-add" /></button>
+	</div>
+	<div collapse="isCollapsed">
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="abmForm" ng-submit="save()" autocomplete ="off">
+						<div class="form-group">
+							<label class="col-md-1 control-label input-sm">Abreviado:</label>
+							<div class="col-md-1">
+									<input type="text" ng-disabled="edicion"
+									id="codigo" autocomplete="false" name="codigo" required placeholder="0-X0"
+									ng-pattern="/^[a-zA-Z0-9\-\s]*$/"
+									class="form-control input-sm" ng-model="ubicacion.abreviado" maxlength="20"/>
+									<p ng-show="abmForm.codigo.$error.pattern">Por favor ingresar solo números y letras</p>
+							</div>
+							<label class="col-md-1 control-label input-sm">Descripción:</label>
+							<div class="col-md-2">
+												<input type="text"
+												id="ubicacion" name="ubicacion" required autocomplete="false"
+												placeholder="Descripción..." ng-pattern="/^[a-zA-Z0-9\-\s]*$/"
+												class="form-control input-sm" ng-model="ubicacion.descripcion"/>
+												<p ng-show="abmForm.ubicacion.$error.pattern">Por favor ingresar solo números y letras</p>
+							</div>
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">
+							Zona: </label>
+							<div class="col-md-2">
+												<select class="form-control input-sm" id="typeZona"
+														ng-options="i.descripcion for i in zonas"
+														ng-model="zonaSeleccionada">
+												</select>
+							</div>
+						</div>
+						<br>
+						<div class="form-group centrobot">
+							<button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+							<button class="btn btn-default botonbus" type="button" ng-click="clear()">Cancelar</button>
+						</div>
+				</form>
+			</div>
+	</div>
+</div>
+<br />
+<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Busca Ubicación" ng-model="filtro">
+			      </div>
+			    </div>
+</form>
+<br />
+<div ng-controller="UbicacionPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'codigo'; sortReverse = !sortReverse">
+					<label>Abreviado</label>
+					<span ng-show="sortType == 'codigo' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'codigo' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'ubicacion'; sortReverse = !sortReverse">
+				<label>Descripción</label>
+					<span ng-show="sortType == 'ubicacion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'ubicacion' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+          		</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcionZona'; sortReverse = !sortReverse">
+				<label>Zona</label>
+					<span ng-show="sortType == 'descripcionZona' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'descripcionZona' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+          		</a>
+			</div>
+				<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcionAlmacen'; sortReverse = !sortReverse">
+				<label>Almacen</label>
+					<span ng-show="sortType == 'descripcionAlmacen' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'descripcionAlmacen' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+          		</a>
+			</div>
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaUbicaciones | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-3 text-center input-sm">{{item.abreviado}}</div>
+			<div class="col-sm-2 text-center">{{item.descripcion}}</div>
+			<div class="col-sm-2 text-center">{{item.descripcionZona}}</div>
+			<div class="col-sm-3 text-center">{{item.descripcionAlmacen}}</div>
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				  	<li>
+							<a href ng-click="edit('{{item.id}}')">Editar
+				      <span class="glyphicon glyphicon-pencil"></a>
+				    </li>
+						<li>
+							<a href ng-click="delete({{item}})">Eliminar
+				      <span class="glyphicon glyphicon-remove"></a>
+				    </li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<div ng-include="'views/templates/sa_template_modals.html'"></div>
+	</div>
+</div>

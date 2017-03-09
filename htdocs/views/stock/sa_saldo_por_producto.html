@@ -1,0 +1,252 @@
+<div ng-controller='SaMarcaCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+  <h3>Saldo Por Producto</h3>
+  <hr class="style1" />
+  <br />
+  <div>
+    <div>
+      <button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Buscar Saldo Por Producto1111 <span class="glyphicon glyphicon-add" /></button>
+    </div>
+    <div >
+      <div class="busqueda">
+        Plásticos 20001111
+        <form class="form-horizontal" role="form" name="abmForm" ng-submit="find()" autocomplete="off">
+          <div class="form-group">
+            <!--Almacen-->
+            <label for="inDocumentType" class="col-md-1 control-label input-sm">
+              Almacén: </label>
+              <div class="col-md-3">
+                <select class="form-control input-sm" id="typeId" required ng-options="i.id as i.descripcion for i in almacenes" ng-model="productoAlmacen.almacen.id">
+                </select>
+              </div>
+              <!--Marca-->
+              <label for="inDocumentType" class="col-md-1 control-label input-sm">
+                Marca: </label>
+                <div class="col-md-3">
+                  <select class="form-control input-sm" id="typeId" required ng-options="i.id as i.descripcion for i in marcas" ng-model="productoAlmacen.marca.id">
+                  </select>
+                </div>
+                <!--Familia-->
+                <label for="inDocumentType" class="col-md-1 control-label input-sm">
+                  Familia: </label>
+                  <div class="col-md-3">
+                    <select class="form-control input-sm" id="typeId" required ng-options="i.id as i.descripcion for i in familias" ng-model="productoAlmacen.familia.id">
+                    </select>
+                  </div>
+                </div>
+                <br>
+                <div class="form-group centrobot">
+                  <button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Buscar</button>
+                  <!-- <button class="btn btn-default botonbus" ng-click="clear()">Cancelar</button> -->
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <br/>
+        <!--Listado de ProductoAlmacen-->
+        <div class="container col-md-6">
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-stripped header-fixed">
+                <thead>
+                  <tr>
+                    <th>Prod</th>
+                    <th>Descripcion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                  <tr>
+                    <td>14711</td>
+                    <td>Abaco Evaflex</td>
+                  </tr>
+                  <tr>
+                    <td>04767</td>
+                    <td>Abaco Grande/td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="container col-md-6">
+          <div class="row">
+            <hr class="style1" />
+            <div class="row">
+              <!--Proveedor-->
+              <label class="col-md-3 control-label input-sm text-right">Proveedor</label>
+  						<div class="col-md-9">
+  							<input type="text" id="proveedor" name="proveedor" required autocomplete="false" class="form-control input-sm" ng-model="productoAlmacen.almacen.descripcion" disabled/>
+  						</div>
+            </div>
+          <div class="row">
+            <!--Familia-->
+            <label class="col-md-3 control-label input-sm text-right">Familia</label>
+						<div class="col-md-9">
+							<input type="text" id="familia" name="familia" required autocomplete="false" class="form-control input-sm" ng-model="productoAlmacen.familia.descripcion" disabled/>
+						</div>
+          </div>
+          <div class="row">
+            <!--Marca-->
+            <label class="col-md-3 control-label input-sm text-right">Marca</label>
+						<div class="col-md-9">
+							<input type="text" id="marca" name="marca" required autocomplete="false" class="form-control input-sm" ng-model="productoAlmacen.marca.descripcion" disabled/>
+						</div>
+          </div>
+          </div>
+          <div class="row">
+            <hr class="style1" />
+            <div class="col-md-4">
+              <!--Última Compra-->
+              <label class="col-md-12 control-label input-sm text-center">Última Compra</label>
+  						<div class="col-md-12 text-center">
+  							<input type="text" id="ultimaCompra" name="ultimaCompra" required autocomplete="false" class="form-control input-sm" disabled/>
+  						</div>
+            </div>
+            <div class="col-md-4">
+              <!--Última Venta-->
+              <label class="col-md-12 control-label input-sm text-center">Última Venta</label>
+  						<div class="col-md-12 text-center">
+  							<input type="text" id="ultimaVenta" name="ultimaVenta" required autocomplete="false" class="form-control input-sm" disabled/>
+  						</div>
+            </div>
+            <div class="col-md-4">
+              <!--Código Equivalente-->
+              <label class="col-md-12 control-label input-sm text-center">Código Equivalente</label>
+  						<div class="col-md-12 text-center">
+  							<input type="text" id="codigoEquivalente" name="codigoEquivalente" required autocomplete="false" class="form-control input-sm" ng-model="productoAlmacen.producto.codigoEquivalente" disabled/>
+  						</div>
+            </div>
+          </div>
+          <div class="row">
+            <hr class="style1" />
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <h4>Saldo Disponible y Precios</h4>
+              </div>
+              <!--Unidad A-->
+              <label class="col-md-2 control-label input-sm text-right">A</label>
+              <div class="col-md-5 text-center">
+                <input type="text" id="cantidadunidadA" name="cantidadunidadA" required autocomplete="false" class="form-control input-sm" disabled/>
+              </div>
+              <div class="col-md-5 text-center">
+                <input type="text" id="precioUnidadA" name="precioUnidadA" required autocomplete="false" class="form-control input-sm" disabled/>
+              </div>
+            </div>
+            <div class="row">
+              <!--Unidad B-->
+              <label class="col-md-2 control-label input-sm text-right">B</label>
+              <div class="col-md-5 text-center">
+                <input type="text" id="cantidadUnidadB" name="cantidadUnidadB" required autocomplete="false" class="form-control input-sm" disabled/>
+              </div>
+              <div class="col-md-5 text-center">
+                <input type="text" id="precioUnidadB" name="precioUnidadB" required autocomplete="false" class="form-control input-sm" disabled/>
+              </div>
+            </div>
+            <div class="row">
+              <!--Unidad C-->
+              <label class="col-md-2 control-label input-sm text-right">C</label>
+              <div class="col-md-5 text-center">
+                <input type="text" id="cantidadUnidadC" name="cantidadunidadC" required autocomplete="false" class="form-control input-sm" disabled/>
+              </div>
+              <div class="col-md-5 text-center">
+                <input type="text" id="precioUnidadC" name="precioUnidadC" required autocomplete="false" class="form-control input-sm" disabled/>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row">
+              <!--Código de Barra-->
+              <label class="col-md-4 control-label input-sm text-right">Código de Barra</label>
+              <div class="col-md-8 text-center">
+                <input type="text" id="codigoDeBarra" name="codigoDeBarra" required autocomplete="false" class="form-control input-sm" disabled/>
+              </div>
+            </div>
+          </div>
+          <div>
+        		  <pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+        	</div>
+        	<div ng-include="'views/templates/sa_template_modals.html'"></div>
+        </div>
+      </div>

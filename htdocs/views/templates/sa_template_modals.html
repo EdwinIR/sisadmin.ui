@@ -1,0 +1,49 @@
+<script type="text/ng-template" id="DelModalContent.html">
+  <div class ="modal-header">
+    <h3 class="modal-title">Eliminación de Elemento</h3>
+  </div>
+  <div class="modal-body">
+    <div><span>Esta seguro de eliminar: </span></div>
+    <div>
+      <ul>
+        <li>{{items[0].descripcion}}</li>
+      </ul>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+  </div>
+</scrpt>
+
+
+<script type="text/ng-template" id="AddModalContent.html">
+  <div class ="modal-header">
+    <h3 class="modal-title">Mensaje</h3>
+  </div>
+  <div class="modal-body">
+    <div><span>Datos: <strong>{{items[0].descripcion}}</strong> registrados correctamente: </span></div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+
+  </div>
+</script>
+
+
+
+<script type="text/ng-template" id="ErrorModalContent.html">
+  <div class ="modal-header">
+    <h3 class="modal-title">Mensaje Error</h3>
+  </div>
+  <div class="modal-body">
+    <div><span>Los password no coinciden, intente nuevamente por favor.</span></div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">Ok</button>
+  </div>
+</script>

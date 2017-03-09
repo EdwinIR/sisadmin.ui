@@ -1,0 +1,257 @@
+<!doctype html>
+
+<html ng-app="SisAdminApp" lang="en">
+<head>
+
+<meta charset="utf-8">
+<title ng-controller="varEmpresa">{{nombreEmpresa}}{{nombreProyecto}}</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="styles/bootstrap.css" />
+<link rel="stylesheet" href="styles/pub.css" />
+
+</head>
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="text-right">
+			<button type="button" class="btn btn-success btn-lg" 
+					onclick="location='http://localhost/#/login/'">
+					<span class="glyphicon glyphicon-home">
+					</span> 
+			</button>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container colorbg">
+		<div class="row">
+			<div class="col-xs-3 col-sm-3 col-md-3"
+				style="margin: auto 0; text-align: center;">
+
+				
+					<span class="busquedasisfetexto" style="font-size: 3.4em;border: none;">
+		                    <img class="logosisfelogin" src="images/sisfe_transp.png"  style="padding-top: 50%"/> 
+		                     SISFE  
+		                 </span>  
+
+			</div>
+
+
+			<div class="col-xs-9 col-sm-9 col-md-9">
+
+				<h3 class="text-center titulo">Consulta Comprobantes Electronicos</h3>
+				<br />	
+				<form class="form-horizontal" role="form" name="formFilter"
+					ng-submit="filter()">
+
+					<div class="form-group">
+
+						<label form="inRucEm"
+							class="col-xs-3 col-sm-3 col-md-3 control-label">RUC
+							Emisor:</label>
+						<div class="col-xs-6 col-sm-6 col-md-6">
+							<input type="text" id="rucEmisor" name="rucEmisor"
+								placeholder="10451028257" required size="11" maxlength="11"
+								class="form-control input-sm input-xs" ng-model="filter.ruc">
+						</div>
+						<small class='error'>*</small> <span class="help-block"
+							ng-show="formFilter.rucEmisor.$error.required"> </span>
+
+					</div>
+
+
+					<div class="form-group">
+						<label for="inNumDoc"
+							class="col-xs-3 col-sm-3 col-md-3 control-label">Serie-N&uacute;mero:</label>
+						<div class="col-xs-6 col-sm-6 col-md-6">
+							<input type="text" id="legalNumber" name="legalNumber"
+								placeholder="F001-00000002" required size="13" maxlength="13"
+								class="form-control input-sm input-xs"
+								ng-model="filter.legalNumber">
+						</div>
+						<small class='error'>*</small> <span class="help-block"
+							ng-show="formFilter.legalNumber.$error.required"></span>
+					</div>
+
+
+					<div class="form-group">
+						<label for="inNumDoc"
+							class="col-xs-3 col-sm-3 col-md-3 control-label">Monto:</label>
+						<div class="col-xs-6 col-sm-6 col-md-6">
+							<input type="text" id="amount" name="amount"
+								class="form-control input-sm input-xs" ng-model="filter.amount"
+								placeholder="0.00" required size="15" maxlength="15">
+						</div>
+						<small class='error'>*</small> <span class="help-block"
+							ng-show="formFilter.amount.$error.required"> </span>
+					</div>
+
+
+					<div class="form-group" ng-controller="DatePickerController">
+						<label for="issueDate"
+							class="col-xs-3 col-sm-3 col-md-3 control-label">Fecha:</label>
+						<div class="col-xs-6 col-sm-6 col-md-6">
+							<p class="input-group">
+								<input id="issueDate" name="issueDate" type="text"
+									class="form-control input-sm input-xs" required
+									close-text="Cerrar" show-button-bar="false"
+									is-open="openedBeginDate" datepicker-options="dateParamOptions"
+									datepicker-popup="{{dateParamFormat}}"
+									ng-model="filter.issueDate" maxlength="15" /> <span
+									class="input-group-btn">
+									<button type="button" class="btn btn-default input-sm input-xs"
+										ng-click="openBeginDate($event)">
+										<i class="glyphicon glyphicon-calendar"> </i>
+									</button>
+							</p>
+
+						</div>
+						</span><small class='error'>*</small> <span class="help-block"
+							ng-show="formFilter.issueDate.$error.required"></span>
+
+					</div>
+
+
+					<div class="form-group" style="margin-top: -10px">
+						<!--asi colocamos nuestro captcha en el formulario-->
+						<label for="captcha"
+							class="col-xs-3 col-sm-3 col-md-3 control-label">Captcha:</label>
+						<div class="col-xs-4 col-sm-3 col-md-3">
+							<!--campoo que hace de respuesta a nuestro captcha-->
+							<input ng-model="resultado" size="2" required
+								class="form-control input-sm input-xs" /></span>
+
+						</div>
+						<div class="col-xs-2 col-sm-2 col-md-2"
+							style="margin-left: -10px; margin-top: 4px; background: #1B96E1 none repeat scroll 0 0; text-align: center; width: 80px; height: 25px; color: #fff; font-size: 14px;">
+							<captcha field1="{{field1}}" operator="{{operator}}"
+								field2="{{field2}}"> </captcha>
+						</div>
+					</div>
+
+					<!--BOTONES-->
+
+					<div class="form-group" align="center" style='margin-top: 40px'>
+
+						<button class="btn btn-success btn-responsive btn-lg" type="submit"
+							ng-disabled="!formFilter.$valid" disabled="disabled">Buscar</button>
+
+						<button class="btn btn-success btn-responsive btn-lg" type="submit"
+							style='margin-left: 20px' ng-click="clear()">Cancelar</button>
+
+
+					</div>
+					<!--<div class="col-md-9 col-md-offset-3 blue">
+						centrada
+						</div>-->
+			</div>
+
+
+
+
+			</form>
+
+		</div><!--div del form-->
+
+
+	</div><!--row-->
+</div><!--container-->
+
+<div class="container">
+
+		<div ng-show="pbResultRefresh">
+			<progressbar class="progress-striped active" value="pbValue"
+				type="success">Cargando datos</progressbar>
+		</div>
+		<br>
+
+
+			<!--EMPIEZA TABLA-->
+	<div ng-controller="PaginationCtrl" >
+
+			<div class="row headerTable" ng-show="listDocuments.length > 0">
+				
+				<div class="col-xs-2 col-sm-2 col-md-2 text-left">
+					<label>Fecha</label>
+				</div>
+				<div class="col-xs-2 col-sm-2 col-md-2 text-left">
+					<label>Nro Documento<br>Cliente
+					</label>
+				</div>
+				<div class="col-xs-1 col-sm-1 col-md-1 text-center">
+					<label>Tipo</label>
+				</div>
+				<div class="col-xs-1 col-sm-1 col-md-1 text-center">
+					<label>Total</label>
+				</div>
+				<div class="col-xs-2 col-sm-2 col-md-2 text-center">
+					<label>Estado</label>
+				</div>
+				<!--<div class="col-sm-1 text-center"><label></label></div> -->
+				<div class="col-xs-3 col-sm-3 col-md-3 text-center">
+					<label>Accion</label>
+				</div>
+			</div>
+
+			<div id="resultset" class="row" ng-class-odd="'odd'"
+				ng-class-even="'even'"
+				ng-repeat="item in listDocuments | offset: (currentPage-1) * itemsPerPage | limitTo:itemsPerPage">
+				
+				<div class="col-xs-2 col-sm-2 col-md-2 text-left input-sm">{{item.issueDate |
+					date:'dd-MM-yyyy'}}</div>
+				<div class="col-xs-2 col-sm-2 col-md-2 text-left ">
+					{{item.legalNumber}}<br> <small> {{item.customerName}}</small>
+				</div>
+
+				<div class="col-xs-1 col-sm-1 col-md-1 text-center input-sm">{{getDocumentTypeDesc(item.documentTypeCode)}}</div>
+
+
+
+				<div class="col-xs-1 col-sm-1 col-md-1 text-center input-sm">{{getCurrencyPrefix(item.currency)}}
+					{{item.amount}}</div>
+				<div class="col-xs-2 col-sm-2 col-md-2 text-center input-sm">{{getStatus(item.status)}}</div>
+				<div class="col-xs-3 col-sm-3 col-md-3 text-center">
+					<div class="btn-group" dropdown>
+						<!--<div  ng-if="disableButtons(item.status)" class="btn-group" dropdown>-->
+						<button type="button" class="btn btn-primary"
+							ng-click="dwlPdf('{{item.fileName}}')">
+							PDF <span class="glyphicon glyphicon-download-alt"></span>
+						</button>
+
+						<button type="button" class="btn btn-primary btn-responsive dropdown-toggle">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+
+							<li><a href ng-click="dwlPdf('{{item.fileName}}')">Descargar
+									PDF <span class="glyphicon glyphicon-download-alt">
+							</a></li>
+
+							<li><a href ng-click="dwlSunatAuth('{{item.fileName}}')">Descargar
+									XML <span class="glyphicon glyphicon-download-alt">
+							</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

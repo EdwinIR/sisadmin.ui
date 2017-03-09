@@ -1,0 +1,425 @@
+
+<div ng-controller="ScheduledCtrl"
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"
+	ng-init="loadPage()">
+
+	<h3>Envios Electronicos Programados</h3>
+
+	<div class="well well-lg" style="background-color: #FFFFFF">
+		<form class="form-horizontal" role="form" name="formFilter" novalidate>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Tarea</th>
+						<th>Tipo Ejecucion</th>
+						<th>Condici&oacute;n</th>
+						<th style='width: 270px'>Par&aacute;metro</th>
+						<th>Ejecutar</th>
+
+					</tr>
+				</thead>				
+				<tbody>
+
+					<tr>
+						<td class="nombretarea">Env&iacute;o de Facturas</td>
+						<td>Automatico</td>
+						<td>    Estado = Pendiente</br> 
+								Fecha Emision = Ayer</br> 								
+								Horario: Todos los dias a las 13 HS y 10:30 HS
+						</td>
+						<td class="horarioejec"> Proxima Ejecucion:  <br> 
+								Dia: 22-03-2016  <br> 
+								Hora: 13:00 
+						</td>
+						<td>
+							<button class="btn btn-success" disabled>Ejecutar</button>
+							<button class="btn btn-danger" disabled>Cancelar</button>
+							<button class="btn btn-primary" disabled>Reiniciar</button>
+						</td>
+					</tr>
+					
+
+					<tr>
+						<td class="nombretarea">Envio Resumen de Boletas</td>
+						<td>Automatico</td>
+						<td>Estado = Pendiente</br>
+							Fecha Emision = Ayer</br> 							
+							Horario Ejecucion: Todos los dias a las 23 HS
+						</td>
+						<td class="horarioejec"> Proxima Ejecucion:  <br> 
+								Dia: 22-03-2016  <br> 
+								Hora: 23:00 </td>
+
+						<td>
+							<button class="btn btn-success" disabled>Ejecutar</button>
+							<button class="btn btn-danger" disabled>Cancelar</button>
+							<button class="btn btn-primary" disabled>Reiniciar</button>
+						</td>
+					</tr>
+
+
+					<tr>
+						<td class="nombretarea">Status Resumen de Boletas</td>
+						<td>Automatico</td>
+						<td>Estado = Enviado(SD)</br>
+							Fecha Emision = Ayer</br> 							
+							Horario Ejecucion: Todos los dias a las 23:30 HS							 
+						</td>
+						<td class="horarioejec"> Proxima Ejecucion:  <br> 
+								Dia: 22-03-2016  <br> 
+								Hora: 23:30</td>
+						<td>
+							<button class="btn btn-success" disabled>Ejecutar</button>
+							<button class="btn btn-danger" disabled>Cancelar</button>
+							<button class="btn btn-primary" disabled>Reiniciar</button>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="nombretarea">Sincronizar FTP InHouse</td>
+						<td>Automatico</td>
+						<td>Copia archivos TXT a carpeta Servidor: 10-ftp
+							Borra archivos TXT del FTP</br>							
+							Horario Ejecucion: Todos los dias a las 05:00 HS
+						</td>
+						<td class="horarioejec"> Proxima Ejecucion:  <br> 
+								Dia: 23-03-2016  <br> 
+								Hora: 05:00</td>
+						<td>
+							<button class="btn btn-success" disabled>Ejecutar</button>
+							<button class="btn btn-danger" disabled>Cancelar</button>
+							<button class="btn btn-primary" disabled>Reiniciar</button>							
+						</td>
+					</tr>
+
+
+
+
+
+
+
+					<tr>
+						<td class="nombretarea">Env&iacute;o de Facturas</td>
+						<td>Manual</td>
+						<td>Realiza envio de Facturas y Notas Asociadas</br> 
+							que cumplen con los parametros cargados</br>							
+						</td>
+						<td><label> <strong>Fecha de Emisi&oacute;n</strong></label>
+
+							<div class="form-group" ng-controller="DatePickerController">
+
+								<div class="col-md-11">
+									<!---tamaño de date-->
+									<p class="input-group">
+										<input id="inBeginDate" type="text"
+											class="form-control input-sm"											show-button-bar="false" is-open="openedBeginDate"
+											datepicker-options="dateParamOptions"
+											datepicker-popup="{{dateParamFormat}}"
+											ng-model="filter.fechaEnvioFactura" 
+											min-date="minDate"
+										    max-date="maxDate" 
+										    ng-required="true" /> 
+										    <span
+											class="input-group-btn">
+											<button type="button" class="btn btn-default input-sm"
+												ng-click="openBeginDate($event)">
+												<i class="glyphicon glyphicon-calendar"> </i>
+											</button>
+										</span>
+									</p>
+								</div>
+
+							</div> <label> <strong>Nro.Documento</strong></label>
+
+							<div class="form-group">
+								<!--<div class="col-md-5">
+									<select class="form-control input-sm" id="serie"
+										ng-options="i.serie for i in listSerieFacturas | orderBy:'serie'"
+										ng-model="filter.serieEnvioFactura"></select>
+								</div>--> 
+																	<div class="col-md-11">
+
+									<input class="form-control input-sm" type="text"
+										ng-model="filter.numeroLegal" maxlength="13"/>
+
+
+								</div>
+							</div> <label> <strong>Estado</strong></label>
+							<div class="form-group">
+								<div class="col-md-5">
+									<select id="estado" name="estado" ng-model="filter.statusEnvioFactura"
+										class="form-control input-sm">
+										<option value="PD">PD</option>
+										<option value="ER">ER</option>
+										
+
+									</select>
+
+								</div>
+							</div></td>
+						<td><button class="btn btn-success"
+								ng-click="btnEnvioFacturas()" ng-disabled="disableFactura()">Ejecutar</button><br><br>
+								<div ng-show="pbResultRefreshFactura">
+									<progressbar class="progress-striped active" value="pbValue"
+										type="danger">Procesando...</progressbar>
+							   </div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="nombretarea">Generacion Resumen de Boletas</td>
+						<td>Manual</td>
+						<td>Genera y envia el Resumen de Boletas y Notas Asociadas </br> 
+							que cumplen con los parametros cargados</br>							
+						</td>
+						<td>
+
+							<label> <strong>Fecha de Emisi&oacute;n</strong></label>
+
+							<div class="form-group" ng-controller="DatePickerController">
+
+								<div class="col-md-11">
+									<!---tamaño de date-->
+									<p class="input-group">
+										<input id="inBeginDate" type="text"
+											class="form-control input-sm" close-text="Cerrar"
+											show-button-bar="false" is-open="openedBeginDate"
+											datepicker-options="dateParamOptions"
+											datepicker-popup="{{dateParamFormat}}"
+											ng-model="filter.fechaResumenEmision" /> <span
+											class="input-group-btn">
+											<button type="button" class="btn btn-default input-sm"
+												ng-click="openBeginDate($event)">
+												<i class="glyphicon glyphicon-calendar"> </i>
+											</button>
+										</span>
+									</p>
+								</div>
+
+							</div>
+
+
+
+							<label> <strong>Fecha de Generaci&oacute;n</strong></label>
+
+							<div class="form-group" ng-controller="DatePickerController">
+
+								<div class="col-md-11">
+									<!---tamaño de date-->
+									<p class="input-group">
+										<input id="inBeginDate" type="text"
+											class="form-control input-sm" close-text="Cerrar"
+											show-button-bar="false" is-open="openedBeginDate"
+											datepicker-options="dateParamOptions"
+											datepicker-popup="{{dateParamFormat}}"
+											ng-model="filter.fechaResumenGeneracion" /> <span
+											class="input-group-btn">
+											<button type="button" class="btn btn-default input-sm"
+												ng-click="openBeginDate($event)">
+												<i class="glyphicon glyphicon-calendar"> </i>
+											</button>
+										</span>
+									</p>
+								</div>
+
+							</div>
+
+
+
+
+							 <label> <strong>Numeraci&oacute;n</strong></label>
+							<div class="form-group">
+								<div class="col-md-7">
+
+									<input class="form-control input-sm" type="text"
+										ng-model="filter.numeracionResumen" maxlength="5"/>
+									
+									<!--<select class="form-control input-sm" id="serie"
+										ng-options="i.serie for i in listSerieBoletas | orderBy:'serie'"
+										ng-model="filter.serieResumen"></select>-->
+
+								</div>
+							</div> 
+							<!--<label> <strong>Estado</strong></label>
+							<div class="form-group">
+								<div class="col-md-5">
+									<select id="estado" name="estado" ng-model="filter.statusResumen"
+										class="form-control input-sm">									
+										<option value="PD">PD</option>
+										
+									</select>
+
+								</div>
+							</div>-->
+							</td>
+						<td><button class="btn btn-success"
+								ng-click="btnGenerarResumen()" ng-disabled="disableResumen()">Ejecutar</button><br><br>
+								<div ng-show="pbResultRefreshResumen">
+									<progressbar class="progress-striped active" value="pbValue"
+										type="danger">Procesando...</progressbar>
+							   </div></td>
+					</tr>
+					
+					<tr>
+						<td class="nombretarea">Envio Resumen de Boletas</td>
+						<td>Manual</td>
+						<td>Envia el Resumen de Boletas y Notas Asociadas </br> 
+							que cumplen con los parametros cargados</br>							
+						</td>
+						<td>							
+							</div> <label> <strong>Identificador</strong></label>
+							<div class="form-group">
+								<div class="col-md-11">
+									<input class="form-control input-sm" type="text"
+										ng-model="filter.identificadorResumen" ng-keypress="myFunct($event)" />
+
+								</div>
+							</div> <label> <strong>Estado</strong></label>
+							<div class="form-group">
+								<div class="col-md-5">
+									<select id="estado" name="estado" ng-model="filter.statusResumen"
+										class="form-control input-sm">
+										<option value="CR">CR</option>										
+									</select>
+
+								</div>
+							</div>
+						</td>
+						<td><button class="btn btn-success"
+								ng-click="btnEnviarResumen()" ng-disabled="disableEnviarResumen()">Ejecutar</button><br><br>
+								<div ng-show="pbResultRefreshResumen">
+									<progressbar class="progress-striped active" value="pbValue"
+									type="danger">Procesando...</progressbar>
+					   			</div>
+					   	</td>
+					</tr>
+					
+					<tr>
+						<td class="nombretarea">Status - Ticket Resumen de Boletas</td>
+						<td>Manual</td>
+						<td>Obtiene Status de Resumenes de Boletas</br>
+							que cumplan con los parametros cargados</br>								
+						</td>
+						<td><label> <strong>Fecha</strong></label>
+							<div class="form-group" ng-controller="DatePickerController">
+								<div class="col-md-11">
+									<!---tamaño de date-->
+									<p class="input-group">
+										<input id="inBeginDate" type="text"
+											class="form-control input-sm" close-text="Cerrar"
+											show-button-bar="false" is-open="openedBeginDate"
+											datepicker-options="dateParamOptions"
+											datepicker-popup="{{dateParamFormat}}"
+											ng-model="filter.fechaTicket" /> <span
+											class="input-group-btn">
+											<button type="button" class="btn btn-default input-sm"
+												ng-click="openBeginDate($event)">
+												<i class="glyphicon glyphicon-calendar"> </i>
+											</button>
+										</span>
+									</p>
+								</div>
+							</div> <label> <strong>Identificador</strong></label>
+							<div class="form-group">
+								<div class="col-md-11">
+									<input class="form-control input-sm" type="text"
+										ng-model="filter.identificadorResumen" ng-keypress="myFunct($event)" />
+
+								</div>
+							</div> <label> <strong>Estado</strong></label>
+							<div class="form-group">
+								<div class="col-md-5">
+									<select id="estado" name="estado" ng-model="filter.statusTicket"
+										class="form-control input-sm">
+										<option value="SD">SD</option>
+										<option value="ER">ER</option>
+									</select>
+
+								</div>
+							</div></td>
+						<td><button class="btn btn-success"
+								 ng-click="btnConStatusTicket()" ng-disabled="disableTicket()">Ejecutar</button></td>
+					</tr>
+					
+					<tr>
+						<td class="nombretarea">Sincronizar FTP Cliente</td>
+						<td>Manual</td>
+						<td>Lector de Servidor FTP</br> 
+							Copia archivos TXT a carpeta Servidor 10-ftp</br>
+							Borra archivos TXT del FTP</br>
+							Para su Procesamiento Centralizado							
+						</td>
+						<td></td>
+						<td><button class="btn btn-success">Ejecutar</button></td>
+					</tr>
+
+
+			
+					
+
+
+				</tbody>
+			</table>
+
+		</form>
+	</div>
+
+
+	<script type="text/ng-template" id="ModalContentFacturaProcesada.html">
+					<div class ="modal-header">
+						<h4 class="modal-title">Mensaje</h4>
+					</div>
+
+					<div class="modal-body">
+						<div>
+						<span>{{items[1]}}</span><br><br>
+						<span><strong>Fecha de emisi&oacute;n:</strong></span> {{items[2]}}<br>
+						<span><strong>Nro.Documento:</strong></span> {{items[3]}}<br><br>					
+						<span><strong>{{items[7]}}</strong></span><br>
+						{{items[8]}}
+						</div>
+
+					</div>
+				
+				
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+						
+						
+					</div>
+    </script>
+
+    <script type="text/ng-template" id="ModalContentResumen.html">
+					<div class ="modal-header">
+						<h4 class="modal-title">Mensaje</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+						<span>{{items[1]}}</span><br><br>
+						<span><strong>{{items[2]}}</strong></span> {{items[3]}}<br>
+						<span><strong>{{items[4]}}</strong></span> {{items[5]}}<br>
+						<span><strong>{{items[10]}}</strong></span> {{items[11]}}<br>
+						<span><strong>{{items[6]}}</strong></span> {{items[7]}}<br><br>
+						<span><strong>{{items[8]}}</strong></span><br>						
+						{{items[9]}}
+						</div>
+				
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+						
+						
+					</div>
+    </script>
+
+
+
+
+
+
+</div>
+
+
+
+
+	

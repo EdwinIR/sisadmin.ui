@@ -1,0 +1,239 @@
+		<div ng-controller="ContingencyCtrl" ng-init="loadPage()" 
+				class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<h3>Documentos Contingencia</h3>
+			<div>
+				<div>
+				<button class="btn btn-default" ng-click="refresh()">Actualizar <span class="glyphicon glyphicon-refresh"></span></button>
+				<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Filtros</button>
+				</div>
+				<div collapse="isCollapsed">
+					<div class="well well-lg">
+						<form class="form-horizontal" role="form" name="formFilter" novalidate>
+								
+								<div class="form-group" ng-controller="DatePickerController">								
+										<label  for="inBeginDate" class="col-md-2 control-label input-sm">
+										Fecha Inicial:</label>
+										<div class="col-md-3">
+											<p class="input-group">
+												<input id="inBeginDate" type="text" class="form-control input-sm" 
+													close-text="Cerrar" show-button-bar="false"
+													is-open="openedBeginDate" datepicker-options="dateParamOptions"   
+													datepicker-popup="{{dateParamFormat}}" ng-model="filter.beginIssueDate" />
+												
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-default input-sm" 
+														ng-click="openBeginDate($event)"><i class="glyphicon glyphicon-calendar">
+													</i></button>
+												</span>
+											</p>
+										</div>
+										
+										<label for="inEndDate" class="col-md-2 control-label input-sm">
+										Fecha Final:</label>
+										<div class="col-md-3">
+											<div>
+												<p class="input-group">
+													<input id="inEndDate" type="text" class="form-control input-sm" 
+														close-text="Cerrar" show-button-bar="false"
+														is-open="openedEndDate" datepicker-options="dateParamOptions"
+														datepicker-popup="{{dateParamFormat}}" ng-model="filter.endIssueDate" />
+
+													<span class="input-group-btn">
+														<button type="button" class="btn btn-default input-sm" 
+															ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar">
+														</i></button>
+													</span>
+
+												</p>
+											</div>
+										</div> 
+								</div>
+						
+								<div class="form-group">
+										<label for="inDocumentType" class="col-md-2 control-label input-sm">Tipo de Documento:</label>
+										<div class="col-md-3">
+												<select class="form-control input-sm" id="typeId" 
+														ng-options="i.descr for i in listDocTypes" 
+														ng-model="filter.documentTypeSelected">
+												</select>
+										</div>
+
+										<label for="inDocumentType" class="col-md-2 control-label input-sm">Cliente:</label>
+										<div class="col-md-3">
+												<select class="form-control input-sm" id="customerId" 
+														ng-options="i.name for i in listCustomer" 
+														ng-model="filter.customerSelected">
+												</select>
+										</div>
+								</div>
+
+							
+								<br>
+								<div class="form-group">
+									<button class="btn btn-success" ng-click="filter()" 
+											ng-disabled="!enableFilter()">Buscar</button>
+									<button class="btn btn-success" ng-click="clear()" 
+											ng-disabled="enableClear()">Limpiar</button>
+								</div>
+						</form>
+					</div>
+				</div>
+
+				<div ng-show="pbResultRefresh">
+						<progressbar class="progress-striped active" value="pbValue" type="success">Cargando datos</progressbar>
+				</div>
+			</div>
+
+			<br>
+			<!--Codigo de Busqueda -->
+				<br>
+			<form>
+			    <div class="form-group">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+			        <input type="text" class="form-control" placeholder="Busca un documento" ng-model="searchDoc">
+			      </div>      
+			    </div>
+			</form>
+			<br>
+			<!--Incio de Cambios para el ordenamiento-->
+			<div ng-controller="PaginationCtrl">
+					<div class="row headerTable">
+							<div class="col-sm-2 text-center"> 
+							<a ng-click="sortType = 'issueDate'; sortReverse = !sortReverse">
+                			<label>Fecha </label> 
+                			<span ng-show="sortType == 'issueDate' && !sortReverse">
+                			<img src="../images/up.png"/></span>
+           		 			<span ng-show="sortType == 'issueDate' && sortReverse">
+           		 			<img src="../images/do.png"/></span>
+          					</a>
+						</div>
+
+
+									<div class="col-sm-3 text-left">
+							<a ng-click="sortType = 'legalNumber'; sortReverse = !sortReverse">
+                			<label>Nro Documento</label>
+                			<span ng-show="sortType == 'legalNumber' && !sortReverse">
+                			<img src="../images/up.png"/></span>
+           		 			<span ng-show="sortType == 'legalNumber' && sortReverse">
+           		 			<img src="../images/do.png"/></span>
+           		 			<br><label>Cliente</label>
+          					</a>
+						</div>
+							
+							
+					
+							
+							
+						<div class="col-sm-1 text-center">
+							<a ng-click="sortType = 'documentTypeCode'; sortReverse = !sortReverse">
+                			<label>Tipo</label>
+                			<span ng-show="sortType == 'documentTypeCode' && !sortReverse">
+                			<img src="../images/up.png"/></span>
+           		 			<span ng-show="sortType == 'documentTypeCode' && sortReverse">
+           		 			<img src="../images/do.png"/></span>
+           					</a>
+						</div>
+						<div class="col-sm-2 text-center">
+							<a ng-click="sortType = 'amount'; sortReverse = !sortReverse">
+                			<label>Total</label>
+                			<span ng-show="sortType == 'amount' && !sortReverse">
+                			<img src="../images/up.png"/></span>
+           		 			<span ng-show="sortType == 'amount' && sortReverse">
+           		 			<img src="../images/do.png"/></span>
+           					</a>
+						</div>
+						<div class="col-sm-1 text-center">
+							<a ng-click="sortType = 'status'; sortReverse = !sortReverse">
+                			<label>Estado</label>
+                			<span ng-show="sortType == 'status' && !sortReverse">
+                			<img src="../images/up.png"/></span>
+           		 			<span ng-show="sortType == 'status' && sortReverse">
+           		 			<img src="../images/do.png"/></span>
+           					</a>
+						</div>
+
+                      <!--Fin de Cambios para el ordenamiento-->
+						
+							<!--<div class="col-sm-1 text-center"><label></label></div> -->
+							<div class="col-sm-2 text-center"><label></label></div>
+					</div>
+			
+					<div ng-if="item.status.trim() == 'AT' || item.status.trim() == 'CT' || item.status.trim() == 'RH' ||item.status.trim() == ''"id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'" 
+							ng-repeat="item in listDocuments | filter:searchDoc | orderBy:sortType:sortReverse  | offset: (currentPage-1) * itemsPerPage | limitTo:itemsPerPage">
+
+							<div class="col-sm-2 text-center input-sm">
+								{{item.issueDate | date:'dd-MM-yyyy'}}
+
+							</div>
+							<div class="col-sm-3 text-left ">{{item.legalNumber}}<br><small> 
+								{{item.customerName}}</small></div>
+							<div class="col-sm-1 text-center input-sm">{{getDocumentTypeDesc(item.documentTypeCode)}}</div>
+							<div class="col-sm-2 text-center input-sm">{{getCurrencyPrefix(item.currency)}} 
+								{{item.amount}}</div>
+							<div class="col-sm-1 text-center input-sm">{{getStatus(item.status)}}</div>
+							
+							<div  class="col-sm-2 text-center">
+		          				<div class="btn-group" dropdown>
+										<button type="button" class="btn btn-warning"> Re-enviar 
+										<span class="glyphicon glyphicon-send"></span></button>
+										<button type="button" class="btn btn-warning dropdown-toggle">
+					          					<span class="caret"></span>
+					          			</button>
+										<ul class="dropdown-menu" role="menu">
+					          				<li><a href  ng-click="reenviar('{{item.fileName}}')">Enviar Sunat  
+					          						<span class="glyphicon glyphicon-send"></a>
+					          				</li>
+					          				<li><a href  ng-click="delete({{item}})">Borrar 
+					          						<span class="glyphicon glyphicon-remove"></a>
+					          				</li>				          				
+					          			</ul>				          				
+				          		</div>	
+
+		          			</div>
+				</div>
+				<div>
+						<pagination total-items="totalItems" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente"></pagination>
+				</div>
+			</div>
+
+
+				<script type="text/ng-template" id="ResendModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Re-envio a Sunat</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Se re-enviara el documento a la SUNAT</span></div>
+						<div>
+							{{items[0]}}
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Re-enviar</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+					</div>
+				</script>
+
+				<script type="text/ng-template" id="DelModalContent.html">
+						<div class ="modal-header">
+							<h3 class="modal-title">Eliminación de Documento</h3>
+						</div>
+						<div class="modal-body">
+							<div><span>Esta seguro de eliminar el documento : </span></div>
+							<div>
+								<ul>
+									<li>{{items[0].legalNumber}}</li>
+								</ul>
+
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="ok()">Eliminar</button>
+							<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+						</div>
+				</script>
+			
+
+
+
+		</div>

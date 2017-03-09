@@ -1,0 +1,226 @@
+<div ng-controller='SaParteIngresoAlmacenCtrl' ng-init="loadPage()"
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+	<h3> Parte Ingreso Almacen</h3>
+	<hr class="style1" />
+	<br />
+	<!--Inicio del div de todo-->
+	<div>
+	<div>
+		<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Ingreso Almacen <span class="glyphicon glyphicon-add" /></button>
+	</div>
+	<div collapse="isCollapsed">
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="abmForm" ng-submit="salvado()" autocomplete ="off">
+						<div class="form-group">
+							<label class="col-md-1 control-label input-sm">Numero Interno:</label>
+							<div class="col-md-1">
+									<input type="text" ng-disabled="codigoDeshabilitado"
+									id="numerointerno" autocomplete="false" name="numerointerno" required placeholder="11111"
+									ng-pattern="/^[0-9]*$/"
+									class="form-control input-sm" ng-model="parteingresoalmacen.numeroInterno" maxlength="20"/>
+									<p ng-show="abmForm.numerointerno.$error.pattern">Ingresar solo número</p>
+							</div>
+							<label for="inEndDate" class="col-md-1 control-label input-sm">Fecha Ingreso :</label>
+							<div class="col-md-2" ng-controller="DatePickerController">
+												<div>
+													<p class="input-group">
+														<input id="fechaIngreso" required type="text" class="form-control input-sm"
+															close-text="Cerrar" show-button-bar="false"
+															is-open="openedEndDate" datepicker-options="dateParamOptions"
+															datepicker-popup="{{dateParamFormat}}" ng-model="parteingresoalmacen.fechaIngreso" />
+														<span class="input-group-btn">
+															<button type="button" class="btn btn-default input-sm"
+																ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar">
+															</i></button>
+														</span>
+													</p>
+												</div>
+							</div>
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">Proveedor: </label>
+							<div class="col-md-2">
+										<select class="form-control input-sm" id="proveedor" required
+																			ng-options="i.id as i.razonSocial for i in proveedores"
+																			ng-model="parteingresoalmacen.proveedorId">
+																	</select>
+							</div>
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">Orden Compra:</label>
+							<div class="col-md-2">
+																	<select class="form-control input-sm" id="ordenes" required
+																			ng-options="i.id for i in ordenescompras"
+																			ng-model="parteingresoalmacen.ordenCompraId"
+																			ng-change="filter()">
+																	</select>
+							</div>
+				</div>
+				<div class="form-group centrobot">
+							<button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+							<button class="btn btn-default botonbus" type="button" ng-click="limpiar()">Cancelar</button>
+			 </div>
+			</form>
+		 </div>
+	</div>
+
+		<!--Inicio Cabecera Orden Compra-->
+		<div ng-show="cabeceraDetalle">
+				<div class="cabeceraobtenida">
+						<div class="form-group">
+								<label class="col-md-1 control-label input-sm">Nro O.C.</label>
+								<label class="col-md-1 control-label input-sm">{{ordenCompra.codigo}}</label>
+  							<label class="col-md-1 control-label input-sm">Proveedor:</label>
+							  <label class="col-md-2 control-label input-sm">{{ordenCompra.razonSocialProveedor}}</label>
+  							<label class="col-md-1 control-label input-sm">Fec Emision:</label>
+							 <label class="col-md-1 control-label input-sm">{{ordenCompra.fechaEmision | date:'dd-MM-yyyy'}}</label>
+               <label class="col-md-1 control-label input-sm">Fec Recepcion: </label>
+							 <label class="col-md-1 control-label input-sm">{{ordenCompra.fechaRecepcion | date:'dd-MM-yyyy'}}</label>
+						</div>
+					<br />
+						<div class="form-group">
+							<label class="col-md-1 control-label input-sm">Moneda: </label>
+							<label class="col-md-1 control-label input-sm">{{ordenCompra.descripcionTipoPago}}</label>
+							<label class="col-md-1 control-label input-sm">Condiciones: </label>
+  						<label class="col-md-2 control-label input-sm">{{ordenCompra.descripcionCondicionPago}}</label>
+						</div>
+
+				</div>
+		</div>
+<!--Fin Cabecera Orden Compra-->
+
+		<!--Inicio Detalle de ordenCompra-->
+		<div class="row" ng-show="cabeceraDetalle">
+			<table class="table table-striped col-md-12">
+				<thead>
+					<tr>
+						<th class="col-md-1"></th>
+						<th class="col-md-1">Producto</th>
+						<th class="col-md-1">Unidades</th>
+						<th class="col-md-1">Bonif</th>
+						<th class="col-md-1">Costo Unitario</th>
+						<th class="col-md-1">%Dscto1</th>
+						<th class="col-md-1">%Dscto2</th>
+						<th class="col-md-1">%Dscto3</th>
+						<th class="col-md-1">%Dscto4</th>
+						<th class="col-md-1">Cto. Unitario Neto</th>
+						<th class="col-md-1">Cantidad Compra</th>
+						<th class="col-md-1">Total Compra</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="detalle in ordenCompra.detalles">
+						<td text-align="center"><button ng-click="removeItem()" class="btn btn-warning" disabled>X</button></td>
+						<td class="col-md-4">
+							<input class="col-md-13" type="text" ng-model="detalle.descripcionProducto" disabled></input>
+						</td>
+						<!--Combo Unidades-->
+						<td class="col-md-1">
+							<input class="col-md-13" type="text" ng-model="detalle.descripcionUnidadMedida" disabled></input>
+						</td>
+						<!--Bonificado-->
+						<td ><input  type="checkbox" autocomplete="false" ng-model="detalle.bonificado" disabled/></td>
+						<td class="col-md-1"><input class="col-md-12" type="text" ng-model="detalle.precioUnitario" name="preciounitario" disabled />
+            </td>
+						<td ><input class="col-md-8" type="text" ng-model="detalle.descuento1" name="descuento1" disabled />
+            </td>
+						<td ><input class="col-md-8" type="text" ng-model="detalle.descuento2" name="descuento2" disabled />
+            </td>
+						<td ><input class="col-md-8" type="text" ng-model="detalle.descuento3" name="descuento3" disabled />
+            </td>
+						<td ><input class="col-md-8" type="text" ng-model="detalle.descuento4" name="descuento4" disabled />
+            </td>
+						<td class="col-md-1"><input class="col-md-8" type="text" ng-model="detalle.precioNeto" name="precioNeto" disabled />
+            </td>
+						<td ><input class="col-md-8" type="text" ng-model="detalle.cantidad" name="cantidad" disabled />
+            </td>
+						<td class="col-md-1"><input  type="text" ng-model="detalle.totalCompra" name="totalCompra" disabled />
+            </td>
+					</tr>
+				</tbody>
+			</table>
+
+	</div>
+<!--Fin Detalle de ordenCompra-->
+
+
+</div>
+<!--Fin del div de todo-->
+<br />
+<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Busca Parte Ingreso" ng-model="filtro">
+			      </div>
+			    </div>
+</form>
+<br />
+
+<div ng-controller="ParteIngresoAlmacenesPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'numeroInterno'; sortReverse = !sortReverse">
+					<label>Nro. Iterno</label>
+					<span ng-show="sortType == 'numeroInterno' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'numeroInterno' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'fechaIngreso'; sortReverse = !sortReverse">
+					<label>Fecha Ingreso</label>
+					<span ng-show="sortType == 'fechaIngreso' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'fechaIngreso' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'razonSocialProveedor'; sortReverse = !sortReverse">
+					<label>Proveedor</label>
+					<span ng-show="sortType == 'razonSocialProveedor' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'razonSocialProveedor' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaParteIngresoAlmacenes | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-2 text-center input-sm">{{item.numeroInterno}}</div>
+			<div class="col-sm-2 text-center input-sm">{{item.fechaIngreso | date:'dd-MM-yyyy'}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.razonSocialProveedor}}</div>
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">				        
+										<li>
+											<a href ng-click="borrar({{item}})">Eliminar
+				          					<span class="glyphicon glyphicon-remove"></a>
+				          	</li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<div ng-include="'views/templates/sa_template_modals.html'"></div>
+	</div>
+</div>

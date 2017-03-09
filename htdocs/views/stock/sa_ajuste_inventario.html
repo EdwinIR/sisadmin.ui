@@ -1,0 +1,333 @@
+<div ng-controller='SaAjusteInventarioCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+ 	<h3>Catalogo Ajuste Inventario</h3>
+	<hr class="style1" />
+	<br />
+	<div>
+		<div>
+			<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Actualizar Inventario<span class="glyphicon glyphicon-add" /></button>
+		</div>
+		<div collapse="isCollapsed">
+			<!-- inicia div formulario alta/edicion -->
+			<div class="busqueda">
+				<!-- inicia div formulario horizontal -->
+				<form class="form-horizontal" role="form" name="abmForm" ng-submit="save()" autocomplete ="off">
+						<div class="form-group">
+
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">
+										Familia: </label>
+							<div class="col-md-3">
+								<select class="form-control input-sm" id="modelo" required
+												ng-options="i.idSa as i.descripcion for i in familias"
+												ng-model="filter.familiaId"
+												ng-change="changeBusquedaMarcaCabecera()">
+								</select>
+							</div>
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">
+							Marca: </label>
+							<div class="col-md-3">
+								<select class="form-control input-sm" id="typeId" required
+												ng-options="i.marca.idSa as i.marca.descripcion for i in marcasCabecera"
+												ng-model="filter.marcaId"
+												ng-change="changeProducto()">
+								</select>
+							</div>
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">
+										Producto: </label>
+							<div class="col-md-3">
+								<select class="form-control input-sm" id="modelo" required
+												ng-options="i.id as i.descripcion for i in marcaproductos"
+												ng-model="filter.productoId"
+												ng-change="filter()">
+								</select>
+							</div>
+						</div>
+
+
+
+						<div  class="form-group">
+
+							<label class="col-md-1 control-label input-sm">
+								Unidad Medida
+							</label>
+								<div class="col-md-3">
+								<input type="text" id="unidadmedida" name="unidadmedida"  class="form-control input-sm"
+								ng-model="productoAlmacen.descripcionUnidadMedida" disabled/>
+								</div>
+
+							<label class="col-md-1 control-label input-sm">
+								Codigo Barra:
+							</label>
+								<div class="col-md-5">
+								<input type="text" id="codigobarra" name="codigobarra"  class="form-control input-sm" ng-model="productoAlmacen.codigoBarra" disabled />
+								</div>
+
+							<label class="col-md-1 control-label input-sm">
+								Stock Actual:
+							</label>
+								<div class="col-md-1">
+								<input type="text" id="stock" name="stock"   class="form-control input-sm" ng-model="productoAlmacen.stock" disabled />
+								</div>
+						</div>
+
+						<div class="form-group">
+
+								<label class="col-md-1 control-label input-sm">
+									Observaciones
+								</label>
+           						 <div class="col-md-7">
+                					<input type="text"
+                					id="observaciones" name="observaciones" autocomplete="false"
+													ng-model="ajusteinventario.observaciones" required
+													placeholder="Observaciones..."
+													ng-pattern="/^[a-zA-Z0-9\s]*$/"
+													class="form-control input-sm"/>
+													<p ng-show="abmForm.observaciones.$error.pattern">Por favor ingresar solo numeros y letras</p>
+            					</div>
+
+           						 <label class="col-md-1 control-label input-sm">
+           							 Stock Real
+           						 </label>
+            						<div class="col-md-3">
+                					<input type="text" id="stockreal" autocomplete="false" name="stockreal" required
+														placeholder="0.00" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+                						class="form-control input-sm" ng-model="ajusteinventario.stockNuevo" maxlength="20"/>
+														<p ng-show="abmForm.stockreal.$error.pattern">Por favor ingresar solo numeros</p>
+            						</div>
+
+						</div>
+
+
+						<br>
+						<div class="form-group centrobot">
+							<button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+							<button class="btn btn-default botonbus" type="button" ng-click="clear()">Cancelar</button>
+							<!--<button class="btn btn-default botonbus" ng-click="filter()" ng-disabled="disableFilter()">Busqueda</button>-->
+						</div>
+				</form>
+				<!-- fin div formulario horizontal -->
+			</div>
+		</div>
+<!--Busqueda Avanzada-->
+	</div>
+	<br />
+
+<div >
+	<div>
+		<button class="btn btn-success" ng-click="mostrarBusqueda()">Busqueda Avanzada<span class="glyphicon glyphicon-add" /></button>
+	</div>
+
+	<div ng-show="displayDetail" >
+			<div class="busqueda" >
+					<form class="form-horizontal" role="form" name="abmForm2"  autocomplete="off" >
+
+
+						<div class="form-group" ng-controller="DatePickerController">
+										<label  for="inBeginDate" class="col-md-3 control-label input-sm">
+										Fecha Desde:</label>
+										<div class="col-md-3">
+											<p class="input-group">
+												<input id="fechaEmision" type="text" class="form-control input-sm"
+													close-text="Cerrar" show-button-bar="false"
+													is-open="openedBeginDate" datepicker-options="dateParamOptions"
+													datepicker-popup="{{dateParamFormat}}" ng-model="busqueda.fechaDesde" />
+
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-default input-sm"
+														ng-click="openBeginDate($event)"><i class="glyphicon glyphicon-calendar">
+													</i></button>
+												</span>
+											</p>
+										</div>
+
+										<label for="inEndDate" class="col-md-3 control-label input-sm">
+										Fecha Hasta:</label>
+										<div class="col-md-3">
+											<div>
+												<p class="input-group">
+													<input id="fechaRecepcion" type="text"  class="form-control input-sm"
+														close-text="Cerrar" show-button-bar="false"
+														is-open="openedEndDate" datepicker-options="dateParamOptions"
+														datepicker-popup="{{dateParamFormat}}" ng-model="busqueda.fechaHasta" />
+
+													<span class="input-group-btn">
+														<button type="button" class="btn btn-default input-sm"
+															ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar">
+														</i></button>
+													</span>
+
+												</p>
+											</div>
+										</div>
+								</div>
+
+
+						<div clas="form-group">
+
+							<label for="inDocumentType" class="col-md-3 control-label input-sm">
+										Familia: </label>
+							<div class="col-md-3">
+								<select class="form-control input-sm" id="modelo" required
+												ng-options="i.idSa as i.descripcion for i in familias"
+												ng-model="busqueda.familiaId"
+												ng-change="changeBusquedaMarca()">
+								</select>
+							</div>
+							<label for="inDocumentType" class="col-md-3 control-label input-sm">
+							Marca: </label>
+							<div class="col-md-3">
+								<select class="form-control input-sm" id="typeId" required
+												ng-options="i.marca.idSa as i.marca.descripcion for i in marcas"
+												ng-model="busqueda.marcaId">
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+						</br>
+							<br>
+						</div>
+
+						<div class="form-group centrobot">
+							 <button class="btn btn-default botonbus" type="button" ng-click="filtroAvanzado()">Busqueda</button>
+							 <button class="btn btn-default botonbus" type="button" ng-click="limpiar()">Limpiar</button>
+						</div>
+
+					</form>
+			</div>
+	</div>
+</div>
+
+
+	<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Busca Ajuste" ng-model="filtro">
+			      </div>
+			    </div>
+</form>
+<br />
+<!--inicio div MarcaPaginacionCtrl-->
+<div ng-controller="AjusteInventarioPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'fecha'; sortReverse = !sortReverse">
+				<label>Fecha</label>
+					<span ng-show="sortType == 'fecha' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'fecha' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'codigoBarra'; sortReverse = !sortReverse">
+				<label>Cod. Barra</label>
+					<span ng-show="sortType == 'codigoBarra' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'codigoBarra' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcionProducto'; sortReverse = !sortReverse">
+				<label>Descripcion</label>
+					<span ng-show="sortType == 'descripcionProducto' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'descripcionProducto' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcionUnidadMedida'; sortReverse = !sortReverse">
+				<label>Uni Medida</label>
+					<span ng-show="sortType == 'descripcionUnidadMedida' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'descripcionUnidadMedida' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'stockAnterior'; sortReverse = !sortReverse">
+				<label>Stock Anterior</label>
+					<span ng-show="sortType == 'stockAnterior' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'stockAnterior' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'stockNuevo'; sortReverse = !sortReverse">
+				<label>Stock Nuevo</label>
+					<span ng-show="sortType == 'stockNuevo' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'stockNuevo' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'observaciones'; sortReverse = !sortReverse">
+				<label>Obervaciones</label>
+					<span ng-show="sortType == 'observaciones' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'observaciones' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+		<!--	<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>-->
+		</div>
+
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listadoAjustesInventario | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+
+			<div class="col-sm-1 text-center">{{item.fecha | date:'dd-MM-yyyy'}}</div>
+			<div class="col-sm-1 text-center">{{item.codigoBarra}}</div>
+			<div class="col-sm-2 text-center">{{item.descripcionProducto}}</div>
+			<div class="col-sm-1 text-center">{{item.descripcionUnidadMedida}}</div>
+			<div class="col-sm-2 text-center">{{item.stockAnterior}}</div>
+			<div class="col-sm-2 text-center">{{item.stockNuevo}}</div>
+			<div class="col-sm-1 text-center">{{item.observaciones}}</div>
+
+		<!--	<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				          		<li>
+											<a href ng-click="edit('{{item.id}}')">Editar
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          		</li>
+											<li>
+											<a href ng-click="delete({{item}})">Eliminar
+				          		<span class="glyphicon glyphicon-remove"></a>
+				          		</li>
+				  </ul>
+				</div>
+			</div>-->
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<div ng-include="'views/templates/sa_template_modals.html'"></div>
+	</div>
+	<!--fin div MarcaPaginationCtrl-->
+</div>
+<!--fin siv SaKardexXProductoCtrl-->

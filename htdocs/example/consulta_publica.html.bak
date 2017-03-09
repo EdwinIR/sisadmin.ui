@@ -1,0 +1,103 @@
+		 <div class="jumbotron subir-consulta">
+		 <div class= "container-fluid">
+        <p class="lead">
+          <h4 class="consulta-pub-titulo">Consulta Comprobantes</h4><br>
+          <img src="images/univ_union_intro.png"/>
+          <br>
+          
+        <br>
+        <br>
+        </div>
+		<div ng-controller="DocumentClientCtrl" ng-init="loadPage()" 
+				>
+			<div>
+				<div collapse="isCollapsed">
+					<div class="well well-lg">
+						<form class="form-horizontal" role="form" name="formFilter" novalidate>
+								
+								<div class="form-group" >
+									<label for="inDocumentType" class="col-sm-5 control-label">Tipo de Documento(*) :</label>
+									<div class="col-sm-2">	
+										<select class="form-control input-sm" id="typeId" 
+														ng-options="i.descr for i in listDocTypes" 
+														ng-model="filter.documentTypeSelected">
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="inNumDoc" class="col-sm-5 control-label">Serie y Número(*) :</label>
+									<div class="col-xs-1">
+										<input type="text" id="inSerie" class="form-control input-xs-1" ng-model="filter.inSerie" placeholder="B001" ngRequired="true" size="4" maxlength="4" style="font-size:80%" >
+										
+									</div>
+									<div class="col-xs-2">
+										<input type="text" id="inNumero" class="form-control input-xs-2" ng-model="filter.inNumero" placeholder="00000001" ngRequired="true" size="8" maxlength="8" style="font-size:80%">
+									</div>
+
+								</div>
+								
+								<br>
+								<div class="form-group" align="center">
+							
+									<button class="btn btn-success btn-lg" ng-click="filter()" 
+											ng-disabled="!enableFilter()"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+									<button class="btn btn-success btn-lg" ng-click="clear()" 
+											ng-disabled="enableClear()"><span class="glyphicon glyphicon-remove"></span>Limpiar</button>
+								</div>
+								
+						</form>
+					</div>
+				</div>
+
+				<div ng-show="pbResultRefresh">
+						<progressbar class="progress-striped active" value="pbValue" type="success">Cargando datos</progressbar>
+				</div>
+			</div>
+
+			<br>
+			<div ng-controller="PaginationCtrl">
+				
+				<div class="row headerTable" ng-show="listDocuments.length > 0">
+					<div class="col-sm-1 text-center"><label></label></div>
+					<div class="col-sm-2 text-center"><label>Fecha</label></div>
+					<div class="col-sm-2 text-left"><label>Nro Documento<br>Cliente</label></div>
+					<div class="col-sm-1 text-center"><label>Tipo</label></div>
+					<div class="col-sm-1 text-center"><label>Total</label></div>
+					<div class="col-sm-2 text-center"><label>Estado</label></div>
+					<!--<div class="col-sm-1 text-center"><label></label></div> -->
+					<div class="col-sm-2 text-center"><label>Acción</label></div>
+				</div>
+			
+				<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="item in listDocuments | offset: (currentPage-1) * itemsPerPage | limitTo:itemsPerPage">
+					<div class="col-sm-1 text-center input-sm"></div>
+					<div class="col-sm-2 text-center input-sm">{{item.issueDate | date:'dd-MM-yyyy'}}</div>
+					<div class="col-sm-2 text-left ">{{item.legalNumber}}<br><small> {{item.customerName}}</small></div>
+					<div class="col-sm-1 text-center input-sm">{{getDocumentTypeDesc(item.documentTypeCode)}}</div>
+					<div class="col-sm-1 text-center input-sm">{{getCurrencyPrefix(item.currency)}} {{item.amount}}</div>
+					<div class="col-sm-2 text-center input-sm">{{getStatus(item.status)}}</div>
+          			<div  class="col-sm-2 text-center">
+          				<div class="btn-group" dropdown>
+			       		<!--<div  ng-if="disableButtons(item.status)" class="btn-group" dropdown>-->
+				        	<button type="button" class="btn btn-primary" ng-click="dwlPdf('{{item.fileName}}')">PDF 
+				          					<span class="glyphicon glyphicon-download-alt"></span>
+				          		</button>
+
+		          				<button type="button" class="btn btn-primary dropdown-toggle">
+				          					<span class="caret"></span>
+		          				</button>
+		          				<ul class="dropdown-menu" role="menu">
+				          				
+				          				<li><a href ng-click="dwlPdf('{{item.fileName}}')">Descargar PDF 
+				          						<span class="glyphicon glyphicon-download-alt"></a></li>
+				          				
+				          				<li><a href  
+				          				ng-click="dwlSunatAuth('{{item.fileName}}')">Descargar XML 
+				          						<span class="glyphicon glyphicon-download-alt"></a></li>
+				          		</ul>				          				
+						</div>
+		          	</div>
+				</div>
+			</div>
+			</div>
+		</div>

@@ -1,0 +1,93 @@
+
+<div ng-controller="GuideCtrl" ng-init="loadPage()"
+	class="col-sm-3 col-sm-offset-3 col-md-9 col-md-offset-2 main ">
+	<h3>Guías de Remisión</h3>
+
+	<div>
+		<button class="btn btn-default" ng-click="refresh()">
+			Actualizar <span class="glyphicon glyphicon-refresh"></span>
+		</button>
+		<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Filtros</button>
+	</div>
+
+	<div collapse="isCollapsed">
+		<div class="well well-lg">
+			<form class="form-horizontal" role="form" name="configForm"
+				ng-submit="filter()">
+				<div class="form-group">
+					<label for="guide" class="col-md-2 control-label input-sm">Guia
+						de Remisión:</label>
+					<div class="col-md-5">
+						<input type="text" class="form-control input-sm" id="guide"
+							name="guide" required ng-model="guide.name" required />
+
+
+					</div>
+					<small class='error'>*</small> <span class="help-block"
+						ng-show="configForm.guide.$error.required">Campo Requerido</span>
+				</div>
+				<br>
+
+				<div class="form-group">
+					<button class="btn btn-success" type="submit"
+						ng-disabled="!configForm.$valid">Buscar</button>
+					<button class="btn btn-success" ng-click="clear()">Limpiar</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+	<div ng-show="pbResultRefresh">
+			<progressbar class="progress-striped active" value="pbValue"
+				type="success">Cargando datos</progressbar>
+		</div>
+	<br>
+	<div ng-controller="PaginationCtrl">
+		<div class="row headerTable">
+
+			<div class="col-sm-6 text-center">
+				<a ng-click="sortType = 'name'; sortReverse = !sortReverse">
+					<label>Numero de Guia </label> <span
+					ng-show="sortType == 'name' && !sortReverse"> <img
+						src="../images/up.png" /></span> <span
+					ng-show="sortType == 'name' && sortReverse"> <img
+						src="../images/do.png" /></span>
+				</a>
+			</div>
+			<div class="col-sm-3 text-center">
+				<label>Acción</label>
+			</div>
+			<br>
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'"
+			ng-class-even="'even'" ng-repeat="item in listDocuments | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<!--<div class="col-sm-3 text-center input-sm">{{item.date | date:'dd-MM-yyyy'}}</div>-->
+			<div class="col-sm-6 text-center input-sm">{{item.name}}</div>
+			<div class="col-sm-3 text-center">
+				<div class="btn-group" dropdown>
+					<button ng-click="dwlGuide('{{item.name}}')" type="button"
+						class="btn btn-primary">
+						Descargar <span class="glyphicon glyphicon-download-alt"></span>
+					</button>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href ng-click="dwlGuide('{{item.name}}')">
+								Descargar <span class="glyphicon glyphicon-download-alt">
+						</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+
+		<div>
+			<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+
+	</div>
+</div>
+
+

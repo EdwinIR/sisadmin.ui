@@ -1,0 +1,355 @@
+<div ng-controller='SaProductoCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+	<h3>Catálogo Productos</h3>
+	<hr class="style1" />
+	<br />
+	<div>
+		<div>
+			<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Productos <span class="glyphicon glyphicon-add" /></button>
+			<!-- importa datos desde excel, se usa al prinipio y despues se debe deshabilitar
+			<button class="btn btn-success" type="button" ng-click="importarProductos()">Importar Productos</button>
+			-->
+		</div>
+		<div collapse="isCollapsed">
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="abmForm" ng-submit="validarDetalles()" autocomplete="off">
+					<div class="form-group">
+						<label class="col-md-2 control-label input-sm">Código Equivalente:</label>
+						<div class="col-md-1">
+							<input type="text" id="codigoEquivalente" name="codigoEquivalente"  placeholder="Codigo Eq."
+							autocomplete="false"
+							ng-pattern="/^[a-zA-Z0-9\-\s]*$/"
+							class="form-control input-sm" ng-model="producto.codigoEquivalente" ng-change ="habilitados()" />
+							<p ng-show="abmForm.codigoEquivalente.$error.pattern">Por favor ingresar solo números y letras</p>
+						</div>
+						<label class="col-md-2 control-label input-sm">Descripción:</label>
+						<div class="col-md-2">
+							<input type="text" id="descripcion" name="descripcion"  placeholder="Descripción.."
+							autocomplete="false"
+							class="form-control input-sm" ng-model="producto.descripcion" ng-change ="habilitados()"  />
+
+						</div>
+						<label for="inDocumentType" class="col-md-2 control-label input-sm">
+						Proveedor: </label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="modelo"  ng-options="i.id as i.razonSocial for i in proveedores" ng-model="producto.proveedorId">
+									</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inDocumentType" class="col-md-2 control-label input-sm">
+									Familia: </label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="modelo"  ng-options="i.idSa as i.descripcion for i in familias"
+											ng-model="producto.familiaId"
+											ng-change="changeMarca()">
+									</select>
+						</div>
+						<label for="inDocumentType" class="col-md-1 control-label input-sm">
+						Marca: </label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="typeId"
+											ng-options="i.marca.idSa as i.marca.descripcion for i in marcafamilias"
+											ng-model="producto.marcaId"
+											ng-change ="habilitados()">
+							</select>
+						</div>
+						<label for="inDocumentType" class="col-md-2 control-label input-sm">
+									Uni.Medida Principal: </label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="typeId" ng-model="producto.unidadMedidaPrincipal" ng-change ="habilitados()">
+							 <option>A</option>
+ 							 <option>B</option>
+							 <option>C</option>
+										</select>
+						</div>
+
+					</div>
+					<div class="form-group">
+						<label for="inDocumentType" class="col-md-2 control-label input-sm">
+									Impuesto: </label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="typeId">
+							 <option>Gravado</option>
+ 							 <option>Exonerado</option>
+										</select>
+						</div>
+						<label class="col-md-2 control-label input-sm">Peso Kgr:</label>
+						<div class="col-md-2">
+							<input type="text" step=any id="peso" name="peso"  placeholder="0.00"
+							autocomplete="false"
+							ng-pattern="/^[0-9\.]*$/"
+							class="form-control input-sm" ng-model="producto.pesoKilogramo" />
+								<p ng-show="abmForm.peso.$error.pattern">Por favor ingresar solo números</p>
+						</div>
+						<label class="col-md-2 control-label input-sm">
+									Trato Especial:</label>
+						<div class="col-md-2">
+							<input type="checkbox" id="tratoEspecial" name="tratoEspecial" autocomplete="false" class="form-control input-sm" ng-model="producto.tratamientoEspecial" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label input-sm">Cód. Barras A:</label>
+						<div class="col-md-2">
+							<input type="text" id="desc" name="desc" placeholder="Codigo de Barras"
+							autocomplete="false" class="form-control input-sm" ng-model="producto.productoDetalleA.codigoBarra" ng-change ="habilitados()" />
+						</div>
+						<label class="col-md-2 control-label input-sm">Cód. Barras B:</label>
+							<div class="col-md-2">
+								<input type="text" id="desc" name="desc"  placeholder="Codigo de Barras"
+								autocomplete="false" class="form-control input-sm" ng-model="producto.productoDetalleB.codigoBarra" ng-change ="habilitados()"/>
+							</div>
+						<label class="col-md-2 control-label input-sm">Cód. Barras C:</label>
+							<div class="col-md-2">
+								<input type="text" id="desc" name="desc"  placeholder="Codigo de Barra"
+								autocomplete="false" class="form-control input-sm" ng-model="producto.productoDetalleC.codigoBarra" ng-change ="habilitados()" />
+							</div>
+					</div>
+					<div class="form-group">
+						<label for="inDocumentType" class="col-md-2 control-label input-sm">
+									Uni. Medida A: </label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="unidada"  ng-options="i.id as i.descripcion for i in unidadmedidas"
+											ng-change ="habilitados()" ng-model="producto.productoDetalleA.unidadMedidaId">
+									</select>
+						</div>
+						<label for="inDocumentType" class="col-md-2 control-label input-sm">
+									Uni. Medida B: </label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="unidadb"  ng-options="i.id as i.descripcion for i in unidadmedidas"
+											ng-change ="habilitados()" ng-model="producto.productoDetalleB.unidadMedidaId">
+									</select>
+						</div>
+						<label for="inDocumentType" class="col-md-2 control-label input-sm">
+									Uni. Medida C: </label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="unidadc"  ng-options="i.id as i.descripcion for i in unidadmedidas"
+											ng-change ="habilitados()" ng-model="producto.productoDetalleC.unidadMedidaId">
+									</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label input-sm">Precio A:</label>
+						<div class="col-md-2">
+							<input type="text" id="desc" name="desc" placeholder="0.00"
+							autocomplete="false" class="form-control input-sm" ng-model="producto.productoDetalleA.precio" ng-change ="habilitados()" />
+						</div>
+						<label class="col-md-2 control-label input-sm">Precio B:</label>
+							<div class="col-md-2">
+								<input type="text" id="desc" name="desc"  placeholder="0.00"
+								autocomplete="false" class="form-control input-sm" ng-model="producto.productoDetalleB.precio" ng-change ="habilitados()"/>
+							</div>
+						<label class="col-md-2 control-label input-sm">Precio C:</label>
+							<div class="col-md-2">
+								<input type="text" id="desc" name="desc"  placeholder="0.00"
+								autocomplete="false" class="form-control input-sm" ng-model="producto.productoDetalleC.precio" ng-change ="habilitados()" />
+							</div>
+					</div>
+
+					<div class="form-group">
+
+						<label for="inDocumentType" class="col-md-2 control-label input-sm">
+									Zona: </label>
+									<div class="col-md-2">
+					  <select class="form-control input-sm" id="zona"  ng-options="i.id as i.descripcion for i in listaZonas"
+						ng-model="producto.zonaId"
+						 ng-change="changeZona(producto.zonaId)" >
+						</select>
+					</div>
+
+						<label for="inDocumentType" class="col-md-2 control-label input-sm">
+									Ubicación: </label>
+									<div class="col-md-2">
+					  <select class="form-control input-sm" id="ubicacion"  ng-options="i.id as i.descripcion for i in ubicaciones"
+						 ng-model="producto.ubicacionId"
+						 ng-change ="habilitados()">
+						</select>
+					</div>
+
+					</div>
+
+					<br>
+					<div class="form-group centrobot">
+						<!--<button class="btn btn-default botonbus" type="button" ng-click="mostrarDetalle()">Ubicaciones</button>-->
+						<button class="btn btn-default botonbus" type="submit" ng-disabled="botonDeshabilitado" disabled="disabled">Guardar</button>
+						<button class="btn btn-default botonbus" type="button" ng-click="clear()">Cancelar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- inicia div formulario DETALLES DE ALTA/EDICION -->
+		<!--a<div class="row" ng-show="displayDetail">
+			<table class="table table-striped col-md-12">
+				<thead>
+					<tr>
+						<th class="col-md-1"></th>
+						<th class="col-md-1">Almacen</th>
+						<th class="col-md-1">Zona</th>
+						<th class="col-md-1">Ubicacion</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="ubicacion in producto.ubicaciones">
+						<td text-align="center"><button ng-click="removeItem()" class="btn btn-warning">X</button></td>
+						<td class="col-md-1">
+								<select class="form-control input-sm" id="condicion" required
+									ng-options="almacen.id as almacen.descripcion for almacen in almacenes"
+									ng-model="ubicacion.almacenId" ng-change="changeAlmacen(ubicacion.almacenId)">
+								</select>
+						</td>
+						<td class="col-md-1">
+								<select class="form-control input-sm" id="condicion" required
+									ng-options="zona.id as zona.descripcion for zona in zonas"
+									ng-model="ubicacion.zonaId" ng-change="changeZona(ubicacion.zonaId)">
+								</select>
+						</td>
+						<td class="col-md-1">
+								<select class="form-control input-sm" id="condicion" required
+									ng-options="ubicacion.id as ubicacion.ubicacion for ubicacion in ubicaciones"
+									 ng-model="ubicacion.ubicacionId">
+								</select>
+						</td>
+					</tr>
+					<tr>
+						<td text-align="center"><button ng-click="addItem()" class="btn btn-primary">+</button></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+				</table>
+		</div>-->
+		<!-- fin div formulario DETALLES DE ALTA/EDICION -->
+
+	</div>
+	<!--fin div FORMULARIO ALTA/EDICION-->
+	<br />
+	<form>
+		<div class="form-group busquedatam">
+			<div class="input-group">
+				<div class="input-group-addon"><i class="fa fa-search">
+							<span class="glyphicon glyphicon-search" />
+						</i></div>
+				<input type="text" class="form-control" placeholder="Buscar Producto" ng-model="filtro">
+			</div>
+		</div>
+	</form>
+	<br />
+	<div ng-controller="ProductoPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'codigoEquivalente'; sortReverse = !sortReverse">
+					<label>Código</label>
+					<span ng-show="sortType == 'codigoEquivalente' && !sortReverse">
+								<span class="glyphicon glyphicon-arrow-up" />
+							</span>
+					<span ng-show="sortType == 'codigoEquivalente' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+				</a>
+			</div>
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+					<label>Descripción</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+								<span class="glyphicon glyphicon-arrow-up" />
+							</span>
+					<span ng-show="sortType == 'descripcion' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+				</a>
+			</div>
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcionFamilia'; sortReverse = !sortReverse">
+					<label>Familia</label>
+					<span ng-show="sortType == 'descripcionFamilia' && !sortReverse">
+								<span class="glyphicon glyphicon-arrow-up" />
+							</span>
+					<span ng-show="sortType == 'descripcionFamilia' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+				</a>
+			</div>
+
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcionMarca'; sortReverse = !sortReverse">
+					<label>Marca</label>
+					<span ng-show="sortType == 'descripcionMarca' && !sortReverse">
+								<span class="glyphicon glyphicon-arrow-up" />
+							</span>
+					<span ng-show="sortType == 'descripcionMarca' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+				</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink"> <label>Funciones</label></a>
+			</div>
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="item in listaProductos | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-2 text-center input-sm">{{item.codigoEquivalente}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.descripcion}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.descripcionFamilia}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.descripcionMarca}}</div>
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+							<span class="caret"></span>
+						</button>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a href ng-click="edit('{{item.id}}')">Editar
+									<span class="glyphicon glyphicon-pencil"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+
+		<script type="text/ng-template" id="DelModalContent.html">
+			<div class="modal-header">
+				<h3 class="modal-title">Eliminación de Producto</h3>
+			</div>
+			<div class="modal-body">
+				<div><span>Esta seguro de eliminar el producto : </span></div>
+				<div>
+					<ul>
+						<li>{{items[0].descripcion}}</li>
+					</ul>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" ng-click="ok()">OK</button>
+				<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+			</div>
+		</script>
+		<script type="text/ng-template" id="AddModalContent.html">
+			<div class="modal-header">
+				<h3 class="modal-title">Mensaje</h3>
+			</div>
+			<div class="modal-body">
+				<div><span>Datos del producto: <strong>{{items[0].descripcion}}</strong> registrados correctamente: </span></div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" ng-click="ok()">Ok</button>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="ErrorModalContent.html">
+			<div class="modal-header">
+				<h3 class="modal-title">Mensaje Error</h3>
+			</div>
+			<div class="modal-body">
+				<div><span>Los password no coinciden, intente nuevamente por favor.</span></div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" ng-click="ok()">Ok</button>
+			</div>
+		</script>
+	</div>
+</div>

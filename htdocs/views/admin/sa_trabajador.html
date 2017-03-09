@@ -1,0 +1,312 @@
+<div ng-controller='SaTrabajadorCtrl' ng-init="loadPage()"
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+ <div class="navbar-collapse collapse menulink">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-envelope" />
+                            Email</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-phone-alt" />
+                            Llamanos</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-off" />
+                            Salir</a></li>
+                   </ul>
+    </div>
+
+	<h3>Catalogo Trabajadores</h3>
+	<hr class="style1" />
+	<br />
+
+	
+
+
+
+
+<div>
+	<div>
+		<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Trabajador <span class="glyphicon glyphicon-add" /></button>
+	</div>
+	<div collapse="isCollapsed">
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="abmForm"
+				ng-submit="save()" autocomplete ="off">
+						<div class="form-group">
+
+							<label class="col-md-2 control-label input-sm">DNI:</label>
+							<div class="col-md-3">
+												<input type="text"
+												id="dni" name="dni" required autocomplete="false"
+												class="form-control input-sm" ng-model="trabajador.dni"/>
+
+							</div>
+
+							<label class="col-md-2 control-label input-sm">Nombre:</label>
+							<div class="col-md-3">
+												<input type="text"
+												id="nombre" name="nombre" required autocomplete="false"
+												class="form-control input-sm" ng-model="trabajador.nombre"/>
+
+							</div>
+
+						</div>
+						<br>
+
+						<div class="form-group">
+
+							<label class="col-md-2 control-label input-sm">Direccion:</label>
+							<div class="col-md-3">
+												<input type="text"
+												id="direccion" name="direccion" required autocomplete="false"
+												class="form-control input-sm" ng-model="trabajador.direccion"/>
+
+							</div>
+
+						</div>
+						<br>
+
+						<div class="form-group">
+
+              				<label for="inDocumentType" class="col-md-2 control-label input-sm">
+              				Sede: </label>
+              				<div class="col-md-3">
+                        		<select class="form-control input-sm" id="sede"
+                           		 ng-options="i.descripcion for i in sedes"
+                           		 ng-model="sedeSeleccionada">
+                        		</select>
+             			 </div>
+
+             			 <label for="inDocumentType" class="col-md-2 control-label input-sm">
+              				Departamento: </label>
+              				<div class="col-md-3">
+                        		<select class="form-control input-sm" id="departamento"
+                           		 ng-options="i.descripcion for i in departamentos"
+                           		 ng-model="departamentoSeleccionado">
+                        		</select>
+             			 </div>
+
+
+            			</div>
+            			<br>
+
+            			<div class="form-group">
+
+              				<label for="inDocumentType" class="col-md-2 control-label input-sm">
+              				Tipo Trabajador: </label>
+              				<div class="col-md-3">
+                        		<select class="form-control input-sm" id="tipotrabajador"
+                           		 ng-options="i.descripcion for i in tipostrabajadores"
+                           		 ng-model="tipoTrabajadorSeleccionado">
+                        		</select>
+             			 </div>
+
+             			 <label for="inDocumentType" class="col-md-2 control-label input-sm">
+              				Puesto Trabajo: </label>
+              				<div class="col-md-3">
+                        		<select class="form-control input-sm" id="puestotrabajo"
+                           		 ng-options="i.descripcion for i in puestostrabajos"
+                           		 ng-model="puestoTrabajoSeleccionado">
+                        		</select>
+             			 </div>
+
+
+            			</div>
+            			<br>
+
+						<div class="form-group" ng-controller="DatePickerController">
+						<label class="col-md-2 control-label input-sm">Fecha Nacimiento:</label>
+						<div class="col-md-3">
+							<p class="input-group">
+								<input id="fechaNacimiento" type="text"
+									class="form-control input-sm" close-text="Cerrar"
+									show-button-bar="false" is-open="openedBeginDate"
+									datepicker-options="dateParamOptions"
+									datepicker-popup="{{dateParamFormat}}"
+									ng-model="trabajador.fechaNacimiento" /> <span
+									class="input-group-btn">
+									<button type="button" class="btn btn-default input-sm"
+										ng-click="openBeginDate($event)">
+										<i class="glyphicon glyphicon-calendar"> </i>
+									</button>
+								</span>
+							</p>
+
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label input-sm">Estado Civil:</label>
+							<div class="col-md-3">
+												<input type="text"
+												id="estadocivil" name="estadocivil" required autocomplete="false"
+												class="form-control input-sm" ng-model="trabajador.estadoCivil"/>
+
+							</div>
+
+						</div>
+						<br>
+
+
+
+
+
+						<div class="form-group centrobot">
+			<button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+			<button class="btn btn-default botonbus" ng-click="clear()">Cancelar</button>
+								</div>
+
+
+				</form>
+			</div>
+		</div>
+</div>
+
+<br />
+<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Busca Proveedor" ng-model="filtro">
+			      </div>
+			    </div>
+</form>
+<br />
+
+<div ng-controller="MarcaPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'dni'; sortReverse = !sortReverse">
+					<label>Dni</label>
+					<span ng-show="sortType == 'dni' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'dni' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'nombre'; sortReverse = !sortReverse">
+					<label>Nombre</label>
+					<span ng-show="sortType == 'nombre' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'nombre' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'direccion'; sortReverse = !sortReverse">
+					<label>Direccion</label>
+					<span ng-show="sortType == 'direccion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'direccion' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+
+
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaTrabajadores | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-2 text-center input-sm">{{item.dni}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.nombre}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.direccion}}</div>
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				          				<li>
+											<a href ng-click="edit('{{item.id}}')">Editar
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          				</li>
+
+										<li>
+											<a href ng-click="delete({{item}})">Eliminar
+				          					<span class="glyphicon glyphicon-remove"></a>
+				          				</li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<script type="text/ng-template" id="DelModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Eliminación de los trabajadores</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Esta seguro de eliminar el Trabajador : </span></div>
+						<div>
+							<ul>
+								<li>{{items[0].ruc}}</li>
+							</ul>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">OK</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+					</div>
+				</script>
+
+			<script type="text/ng-template" id="AddModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Mensaje</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Datos del Trabajador: <strong>{{items[0].ruc}}</strong> registrados correctamente: </span></div>
+
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+
+					</div>
+			</script>
+
+
+			<script type="text/ng-template" id="ErrorModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Mensaje Error</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Los password no coinciden, intente nuevamente por favor.</span></div>
+
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+
+					</div>
+			</script>
+	</div>
+</div>

@@ -1,0 +1,300 @@
+<div ng-controller='SaClienteCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+	<div class="navbar-collapse collapse menulink">
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+				<a href ng-click='logout()' class="menulinkb">
+					<span class="glyphicon glyphicon-envelope" /> Email
+				</a>
+			</li>
+
+			<li>
+				<a href ng-click='logout()' class="menulinkb">
+					<span class="glyphicon glyphicon-phone-alt" /> Llámanos
+				</a>
+			</li>
+
+			<li>
+				<a href ng-click='logout()' class="menulinkb">
+					<span class="glyphicon glyphicon-off" /> Salir
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<h3>Catálogo Clientes</h3>
+	<br/>
+
+	<div>
+		<div>
+			<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Cliente <span class="glyphicon glyphicon-add" /></button>
+		</div>
+		<div collapse="isCollapsed">
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="abmForm" ng-submit="save()" autocomplete="off">
+					<!--Cabecera Primera fila-->
+					<div class="form-group">
+						<!--RUC/DNI-->
+						<label class="col-md-1 control-label input-sm">RUC/DNI:</label>
+						<div class="col-md-2">
+							<input type="text" maxlength="11" required pattern="[0-9]{11}" id="iden" autocomplete="false" name="identificador" class="form-control input-sm" ng-model="cliente.identificador" maxlength="20" />
+						</div>
+						<!--Razón Social-->
+						<label class="col-md-1 control-label input-sm">Razón Social:</label>
+						<div class="col-md-2">
+							<input type="text" id="razon" name="razon" autocomplete="false" class="form-control input-sm" ng-model="cliente.razonSocial" />
+						</div>
+						<!--Rubro-->
+						<label class="col-md-1 control-label input-sm">Rubro:</label>
+						<div class="col-md-2">
+							<input type="text" id="rubro" autocomplete="false" name="rubro" class="form-control input-sm" ng-model="cliente.rubro" maxlength="20" />
+						</div>
+						<!--Email-->
+						<label class="col-md-1 control-label input-sm">Email:</label>
+						<div class="col-md-2">
+							<input type="email" id="email" name="email" autocomplete="false" class="form-control input-sm" ng-model="cliente.email" />
+						</div>
+					</div>
+					<br>
+
+					<div class="form-group" ng-controller="DatePickerController">
+						<!--Fecha Alta-->
+						<label class="col-md-1 control-label input-sm">Fecha Alta:</label>
+						<div class="col-md-3">
+							<p class="input-group">
+								<input id="fechaAlta" type="text" class="form-control input-sm" close-text="Cerrar" show-button-bar="false" is-open="openedBeginDate" datepicker-options="dateParamOptions" datepicker-popup="{{dateParamFormat}}" ng-model="cliente.fechaAlta"/><span class="input-group-btn">
+									<button type="button" class="btn btn-default input-sm"
+									ng-click="openBeginDate($event)">
+									<i class="glyphicon glyphicon-calendar"> </i>
+								</button>
+							</span>
+						</p>
+					</div>
+				</div>
+				<!--Línea divisora-->
+				<h2>Sucursales</h2>
+			</hr>
+			<!--Sede1-->
+			<!--<div class="form-group">
+				<label class="col-md-1 control-label input-sm">Ciudad 1:</label>
+				<div class="col-md-2">
+					<input type="text" id="ciudad" name="ciudad" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[0].ciudad" required />
+				</div>
+				<label class="col-md-1 control-label input-sm">Dirección 1:</label>
+				<div class="col-md-2">
+					<input type="text" id="direccion1" name="direccion1" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[0].direccion" required />
+				</div>
+				<label class="col-md-1 control-label input-sm">Contacto 1:</label>
+				<div class="col-md-2">
+					<input type="text" id="contacto1" name="contacto1" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[0].contacto" maxlength="20" required />
+				</div>
+				<label class="col-md-1 control-label input-sm">Teléfono 1:</label>
+				<div class="col-md-2">
+					<input type="text" id="telefono1" name="telefono1" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[0].telefono" required />
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-md-1 control-label input-sm">Ciudad 2:</label>
+				<div class="col-md-2">
+					<input type="text" id="ciudad" name="ciudad" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[1].ciudad" />
+				</div>
+				<label class="col-md-1 control-label input-sm">Dirección 2:</label>
+				<div class="col-md-2">
+					<input type="text" id="direccion2" name="direccion2" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[1].direccion" />
+				</div>
+				<label class="col-md-1 control-label input-sm">Contacto 2:</label>
+				<div class="col-md-2">
+					<input type="text" id="contacto" autocomplete="false" name="contacto" class="form-control input-sm" ng-model="cliente.detalles[1].contacto" maxlength="20" />
+				</div>
+				<label class="col-md-1 control-label input-sm">Teléfono 2:</label>
+				<div class="col-md-2">
+					<input type="text" id="telefono2" name="telefono2" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[1].telefono" />
+				</div>
+			</div>-->
+			<!--<div class="form-group">
+				<label class="col-md-1 control-label input-sm">Ciudad 3:</label>
+				<div class="col-md-2">
+					<input type="text" id="ciudad" name="ciudad" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[2].ciudad" />
+				</div>
+				<label class="col-md-1 control-label input-sm">Dirección 3:</label>
+				<div class="col-md-2">
+					<input type="text" id="direccion3" name="direccion3" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[2].direccion" />
+				</div>
+				<label class="col-md-1 control-label input-sm">Contacto 3:</label>
+				<div class="col-md-2">
+					<input type="text" id="contacto" autocomplete="false" name="contacto" class="form-control input-sm" ng-model="cliente.detalles[2].contacto" maxlength="20" />
+				</div>
+				<label class="col-md-1 control-label input-sm">Teléfono 3:</label>
+				<div class="col-md-2">
+					<input type="text" id="telefono3" name="telefono3" autocomplete="false" class="form-control input-sm" ng-model="cliente.detalles[2].telefono" />
+				</div>
+			</div>-->
+			<div class="form-group centrobot">
+				<button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+				<button class="btn btn-default botonbus" ng-click="clear()">Cancelar</button>
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+<br/>
+
+
+<form>
+	<div class="form-group busquedatam">
+		<div class="input-group">
+			<div class="input-group-addon"><i class="fa fa-search">
+				<span class="glyphicon glyphicon-search" />
+			</i></div>
+			<input type="text" class="form-control" placeholder="Busca Cliente" ng-model="filtro">
+		</div>
+	</div>
+</form>
+<br />
+
+<div ng-controller="ClientePaginationCtrl" class="tabladatos">
+	<div class="row headerTable">
+		<div class="col-sm-2 text-center">
+			<a class="menulink" ng-click="sortType = 'identificador'; sortReverse = !sortReverse">
+				<label>Identificador</label>
+				<span ng-show="sortType == 'identificador' && !sortReverse">
+					<span class="glyphicon glyphicon-arrow-up" />
+				</span>
+				<span ng-show="sortType == 'identificador' && sortReverse">
+					<span class="glyphicon glyphicon-arrow-down" />
+				</span>
+			</a>
+		</div>
+
+		<div class="col-sm-2 text-center">
+			<a class="menulink" ng-click="sortType = 'razonSocial'; sortReverse = !sortReverse">
+				<label>Razon Social</label>
+				<span ng-show="sortType == 'razonSocial' && !sortReverse">
+					<span class="glyphicon glyphicon-arrow-up" />
+				</span>
+				<span ng-show="sortType == 'razonSocial' && sortReverse">
+					<span class="glyphicon glyphicon-arrow-down" />
+				</span>
+			</a>
+		</div>
+
+		<div class="col-sm-3 text-center">
+			<a class="menulink" ng-click="sortType = 'email'; sortReverse = !sortReverse">
+				<label>Email</label>
+				<span ng-show="sortType == 'email' && !sortReverse">
+					<span class="glyphicon glyphicon-arrow-up" />
+				</span>
+				<span ng-show="sortType == 'email' && sortReverse">
+					<span class="glyphicon glyphicon-arrow-down" />
+				</span>
+			</a>
+		</div>
+
+		<div class="col-sm-2 text-center">
+			<a class="menulink" ng-click="sortType = 'fechaAlta'; sortReverse = !sortReverse">
+				<label>Fecha Alta</label>
+				<span ng-show="sortType == 'fechaAlta' && !sortReverse">
+					<span class="glyphicon glyphicon-arrow-up" />
+				</span>
+				<span ng-show="sortType == 'fechaAlta' && sortReverse">
+					<span class="glyphicon glyphicon-arrow-down" />
+				</span>
+			</a>
+		</div>
+
+		<div class="col-sm-2 text-center">
+			<a class="menulink" ng-click="sortType = 'rubro'; sortReverse = !sortReverse">
+				<label>Rubro</label>
+				<span ng-show="sortType == 'rubro' && !sortReverse">
+					<span class="glyphicon glyphicon-arrow-up" />
+				</span>
+				<span ng-show="sortType == 'rubro' && sortReverse">
+					<span class="glyphicon glyphicon-arrow-down" />
+				</span>
+			</a>
+		</div>
+
+		<div class="col-sm-1 text-center">
+			<a class="menulink"> <label>Funciones</label></a>
+		</div>
+
+	</div>
+	<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="item in listaClientes  | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+		<div class="col-sm-2 text-center input-sm">{{item.identificador}}</div>
+		<div class="col-sm-2 text-center input-sm">{{item.razonSocial}}</div>
+		<div class="col-sm-3 text-center input-sm">{{item.email}}</div>
+		<!-- <div class="col-sm-2 text-center input-sm">{{item.fechaAlta}}</div> -->
+		<!-- Fecha con Formato -->
+		<div class="col-sm-2 text-center input-sm">{{item.fechaAlta | date:'dd/MM/yyyy'}}</div>
+		<div class="col-sm-2 text-center input-sm">{{item.rubro}}</div>
+
+		<div class="col-sm-1 text-center">
+			<div class="btn-group" dropdown>
+				<button type="button" class="btn btn-primary dropdown-toggle">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li>
+						<a href ng-click="edit('{{item.id}}')">Editar
+							<span class="glyphicon glyphicon-pencil"></a>
+							</li>
+
+							<li>
+								<a href ng-click="delete({{item}})">Eliminar
+									<span class="glyphicon glyphicon-remove"></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div>
+						<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+					</div>
+
+					<script type="text/ng-template" id="DelModalContent.html">
+						<div class="modal-header">
+							<h3 class="modal-title">Eliminación de Clientes</h3>
+						</div>
+						<div class="modal-body">
+							<div><span>Esta seguro de eliminar el cliente : </span></div>
+							<div>
+								<ul>
+									<li>{{items[0].razonSocial}}</li>
+								</ul>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="ok()">OK</button>
+							<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+						</div>
+					</script>
+
+					<script type="text/ng-template" id="AddModalContent.html">
+						<div class="modal-header">
+							<h3 class="modal-title">Mensaje</h3>
+						</div>
+						<div class="modal-body">
+							<div><span>Datos del cliente: <strong>{{items[0].razonSocial}}</strong> registrados correctamente: </span></div>
+
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+						</div>
+					</script>
+
+					<script type="text/ng-template" id="ErrorModalContent.html">
+						<div class="modal-header">
+							<h3 class="modal-title">Mensaje Error</h3>
+						</div>
+						<div class="modal-body">
+							<div><span>Los password no coinciden, intente nuevamente por favor.</span></div>
+
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+						</div>
+					</script>
+				</div>
+			</div>

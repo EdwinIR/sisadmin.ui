@@ -1,0 +1,335 @@
+<div ng-controller='SaComprobantesPtoVtaCtrl' ng-init="loadPage()"
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+	<h3>Comprobantes Pto Venta</h3>
+	<hr class="style1" />
+	<br>
+	<form class="form-horizontal" role="form" name="abmForm" autocomplete ="off">
+<div>
+	<div>
+		<button class="btn btn-success" ng-click="clear()">Comprobantes <span class="glyphicon glyphicon-add" /></button>
+	</div>
+	<div collapse="isCollapsed">
+			<div class="busqueda">
+						<div class="form-group">
+
+						<label class="col-md-2 control-label input-sm">Nro Documento:</label>
+						<div class="col-md-2">
+						<input type="text" maxlength="50" required 	ng-disabled="inInquiry || inEdit" id="desc" name="desc"  autocomplete="false"
+												class="form-control input-sm" ng-model="comprobante.nroDocumento" readonly/>
+						</div>
+						<label class="col-md-2 control-label input-sm">Fecha Emision:</label>
+						<div class="col-md-2"  ng-controller="DatePickerController" >
+						<input type="text" maxlength="50" required 	ng-disabled="inInquiry || inEdit" id="desc" name="desc"  autocomplete="false"
+												class="form-control input-sm" datepicker-options="dateParamOptions" datepicker-popup="{{dateParamFormat}}" ng-model="comprobante.fechaEmision" readonly/>
+						</div>
+						</div>
+						<div class="form-group">
+						<label class="col-md-2 control-label input-sm">Cliente:</label>
+						<div class="col-md-2">
+						<input type="text" maxlength="50" required 	ng-disabled="inInquiry || inEdit" id="desc" name="desc"  autocomplete="false"
+												class="form-control input-sm" ng-model="comprobante.cliente" readonly/>
+						</div>
+
+						<label class="col-md-2 control-label input-sm">RUC/DNI</label>
+						<div class="col-md-2">
+						<input type="text" maxlength="50" required 	ng-disabled="inInquiry || inEdit" id="desc" name="desc"  autocomplete="false"
+												class="form-control input-sm" ng-model="comprobante.identificadorCliente" readonly/>
+						</div>
+
+						<label class="col-md-2 control-label input-sm">Monto Total:</label>
+						<div class="col-md-2">
+						<input type="text" maxlength="50" required 	ng-disabled="inInquiry || inEdit" id="desc" name="desc"  autocomplete="false"
+												class="form-control input-sm" ng-model="comprobante.montoTotal" readonly/>
+						</div>
+						</div>
+						<br>
+						<br>
+						<div class="form-group centrobot">
+						<!--<button class="btn btn-default botonbus" ng-click="clear()">Cerrar</button>-->
+					</div>
+				</form>
+			</div>
+		</div>
+
+<div class="row" collapse="isCollapsed">
+	<h4>Detalles de Comprobante</h4><br>
+	 <table class="table table-striped col-md-11">
+		 <thead>
+			 <tr>
+				 <th class="col-md-2">Codigo</th>
+				 <th class="col-md-2">Descripcion</th>
+				 <th class="col-md-2">Uni. Medida</th>
+				 <th class="col-md-2">Cantidad</th>
+				 <th class="col-md-2">Precio Unit</th>
+				 <!--<th class="col-md-1">Precio Total</th>-->
+			 </tr>
+		 </thead>
+		 <tbody>
+			 <tr ng-repeat="detalle in comprobante.detalles">
+				 <td class="col-md-2"><input type="text" ng-model="detalle.codigo" readonly/></td>
+				 <td class="col-md-2"><input type="text" ng-model="detalle.producto" readonly/></td>
+				 <td class="col-md-2"><input type="text" ng-model="detalle.unidadMedida" readonly/></td>
+				 <td class="col-md-2"><input type="text" ng-model="detalle.cantidad" readonly/></td>
+				 <td class="col-md-2"><input type="text" ng-model="detalle.precioUnitario" readonly/></td>
+				 <!--<td class="col-md-1"><input type="text" ng-model="detalle.precioTotal" readonly/></td>-->
+			 </tr>
+		 </tbody>
+	 </table>
+ </div>
+
+<br />
+
+<div >
+	<div>
+		<button class="btn btn-success" ng-click="mostrarBusqueda()">Busqueda Avanzada<span class="glyphicon glyphicon-add" /></button>
+	</div>
+
+	<div ng-show="displayDetail" >
+			<div class="busqueda" >
+					<form class="form-horizontal" role="form" name="abmForm2"  autocomplete="off" >
+						<div class="form-group" ng-controller="DatePickerController">
+										<label  for="inBeginDate" class="col-md-3 control-label input-sm">
+										Fecha Desde:</label>
+										<div class="col-md-3">
+											<p class="input-group">
+												<input id="fechaEmision" type="text" class="form-control input-sm"
+													close-text="Cerrar" show-button-bar="false"
+													is-open="openedBeginDate" datepicker-options="dateParamOptions"
+													datepicker-popup="{{dateParamFormat}}" ng-model="busqueda.fechaDesde" />
+
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-default input-sm"
+														ng-click="openBeginDate($event)"><i class="glyphicon glyphicon-calendar">
+													</i></button>
+												</span>
+											</p>
+										</div>
+
+										<label for="inEndDate" class="col-md-3 control-label input-sm">
+										Fecha Hasta:</label>
+										<div class="col-md-3">
+											<div>
+												<p class="input-group">
+													<input id="fechaRecepcion" type="text"  class="form-control input-sm"
+														close-text="Cerrar" show-button-bar="false"
+														is-open="openedEndDate" datepicker-options="dateParamOptions"
+														datepicker-popup="{{dateParamFormat}}" ng-model="busqueda.fechaHasta" />
+
+													<span class="input-group-btn">
+														<button type="button" class="btn btn-default input-sm"
+															ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar">
+														</i></button>
+													</span>
+
+												</p>
+											</div>
+										</div>
+								</div>
+
+
+						<div clas="form-group">
+
+							<label for="inDocumentType" class="col-md-3 control-label input-sm">
+										Nro Documento: </label>
+							<div class="col-md-3">
+								<input type="text" id="nroDocumento" name="nroDocumento" class="form-control input-sm" ng-model="busqueda.nroDocumento"/>
+							</div>
+
+							<label for="inDocumentType" class="col-md-3 control-label input-sm">
+															Vendedor:
+														</label>
+														<div class="col-md-3">
+															<select class="form-control input-sm" id="modelo" required
+																ng-options="i.id as i.nombreCompleto for i in vendedores"
+																ng-model="busqueda.vendedorId">
+															</select>
+														</div>
+						</div>
+
+						<div clas="form-group">
+						</br>
+						<br>
+						</div>
+
+						<div class="form-group centrobot">
+							 <button class="btn btn-default botonbus" type="button" ng-click="filter()">Busqueda</button>
+							 <button class="btn btn-default botonbus" type="button" ng-click="exportar()">Generar Reporte</button>
+							 <button class="btn btn-default botonbus" type="button" ng-click="limpiar()">Limpiar</button>
+						</div>
+
+					</form>
+			</div>
+	</div>
+</div>
+</div>
+</form>
+
+
+
+
+
+<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Buscar Comprobantes" ng-model="filtro">
+			      </div>
+			    </div>
+</form>
+<br />
+
+<div ng-controller="ComprobantesPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'nroDocumento'; sortReverse = !sortReverse">
+					<label>Nro Documento</label>
+					<span ng-show="sortType == 'nroDocumento' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+					<span ng-show="sortType == 'nroDocumento' && sortReverse">
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'cliente'; sortReverse = !sortReverse">
+					<label>Cliente</label>
+					<span ng-show="sortType == 'cliente' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+					<span ng-show="sortType == 'cliente' && sortReverse">
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'montoTotal'; sortReverse = !sortReverse">
+					<label>Monto Total</label>
+					<span ng-show="sortType == 'montoTotal' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+					<span ng-show="sortType == 'montoTotal' && sortReverse">
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'fechaEmision'; sortReverse = !sortReverse">
+					<label>Fecha Emision</label>
+					<span ng-show="sortType == 'fechaEmision' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+					<span ng-show="sortType == 'fechaEmision' && sortReverse">
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'vendedorDescipcion'; sortReverse = !sortReverse">
+					<label>Vendedor</label>
+					<span ng-show="sortType == 'vendedorDescipcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+					<span ng-show="sortType == 'vendedorDescipcion' && sortReverse">
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaComprobantes | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+
+			<div class="col-sm-2 text-center input-sm">{{item.nroDocumento}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.cliente}}</div>
+			<div class="col-sm-1 text-center input-sm">{{item.montoTotal}}</div>
+			<div class="col-sm-1 text-center input-sm">{{item.fechaEmision | date:'dd/MM/yyyy'}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.vendedorDescripcion}}</div>
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				          				<li>
+											<a href ng-click="edit('{{item.id}}')">Ver
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          				</li>
+
+										<li>
+										<!--	<a href ng-click="delete({{item}})">Eliminar
+				          					<span class="glyphicon glyphicon-remove"></a>
+				          				</li>-->
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+
+
+
+
+		<script type="text/ng-template" id="DelModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Eliminación de Marca</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Esta seguro de eliminar la marca : </span></div>
+						<div>
+							<ul>
+								<li>{{items[0].name}}</li>
+							</ul>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">OK</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+					</div>
+				</script>
+
+			<script type="text/ng-template" id="AddModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Mensaje</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Datos de la marca: <strong>{{items[0].name}}</strong> registrados correctamente: </span></div>
+
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+
+					</div>
+			</script>
+
+
+			<script type="text/ng-template" id="ErrorModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Mensaje Error</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Los password no coinciden, intente nuevamente por favor.</span></div>
+
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+
+					</div>
+			</script>
+	</div>
+</div>
+</div>

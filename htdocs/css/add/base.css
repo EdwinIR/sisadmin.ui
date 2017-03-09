@@ -1,0 +1,153 @@
+body{
+	background: #EFEFEF;
+	font-size: 12px;
+}
+
+.navbar{
+	margin-bottom: 0;
+	min-height: 20px;
+}
+
+.container{
+	max-width: 1024px;
+}
+
+.footer-container{
+	max-width: 1024px;
+}
+
+.container-body{
+	background: white;
+}
+
+.bottom-menu p{
+	font-size: 12px;
+}
+
+.acceso-directo{		
+	width: 100%;
+	height: 100px;
+	padding: 18px;
+	color: white;
+	text-align: center;
+	transition: background-color 0.5s ease;
+}
+
+.acceso-directo a{
+	color: white;
+}
+
+.rojo{
+	background: #E74C3C;	
+}
+
+.rojo:hover{
+	background: #C0392B;
+}
+
+.azul{ background: #3498DB}
+.azul:hover{ background: #2980B9}
+.amarillo{ background: #F1C40F}
+.amarillo:hover{ background: #F39C12}
+.gris{ background: #34495E}
+.gris:hover{ background: #2C3E50}
+
+.navbar-inverse .navbar-nav>li>a:hover{
+	color: #E74C3C;
+}
+.nav-tabs > li.dropdown.active > a:hover .caret {
+	color: #E74C3C;
+}
+.navbar-inverse .navbar-brand:hover{
+	color: #E74C3C;
+}
+
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus{
+  background: #E74C3C;
+  }
+
+  .navbar-inverse .navbar-nav>.dropdown>a:hover span.caret{
+	color:white;
+  }  
+
+  .navbar-inverse .navbar-nav>.open>.dropdown-menu>li>a:hover{
+  	background: #E74C3C;
+  }
+
+  .form-control, .select2-search input[type=text]:hover{
+
+  }
+
+  .nav-pills>li>a{
+  	background: #E74C3C;
+  	border-left: 2px solid #C0392B;
+  }
+  .nav-pills>li>a:hover{
+  	background: #C0392B;
+  }
+
+  .nav-pills>li.active>a, .nav-pills>li.active>a:hover{
+  	/*background: #C0392B;*/
+  	background: #428BCA;
+  }
+
+  .btn-group>.btn{	
+  	border-radius: 5px;
+  	margin-right: 2px;
+  }
+
+  .btn-group>.btn:not(:first-child):not(:last-child):not(.dropdown-toggle){
+  	border-radius: 5px;	
+  }
+
+  .btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle){
+  	border-radius: 5px;		
+  }
+
+  .btn-group>.btn:last-child:not(:first-child), .btn-group>.dropdown-toggle:not(:first-child){
+  	border-radius: 5px;			
+  }
+
+	table > thead > tr {
+	    background-color: #bfb81f;
+	}
+	
+	.table > thead > tr > th {
+	    color: #eee;
+	}
+
+	.modal-header{
+		background-color: #8e969c;
+		color: #EEEEEE;
+		border-radius: 5px 5px 0 0;
+	}
+
+	.modal-header .close {
+	    color: #fff;
+	}
+
+	.modal-content {
+	    border: 0;
+	}
+
+	.vcenter {
+		align-items: center;
+	    display: flex;
+	}
+
+	table.ui-datepicker-calendar > thead > tr{
+		background-color: #FFF;
+	}
+
+.edit>i.glyphicon, .remove>i.glyphicon{
+	color : #2181cc;
+}
+
+.glyphicon-edit:hover , .glyphicon-edit:active, 
+.glyphicon-trash:hover , .glyphicon-trash:active{
+	color : #F00;
+}
+
+.table {
+    font-size: 12px;
+}

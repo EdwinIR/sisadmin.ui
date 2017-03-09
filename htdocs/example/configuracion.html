@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+  <META HTTP-EQUIV="Expires" CONTENT="-1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>SISFE - Mi Cuenta</title>
+  <!--
+  <link rel="icon" type="image/png" href="/documentos/public/img/Logo-F.gif" />
+  -->
+
+	<link type="image/x-icon" href="favicone.ico" rel="shortcut icon">    
+	<link rel="stylesheet" href="styles/bootstrap.css" />
+	<link rel="stylesheet" href="styles/estilorig.css">
+	
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/flat-ui-pro.min.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/base.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/index.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/bootstrap-select.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/bootstrap-table.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/registro.css">
+
+</head>
+
+<body>
+	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	  <div class="container container-body" style="min-height: 550px;">
+	      <div class="row" style="padding:20px">
+	        <div class="row" > <div class="col-sm-12"> <h4>Mi Cuenta</h4></div> </div>
+
+	        <hr>
+
+	        <tabs>
+	        	<pane title="Datos Fiscales">
+					<div id="fiscales" class="panel current">
+						
+							<div class="col-md-6 fisc">								
+								<label class="milab" for="registration_name">Nombre o razón social:</label>
+								<input id="registration_name" class="form-control" type="text" value="THE FACTORY HKA PERU SOCIEDAD ANONIMA CERRADA" name="registration_name" label="Nombre o razón social">
+								<label class="milab" for="name">Nombre comercial (opcional):</label>
+								<input id="name" class="form-control" type="text" value="THE FACTORY HKA DEMO" name="name" label="Nombre comercial (opcional)">
+								<label class="milab" for="ruc">RUC:</label>
+								<input id="ruc" class="form-control" type="text" value="2055072876-" name="ruc" label="RUC">
+								<label class="milab" for="no_aprobacion">Resolucion intendencia SUNAT:</label>
+								<input id="no_aprobacion" class="form-control" type="text" value="2131231231231" name="no_aprobacion" label="Número de aprobación SUNAT">			
+							</div>
+							<div class="col-md-6 fisc">
+									
+									<label class="milab" for="street_name">Dirección completa y detallada:</label>
+									<input id="street_name" class="form-control" type="text" value="AV. MANUEL OLGUIN NRO. 335 OF. 705" name="street_name">
+									
+									<label class="milab" for="city_subdivision_name">Urbanización o zona (opcional):</label>
+									<input id="city_subdivision_name" class="form-control" type="text" value="MONTERRICO" name="city_subdivision_name">
+									
+									<label class="milab" for="city_name">Departamento:</label>
+									<input id="city_name" class="form-control" type="text" value="MONTERRICO" name="city_name">
+									
+									<label class="milab" for="country">País:</label>
+									<input id="country_name" class="form-control" type="text" value="MONTERRICO" name="country_name">
+
+							</div>
+						
+					</div>
+	        	</pane>
+	        	<pane title="Certificado">
+	    	      <div class="form-horizontal confesp">
+	      						<div class="form-group">
+									<label for="pathCer" class="col-sm-3 control-label">Path Certificado:</label>
+									<div class="col-sm-4">
+										<input type="text" id="pathCer" name="pathCer" 
+											disabled="disabled"
+											class="form-control input-sm" ng-model="emitterSelected.pathCert">
+									</div>
+								</div>		
+
+								<div class="form-group">
+									<label for="expiredDate" class="col-sm-3 control-label">Fecha de Vencimiento:</label>
+									<div class="col-sm-4">
+										<input type="text" id="expiredDate" placeholder="Fecha Expiracion Certificado"
+										class="form-control input-sm"  
+										style="background-color: #5cb85c; color: #fff"
+										 ng-model="emitterSelected.expiredDate">						
+									</div>
+								</div>
+	      			</div>
+	        	</pane>
+	        	<pane title="Usuario SUNAT">
+	        		<h3>Tab 03</h3>
+	        	</pane>
+	        </tabs>
+
+
+	      </div>
+	  </div>
+	</div>
+
+<!-- Librerias SISFE -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script> 
+        
+        <!--
+        <script src="js/jquery.min.js"></script>      
+        <script src="js/bootstrap.min.js"></script>
+         <script src="js/customs.js"></script>  
+        -->
+        
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-captcha/captcha.js"></script>        
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-touch/angular-touch.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+        <script src="bower_components/restangular/dist/restangular.js"></script>
+        <script src="bower_components/FileSaver/FileSaver.js"></script>
+        <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
+        <!--
+        <script src="scripts/app.js"></script>       
+        <script src="scripts/controllers/login.js"></script>        
+        <script src="scripts/controllers/util.js"></script>        
+        <script src="scripts/controllers/customerMenuCtrl.js"></script>
+        <script src="scripts/controllers/customerSearchCtrl.js"></script>
+        <script src="scripts/controllers/customerConfCtrl.js"></script>
+        <script src="scripts/controllers/emitterMenuCtrl.js"></script>
+        <script src="scripts/controllers/docHoldedCtrl.js"></script>               
+        <script src="scripts/controllers/docContingencyCtrl.js"></script>
+        <script src="scripts/controllers/docAuthorizedCtrl.js"></script>               
+        <script src="scripts/controllers/docRejectedCtrl.js"></script>
+        <script src="scripts/controllers/docInvalidCtrl.js"></script>
+        <script src="scripts/controllers/docArchivedCtrl.js"></script>
+        <script src="scripts/controllers/docReceiptSummaryCtrl.js"></script>
+        <script src="scripts/controllers/scheduledCtrl.js"></script>
+        <script src="scripts/controllers/reporteCtrl.js"></script> 
+        <script src="scripts/controllers/uploadCtrl.js"></script>          
+        <script src="scripts/controllers/bitacoraCtrl.js"></script>
+        <script src="scripts/controllers/customerCtrl.js"></script>
+ 		<script src="scripts/controllers/userCtrl.js"></script> 
+        <script src="scripts/controllers/userClientCtrl.js"></script> 		
+        <script src="scripts/controllers/menuCtrl.js"></script>
+        <script src="scripts/controllers/addInvCtrl.js"></script>
+        <script src="scripts/controllers/emitterCtrl.js"></script>
+        <script src="scripts/controllers/publicSearchCtrl.js"></script>
+        <script src="scripts/controllers/db.js"></script>
+        <script src="scripts/controllers/configCtrl.js"></script>
+        <script src="scripts/controllers/guideCtrl.js"></script>
+		-->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+-->
+<!-- Comentado ####
+<script src="js/add/jquery.min.js"></script>
+-->
+<!--  
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+-->
+
+<!-- Comentado ###
+<script src="js/add/bootstrap.min.js"></script>
+-->
+<script src="js/add/bootbox.min.js"></script>
+<script src="js/add/jquery_default_settings.js"></script>
+
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+-->
+<script src="js/add/jquery-ui.min.js"></script>
+<script src="js/add/bootstrap-select.js"></script>
+<script src="js/add/bootstrap-table.js"></script>
+<script src="js/add/locale/bootstrap-table-es.js"></script>
+<script src="js/add/init-table-clientes.js"></script>
+<!--
+<script src="js/add/registro.js"></script>
+-->
+
+</body>
+
+</html>

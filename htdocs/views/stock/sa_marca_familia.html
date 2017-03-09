@@ -1,0 +1,210 @@
+<div ng-controller='SaMarcaFamiliaCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+	<h3>Catalogo Marca Familias</h3>
+		<hr class="style1" />
+		<br />
+		<!--inicia div FORMULARIO ALTA/EDICION-->
+		<div>
+			<div>
+				<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Marca Familia <span class="glyphicon glyphicon-add" /></button>
+			<!-- permite importar los datos a partir de un excel, se deshabilita
+				<button class="btn btn-success" type="button" ng-click="importarMargenes()">Importar Margenes</button>
+			-->
+			</div>
+			<!-- inicio div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA/EDICION -->
+			<div collapse="isCollapsed">
+				<!-- inicia div formulario alta/edicion -->
+					<div class="busqueda">
+						<form class="form-horizontal" role="form" name="abmForm" ng-submit="save()" autocomplete ="off">
+						<div class="form-group">
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">Familia: </label>
+							<div class="col-md-3">
+												<select class="form-control input-sm" id="typeAlmacen"
+														ng-options="i.descripcion for i in familias"
+														ng-model="familiaSeleccionada"
+														ng-change="changeFamilia()">
+												</select>
+							</div>
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">Marca: </label>
+							<div class="col-md-3">
+												<select class="form-control input-sm" id="typeZona"
+														ng-options="i.descripcion for i in marcas"
+														ng-model="marcaSeleccionada">
+												</select>
+							</div>
+						</div>
+						<br>
+						<div class="form-group">
+							<label class="col-md-1 control-label input-sm">Margen Base:</label>
+							<div class="col-md-1">
+												<input type="text"
+												id="margenbase" name="margenbase" required
+												placeholder="0.00" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" autocomplete="false"
+												class="form-control input-sm" ng-model="marcafamilia.margenBase"
+												/>
+												<p ng-show="abmForm.margenbase.$error.pattern">Solo numeros</p>
+							</div>
+							<label class="col-md-1 control-label input-sm">Margen A:</label>
+							<div class="col-md-1">
+												<input type="text"
+												id="margena" name="margena" required autocomplete="false"
+												class="form-control input-sm" ng-model="marcafamilia.margenA" required placeholder="0.00"
+												ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+												<p ng-show="abmForm.margena.$error.pattern">Solo numeros</p>
+
+							</div>
+							<label class="col-md-1 control-label input-sm">Margen B:</label>
+							<div class="col-md-1">
+											<input type="text"
+											id="margenb" name="margenb" required autocomplete="false"
+											class="form-control input-sm" ng-model="marcafamilia.margenB" required placeholder="0.00"
+											ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+											<p ng-show="abmForm.margenb.$error.pattern">Solo numeros</p>
+							</div>
+							<label class="col-md-1 control-label input-sm">Margen C:</label>
+							<div class="col-md-1">
+											<input type="text"
+											id="margenc" name="margenc" required autocomplete="false"
+											class="form-control input-sm" ng-model="marcafamilia.margenC" required placeholder="0.00"
+											ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+											<p ng-show="abmForm.margenc.$error.pattern">Solo numeros</p>
+							</div>
+						</div>
+						<br>
+					<div class="form-group centrobot">
+						<button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+						<button class="btn btn-default botonbus" type="button" ng-click="clear()">Cancelar</button>
+					</div>
+				</form>
+				</div>
+			<!-- fin div formulario alta/edicion -->
+			</div>
+			<!-- fin div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA/EDICION -->
+		</div>
+		<!--fin div FORMULARIO ALTA/EDICION-->
+
+		<!-- inicio FORMULARIO BUSQUEDA -->
+		<br />
+		<form>
+			<div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Buscar Marca Familia" ng-model="filtro">
+			      </div>
+			</div>
+		</form>
+		<br />
+		<!-- fin FORMULARIO BUSQUEDA -->
+
+		<!-- inicio div MarcaPaginationCtrl -->
+		<div ng-controller="MarcaFamiliaPaginationCtrl" class="tabladatos">
+
+		<!-- inicio div CABECERA LISTADO -->
+		<div class="row headerTable">
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcionFamilia'; sortReverse = !sortReverse">
+				<label>Familia</label>
+					<span ng-show="sortType == 'descripcionFamilia' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'descripcionFamilia' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+          		</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcionMarca'; sortReverse = !sortReverse">
+				<label>Marca</label>
+					<span ng-show="sortType == 'descripcionMarca' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'descripcionMarca' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+        </a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'margenBase'; sortReverse = !sortReverse">
+				<label>Margen Base</label>
+					<span ng-show="sortType == 'margenBase' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'margenBase' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+          		</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'margenA'; sortReverse = !sortReverse">
+				<label>Margen A</label>
+					<span ng-show="sortType == 'margenA' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'margenA' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+          		</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'margenB'; sortReverse = !sortReverse">
+				<label>Margen B</label>
+					<span ng-show="sortType == 'margenB' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'margenB' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'margenC'; sortReverse = !sortReverse">
+				<label>Margen C</label>
+					<span ng-show="sortType == 'margenC' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'margenC' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink"> <label>Funciones</label></a></div>
+		</div>
+
+		<!-- inicio div RESULTADO LISTADO -->
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaMarcaFamilias | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<!--		<div class="col-sm-1 text-center input-sm">{{item.id}}</div>-->
+			<div class="col-sm-2 text-center">{{item.descripcionFamilia}}</div>
+			<div class="col-sm-2 text-center">{{item.descripcionMarca}}</div>
+			<div class="col-sm-1 text-center">{{item.margenBase}}</div>
+			<div class="col-sm-1 text-center">{{item.margenA}}</div>
+			<div class="col-sm-1 text-center">{{item.margenB}}</div>
+			<div class="col-sm-1 text-center">{{item.margenC}}</div>
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				          				<li>
+											<a href ng-click="edit('{{item.id}}')">Editar
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          				</li>
+
+										<!--<li>
+											<a href ng-click="delete({{item}})">Eliminar
+				          					<span class="glyphicon glyphicon-remove"></a>
+				          	</li>-->
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<div ng-include="'views/templates/sa_template_modals.html'"></div>
+	</div>
+</div>

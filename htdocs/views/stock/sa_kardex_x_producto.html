@@ -1,0 +1,203 @@
+<div ng-controller='SaKardexXProductoCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+ 	<h3>Kardex X Producto</h3>
+	<hr class="style1" />
+	<br />
+	<div>
+		<!--<div>
+			<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Marca <span class="glyphicon glyphicon-add" /></button>
+		</div>-->
+		<div collapse="false">
+			<!-- inicia div formulario alta/edicion -->
+			<div class="busqueda">
+				<!-- inicia div formulario horizontal -->
+				<form class="form-horizontal" role="form" name="abmForm" autocomplete ="off">
+						<div class="form-group">
+							<!--<label class="col-md-2 control-label input-sm">Descripcion:</label>
+							<div class="col-md-3">
+									<input type="text" maxlength="50" required 	ng-disabled="inInquiry || inEdit" id="desc" name="desc"  autocomplete="false"
+												class="form-control input-sm" ng-model="marca.descripcion" />
+							</div>-->
+							<label for="inDocumentType" class="col-md-2 control-label input-sm">
+										Familia: </label>
+							<div class="col-md-2">
+								<select class="form-control input-sm" id="modelo" required
+												ng-options="i.id as i.descripcion for i in familias"
+												ng-model="filter.familiaId"
+												ng-change="changeMarca()">
+								</select>
+							</div>
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">
+							Marca: </label>
+							<div class="col-md-2">
+								<select class="form-control input-sm" id="typeId" required
+												ng-options="i.marca.id as i.marca.descripcion for i in marcafamilias"
+												ng-model="filter.marcaId"
+												ng-change="changeProducto()">
+								</select>
+							</div>
+							<label for="inDocumentType" class="col-md-2 control-label input-sm">
+										Producto: </label>
+							<div class="col-md-2">
+								<select class="form-control input-sm" id="modelo" required
+												ng-options="i.id as i.descripcion for i in marcaproductos"
+												ng-model="filter.productoId">
+								</select>
+							</div>
+						</div>
+						<br>
+						<div class="form-group centrobot">
+							<!--<button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+							<button class="btn btn-default botonbus" ng-click="clear()">Cancelar</button>-->
+							<button class="btn btn-default botonbus" ng-click="filter()" ng-disabled="disableFilter()">Busqueda</button>
+						</div>
+				</form>
+				<!-- fin div formulario horizontal -->
+			</div>
+		</div>
+	</div>
+	<br />
+	<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Busca Kardex" ng-model="filtro">
+			      </div>
+			    </div>
+</form>
+<br />
+<!--inicio div MarcaPaginacionCtrl-->
+<div ng-controller="MarcaPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+				<label>Fecha</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'descripcion' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+          		</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+				<label>Salida</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'descripcion' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+				<label>Entrada</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'descripcion' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+				<label>Saldo</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'descripcion' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+				<label>Referencia</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'descripcion' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+				<label>TD</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'descripcion' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+				<label>Serie</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'descripcion' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+				<label>Numero</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'descripcion' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+		</div>
+
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaKardexProducto | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+
+			<div class="col-sm-3 text-center">{{item.fecha}}</div>
+			<div class="col-sm-3 text-center">{{item.salida}}</div>
+			<div class="col-sm-3 text-center">{{item.entrada}}</div>
+			<div class="col-sm-3 text-center">{{item.saldo}}</div>
+			<div class="col-sm-3 text-center">{{item.referencia}}</div>
+			<div class="col-sm-3 text-center">{{item.td}}</div>
+			<div class="col-sm-3 text-center">{{item.serie}}</div>
+			<div class="col-sm-3 text-center">{{item.numero}}</div>
+
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				          		<li>
+											<a href ng-click="edit('{{item.id}}')">Editar
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          		</li>
+											<li>
+											<a href ng-click="delete({{item}})">Eliminar
+				          		<span class="glyphicon glyphicon-remove"></a>
+				          		</li>
+				  </ul>
+				</div>
+			</div>
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<div ng-include="'views/templates/sa_template_modals.html'"></div>
+	</div>
+	<!--fin div MarcaPaginationCtrl-->
+</div>
+<!--fin siv SaKardexXProductoCtrl-->

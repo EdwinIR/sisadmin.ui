@@ -1,0 +1,416 @@
+<div ng-controller="DocInvalidCtrl" ng-init="loadPage()" 
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+   <div class="navbar-collapse collapse menulink">
+                    <ul class="nav navbar-nav navbar-right">                        
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-envelope" />
+                            Email</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-phone-alt" />
+                            Llamanos</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-off" />
+                            Salir</a></li>
+                   </ul>
+    </div>
+
+	<h3>Facturas, Boletas, Notas Electronicas - Falladas</h3>
+	<br />			
+	<div id="" class="btn-toolbar" role="toolbar">
+		<div class="row">
+			<div class="col-sm-10 vcenter" style="height: 40px;"> 
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-success" ng-click="setearEne()">Enero</button>
+							<button type="button" class="btn btn-success" ng-click="setearFeb()">Febrero</button>
+							<button type="button" class="btn btn-success" ng-click="setearMar()">Marzo</button>
+							<button type="button" class="btn btn-success" ng-click="setearAbr()">Abril</button>
+							<button type="button" class="btn btn-success" ng-click="setearMay()">Mayo</button>
+							<button type="button" class="btn btn-success" ng-click="setearJun()">Junio</button>
+							<button type="button" class="btn btn-success" ng-click="setearJul()">Julio</button>
+							<button type="button" class="btn btn-success" ng-click="setearAgo()">Agosto</button>
+						<button type="button" class="btn btn-success" ng-click="setearSet()">Septiembre</button>
+							<button type="button" class="btn btn-success" ng-click="setearOct()">Octubre</button>
+						<button type="button" class="btn btn-success" ng-click="setearNov()">Noviembre</button>
+						<button type="button" class="btn btn-success" ng-click="setearDic()">Diciembre</button>
+							<button type="button" class="btn btn-success" ng-click="setearAll()">Todos</button>		  	
+						</div>				
+						<div class="col-sm-2">
+							<select class="form-control" ng-model="obj.selected" 
+									ng-options="obj.value as obj.text for obj in opts"
+									ng-change="cambiarAnio()">
+							</select>
+						</div>
+			</div>	
+		</div>	
+	</div>	
+
+
+
+	
+
+
+	<div>
+		<div>
+			 <!--<button class="btn btn-default" ng-click="refresh()">Buscar</span></button>-->
+			<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Busqueda Avanzada <span class="glyphicon glyphicon-search" /> </button>
+		</div>
+
+		<div collapse="isCollapsed">
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="formFilter" novalidate>
+
+
+						
+								<div class="form-group">
+										<label for="inDocumentType" class="col-md-2 control-label input-sm">
+										Comprobante: </label>
+										<div class="col-md-3">
+												<select class="form-control input-sm" id="typeId" 
+														ng-options="i.descr for i in listDocTypes" 
+														ng-model="filter.documentTypeSelected">
+												</select>
+										</div>
+
+									<label for="inDocumentType" class="col-md-2 control-label input-sm">Sede:</label>
+										<div class="col-md-3">
+												<select class="form-control input-sm" id="filialId" 
+														ng-options="i.description for i in listFilial" 
+														ng-model="filter.filial">
+												</select>
+										</div>
+								</div>
+
+								<div class="form-group" ng-controller="DatePickerController">							
+										<label  for="inBeginDate" class="col-md-2 control-label input-sm">
+										Fecha Inicio:</label>
+										<div class="col-md-3">
+											<p class="input-group">
+												<input id="inBeginDate" type="text" class="form-control input-sm" 
+													close-text="Cerrar" show-button-bar="false"
+													is-open="openedBeginDate" datepicker-options="dateParamOptions"   
+													datepicker-popup="{{dateParamFormat}}" ng-model="filter.beginIssueDate" />
+												
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-default input-sm" 
+														ng-click="openBeginDate($event)"><i class="glyphicon glyphicon-calendar">
+													</i></button>
+												</span>
+											</p>
+										</div>
+										
+
+										<label for="inEndDate" class="col-md-2 control-label input-sm">
+										Fecha Fin:</label>
+										<div class="col-md-3">
+										<div>
+												<p class="input-group">
+													<input id="inEndDate" type="text" class="form-control input-sm" 
+														close-text="Cerrar" show-button-bar="false"
+														is-open="openedEndDate" datepicker-options="dateParamOptions"
+														datepicker-popup="{{dateParamFormat}}" ng-model="filter.endIssueDate" />
+
+													<span class="input-group-btn">
+														<button type="button" class="btn btn-default input-sm" 
+															ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar">
+														</i></button>
+													</span>
+
+												</p>
+											</div>
+										</div> 
+								</div>
+
+
+								<br>
+								<div class="form-group centrobot">
+									<button class="btn btn-default botonbus" ng-click="filter()" 
+											ng-disabled="disableFilter()">Busqueda</button>
+									<button class="btn btn-default botonbus" ng-click="clear()">Cancelar</button>
+								</div>
+		
+
+				</form>
+			</div>
+		</div>
+
+		<div ng-show="pbResultRefresh">
+			<progressbar class="progress-striped active" value="pbValue"
+				type="success">Cargando datos</progressbar>
+		</div>
+	</div>
+	<br>
+	<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Busca Comprobantes" ng-model="searchDoc">
+			      </div>      
+			    </div>
+	</form>
+	<br>
+
+
+<div ng-controller="PaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink"
+					ng-click="sortType = 'documentTypeCode'; sortReverse = !sortReverse"><label>Tipo</label> 
+
+					<span ng-show="sortType == 'documentTypeCode' && !sortReverse"> 
+							 <span class="glyphicon glyphicon-arrow-up" />
+					</span> 
+					<span ng-show="sortType == 'documentTypeCode' && sortReverse"> 
+							 <span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+
+			<div class="col-sm-serie text-left">
+				<a class="menulink" ng-click="sortType = 'legalNumber'; sortReverse = !sortReverse"><label>Serie - Correlativo</label> 
+					<span ng-show="sortType == 'legalNumber' && !sortReverse"> 
+							<span class="glyphicon glyphicon-arrow-up" />
+					</span> 
+					<span ng-show="sortType == 'legalNumber' && sortReverse"> 
+							<span class="glyphicon glyphicon-arrow-down" />
+					</span> 
+				</a>
+			</div>
+
+			<div class="col-sm-3 text-center">
+			<a class="menulink" ng-click="sortType = 'customerName'; sortReverse = !sortReverse"><label>Cliente</label> 
+					<span ng-show="sortType == 'customerName' && !sortReverse"> 
+					   <span class="glyphicon glyphicon-arrow-up" />
+					</span>   
+					<span ng-show="sortType == 'customerName' && sortReverse"> 
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+			
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'issueDate'; sortReverse = !sortReverse"> <label>Fecha</label> 
+					<span ng-show="sortType == 'issueDate' && !sortReverse"> 
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span> 
+					
+					<span ng-show="sortType == 'issueDate' && sortReverse"> 
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'amount'; sortReverse = !sortReverse"> <label>Monto</label>
+					<span ng-show="sortType == 'amount' && !sortReverse"> 
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span> 
+					<span ng-show="sortType == 'amount' && sortReverse"> 
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+			<div class="col-sm-0 text-center"><a class="menulink"> <label>Status</label></a></div>
+			<div class="col-sm-0 text-center"><a class="menulink"> <label>PDF</label></a></div>
+			<div class="col-sm-0 text-center"><a class="menulink"> <label>XML</label></a></div>
+			<div class="col-sm-0 text-center"><a class="menulink"> <label>EMAIL</label></a></div>
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+</div>
+
+
+	<div ng-if="item.status.trim() == 'ER' || item.status.trim() == 'AN' || item.status.trim() == 'DB' || item.status.trim() == 'BJ'" id="resultset" class="row" ng-class-odd="'odd'"
+			ng-class-even="'even'"
+			ng-repeat="item in listDocuments | filter:searchDoc | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+
+			<div class="col-sm-1 text-center input-sm">{{getDocumentTypeDesc(item.documentTypeCode)}}</div>			
+			<div class="col-sm-serie text-left input-sm">{{item.legalNumber}}</div>
+			<div class="col-sm-3 input-smdos"> {{item.customerName}}	</div>
+			<div class="col-sm-1 text-center input-sm">{{item.issueDate | date:'dd-MM-yyyy'}}</div>			
+			<div class="col-sm-1 text-center input-sm">{{getCurrencyPrefix(item.currency)}}	{{item.amount}}</div>
+			<div class="col-sm-0 text-center input-sm">{{getStatus(item.status)}}</div>
+
+			<div class="col-sm-0 text-center input-sm">
+				<a class="menulinkb" href ng-click="dwlPdf('{{item.fileName}}')"><span class="glyphicon glyphicon-download-alt"></a></div>
+			<div class="col-sm-0 text-center input-sm">
+				<a class="menulinkb" href ng-click="dwlXml('{{item.fileName}}','{{item.legalNumber}}')">
+				<span class="glyphicon glyphicon-download-alt"></a>
+			</div>
+			<div class="col-sm-0 text-center input-sm">
+				<a class="menulinkb" href	ng-click="dwlEmail('{{item.fileName}}','{{item.legalNumber}}','{{item.customerName}}')">
+				<span class="glyphicon glyphicon-envelope"></a>
+			</div>
+			<div class="col-sm-1 text-center">
+					<div ng-if="item.status.trim() == 'ER' || item.status.trim() == 'AN' || item.status.trim() == 'DB' 				|| item.status.trim() == 'BJ'" 
+						class="btn-group" dropdown>
+						<button type="button" class="btn btn-primary dropdown-toggle">
+							<span class="caret"></span>
+						</button>
+
+
+					<ul class="dropdown-menu" role="menu">
+						<li ng-if="item.status === 'AN'">
+						<a href ng-click="desAnularDocumento({{item}})"> Des-Anular
+						<span class="glyphicon glyphicon-play"></a></li>
+
+						<li>
+						<a href ng-click="desBajarDocumento({{item}})"> Des-Bajar
+						<span class="glyphicon glyphicon-ok"></a></li>
+
+						<li><a href ng-click="dwlBitacora({{item}})"> Informacion
+						<span class="glyphicon glyphicon-info-sign"></a></li>
+
+						
+
+						
+
+
+					</ul>
+					</div>
+			</div>
+		</div>
+	<div>
+			<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+	</div>
+</div>
+
+
+
+
+				<script type="text/ng-template" id="DesAnularModalConfirm.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Anular Documento</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Esta seguro de anular el documento: </span></div>
+						<div>
+							<ul>
+								<li><strong>{{items[0].legalNumber}}</strong></li>
+							</ul>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">OK</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+					</div>
+				</script>
+
+
+				<script type="text/ng-template" id="DesBajarModalConfirm.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Anular Documento</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Esta seguro de anular el documento: </span></div>
+						<div>
+							<ul>
+								<li><strong>{{items[0].legalNumber}}</strong></li>
+							</ul>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">OK</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+					</div>
+				</script>
+
+
+
+
+
+				<script type="text/ng-template" id="DelModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Eliminación de Documento</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Esta seguro de eliminar el documento : </span></div>
+						<div>
+							<ul>
+								<li>{{items[0].fileName}}</li>
+							</ul>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Eliminar</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+					</div>
+				</script>
+
+
+				<script type="text/ng-template" id="ModalErrores.html">
+					<div class="modal-body">
+						<div class ="modal-header">
+								<h3 class="modal-title">Documento Errores</h3>
+						</div>
+						<div>
+							  <ul>
+								        <li ng-repeat="bit in items[0]">
+								         <p style="font-size:14px; color:#538b01; font-weight:bold; font-style:italic;">
+  																<span style="color: #0000a0">{{bit.msg}}</span>   
+										</p>
+								        </li>
+							 </ul>
+						</div>
+					</div>				
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Aceptar</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+					</div>
+				</script>
+
+				<script type="text/ng-template" id="NotaModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Asociar Documento Referencia</h3>
+					</div>
+					<div class="modal-body">
+						
+								<div class="form-group">
+										<label for="doc" class="col-md-4 control-label input-sm">Documento Referencia:</label>
+										<div class="col-md-6">
+												<input class="form-control" ng-model="documentoModificado" ng-required="true" maxlength="13" capitalize />
+										</div>
+								</div>
+
+
+						<div>
+							
+						</div>
+				
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()" ng-disabled="!documentoModificado">Enviar</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+						
+						
+					</div>
+
+			</script>
+
+			<script type="text/ng-template" id="ModalReproceso.html">
+					<div class ="modal-header">
+						<h4 class="modal-title">Mensaje</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+						<span>{{items}}</span>
+						</div>
+				
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+						
+						
+					</div>
+   		 </script>    
+		
+
+			
+		</div>

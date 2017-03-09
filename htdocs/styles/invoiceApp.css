@@ -1,0 +1,152 @@
+body{
+    background-color: #BCD4FF; /* Color de fondo de la pantalla inicial*/
+}
+
+.padding-title {
+     padding-left: 200px;
+}
+
+.menu-margen {
+     margin-left: 10px;
+     margin-top: 45px;
+     
+}
+
+.consulta-pub-titulo{
+    margin-top: -15px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.title-panel-pub {
+color: #d4145a;
+font-size: 18px;
+border-bottom-style: dashed; border-bottom-width: 1px;
+margin: 15px 25px 10px 25px
+}
+.subir-consulta
+{
+    margin-top:-50px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.container-fluid-logo {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top:-90px;
+  margin-bottom:10px;
+  text-align: center
+
+}
+
+
+.divcontainer{width: 55%; margin: 0 auto; margin-top: 0px; font-size:11px;}
+.error{
+    border-color: #d50000;
+    color: #d50000;
+    font-size: 16px;
+    font-style: italic;
+    position: absolute;margin-left:-13px}
+
+.inputerror {
+  border-color: red;
+}
+ 
+.warning {
+  border-color: yellow;
+}
+
+
+.leyenda{
+    border-color: #d50000;
+    color: #d50000;
+    font-size: 12px;
+    font-style: italic;
+    
+   }
+
+/*
+.container-fluid, navbar-header, navbar-collapse{
+     background-color: #D6E1FD;
+}
+*/
+
+.col-sm-3 .col-md-2 .sidebar{
+    background-color: transparent;
+}
+
+.center, .menu{
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+.menu .center > a:hover{
+    background-color: #1F4A8A;
+    color: white;
+}
+
+.round-button{
+    display: table-cell;
+    vertical-align: middle;
+    width:112px;
+    height:112px;
+    border:2px solid #29966c;
+    border-radius: 50%;
+    color: white;
+    text-align:center;
+    text-decoration:none;
+    background-color: #428bca;
+    box-shadow: 0 0 3px gray;
+    font-size:21px;
+    font-weight:bold;
+}
+
+a.css3dbutton {
+    background: #428bca; /* default green background color of button */
+    color: white;
+    text-decoration: none;
+    font: bold 18px Arial; /* font size and style */
+    position: relative;
+    display: inline-block;
+    margin-right: 15px; /* spacing between multiple buttons */
+    padding: 30px 0px; /* padding inside button */
+    border-radius: 85px; /* border radius of button */
+    width: 100px; /* dimensions of button */
+    height: 100px;
+    outline: none;    
+    -moz-transition: all 0.2s ease-in-out; /* transition style and duration */
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+a.css3dbutton:hover {
+    background: #243984; /* background color when mouse rolls over button */    
+    -ms-transform: translateY(8px); /* shift button downwards by shadow depth amount */
+    -webkit-transform: translate3D(0, 8px, 0);
+    -moz-transform: translateY(8px);
+    transform: translate3D(0, 8px, 0);
+}
+
+a.css3dbutton.lineSingle{
+    background: #428bca; 
+    padding: 40px 0px;
+}
+
+a.css3dbutton.lineSingle:hover {
+    background: #243984; /* background color when mouse rolls over button */
+}
+
+.jumbotron .center-block {
+    background-color: #BCD4FF;
+}
+
+.invoiceimage {
+    padding-bottom: 0px;
+    padding-top: 0px;
+}

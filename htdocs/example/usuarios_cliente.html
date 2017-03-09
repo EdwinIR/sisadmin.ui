@@ -1,0 +1,281 @@
+
+<div ng-controller='UserClienteCtrl' ng-init="loadPage()"
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<h3>Catalogo Clientesss</h3>
+	
+
+	<div id="" class="btn-toolbar" role="toolbar">
+		<div class="row">
+				<div class="col-sm-10 vcenter" style="height: 40px;"> 
+				 	<div class="btn-group btn-group-xs">
+						<button type="button" class="barra btn btn-default" data-month="1" data-method="refresh">January</button>
+						<button type="button" class="barra btn btn-default active" data-month="2" data-method="refresh">February</button>
+						<button type="button" class="barra btn btn-default" data-month="3" data-method="refresh">March</button>
+						<button type="button" class="barra btn btn-default" data-month="4" data-method="refresh">April</button>
+						<button type="button" class="barra btn btn-default" data-month="5" data-method="refresh">May</button>
+						<button type="button" class="barra btn btn-default" data-month="6" data-method="refresh">June</button>
+						<button type="button" class="barra btn btn-default" data-month="7" data-method="refresh">July</button>
+						<button type="button" class="barra btn btn-default" data-month="8" data-method="refresh">August</button>
+						<button type="button" class="barra btn btn-default" data-month="9" data-method="refresh">September</button>
+						<button type="button" class="barra btn btn-default" data-month="10" data-method="refresh">October</button>
+						<button type="button" class="barra btn btn-default" data-month="11" data-method="refresh">November</button>
+						<button type="button" class="barra btn btn-default" data-month="12" data-method="refresh">December</button>
+						<button type="button" class="barra btn btn-default" data-month="Todos" data-method="refresh">Todos</button>
+				  	</div>
+				</div>
+				
+		</div>	
+	</div>	
+	<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+			        <input type="text" class="form-control" placeholder="Busca un documentos" ng-model="searchDoc">
+			      </div>      
+			    </div>
+	</form>
+	<br>
+
+
+
+	<div ng-controller="UserPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">			
+			<div class="col-sm-3 text-center">
+				<a ng-click="sortType = 'nombre'; sortReverse = !sortReverse"><label>Razon Social</label>
+					<span ng-show="sortType == 'nombre' && !sortReverse"><img src="../images/up.png"/></span>
+           		 	<span ng-show="sortType == 'nombre' && sortReverse"><img src="../images/do.png"/></span>
+          		</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a ng-click="sortType = 'codUsuario'; sortReverse = !sortReverse"><label>Tipo Documento</label>
+					<span ng-show="sortType == 'codUsuario' && !sortReverse"><img src="../images/up.png"/></span>
+           		 	<span ng-show="sortType == 'codUsuario' && sortReverse"><img src="../images/do.png"/></span>
+          		</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a ng-click="sortType = 'rucEmpresa'; sortReverse = !sortReverse"><label>Nro. Documento</label>
+					<span ng-show="sortType == 'rucEmpresa' && !sortReverse"><img src="../images/up.png"/></span>
+           		 	<span ng-show="sortType == 'rucEmpresa' && sortReverse"><img src="../images/do.png"/></span>
+          		</a>
+			</div>
+			<div class="col-sm-3 text-center">
+				<a ng-click="sortType = 'empresa'; sortReverse = !sortReverse"><label>Email</label>
+				<span ng-show="sortType == 'empresa' && !sortReverse"><img src="../images/up.png"/></span>
+           		 <span ng-show="sortType == 'empresa' && sortReverse"><img src="../images/do.png"/></span>
+          		</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a ng-click="sortType = 'tipoUsuario'; sortReverse = !sortReverse"><label>Telefono</label>
+				<span ng-show="sortType == 'tipoUsuario' && !sortReverse"><img src="../images/up.png"/></span>
+           		 <span ng-show="sortType == 'tipoUsuario' && sortReverse"><img src="../images/do.png"/></span>
+          		</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a><label>Acc</label></a>				
+			</div>
+		</div>
+		<div ng-if="item.tipoUsuario.trim() == 'C'" id="resultset" class="row" ng-class-odd="'odd'"
+			ng-class-even="'even'"
+			ng-repeat="item in listUser | filter:searchUser | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-1 text-center input-sm">{{item.nombre}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.empresa}}</div>
+			<div class="col-sm-2 text-center input-sm">{{item.codUsuario}}</div>
+			<div class="col-sm-3 text-center">{{item.nombre}}</div>
+			<div class="col-sm-1 text-center input-sm">{{item.role}}</div>
+		
+			<div class="col-sm-2 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button"
+						ng-click="inquiry('{{item.ruc}}','{{item.codUsuario}}')"
+						class="btn btn-primary">
+						<span class="glyphicon glyphicon-zoom-in"></span>
+					</button>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href
+							ng-click="edit('{{item.ruc}}','{{item.codUsuario}}')">Editar
+								<span class="glyphicon glyphicon-pencil"></span>
+						</a></li>
+						<li><a href ng-click="openModalDelete({{item}})">Eliminar
+								<span class="glyphicon glyphicon-remove"></span>
+						</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div>
+			<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<script type="text/ng-template" id="DelModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Eliminación de Usuario</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Esta seguro de eliminar el usuario : </span></div>
+						<div>
+							<ul>
+								<li>{{items[0].nombre}}</li>
+							</ul>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Eliminar</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+					</div>
+				</script>
+
+
+				<script type="text/ng-template" id="AddModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Mensaje</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Datos del usuario: <strong>{{items[0].nombre}}</strong> registrados correctamente: </span></div>
+				
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+						
+						
+					</div>
+				</script>
+	</div>
+
+
+
+
+
+	<!--
+	<div class="well well-lg">
+		<form class="form-horizontal" role="form" name="configForm"
+			ng-submit="saveUser()"  autocomplete ="off">
+
+
+
+			<div class="form-group">
+					<label for="inClientTypeId" class="col-md-2 control-label input-sm">Cliente:</label>
+					<div class="col-sm-4">
+						<select class="form-control" ng-disabled="inInquiry" id="inClientTypeId" ng-options="i.name for i in listCustomer" ng-model="rucCliente" required></select>
+						
+					</div>
+					<small class='error'>*</small> 
+						<span class="help-block" ng-show="configForm.inClientTypeId.$error.required">
+           				Campo Requerido</span>
+
+			</div>
+
+
+
+
+			<div class="form-group">
+				<label for="nomReal" class="col-md-2 control-label input-sm">Nombre
+					Real:</label>
+				<div class="col-sm-5">
+					<input type="text" ng-disabled="inInquiry || inEdit" id="nombre"
+						name="nombre" required class="form-control input-sm"
+						ng-model="user.nombre" autocomplete = "false"/>
+
+				</div>
+				       <small class='error'>*</small> 
+						<span class="help-block" ng-show="configForm.nombre.$error.required">
+           				Campo Requerido</span> 
+			</div>
+
+			<div class="form-group">
+				<label for="email" class="col-md-2 control-label input-sm">Email:</label>
+				<div class="col-sm-4">
+					<input type="email" autocomplete="off" ng-disabled="inInquiry"
+						id="email" name="email" required class="form-control input-sm"
+						ng-model="user.email"/>
+				</div>
+				      <small class='error'>*</small> 
+						<span class="help-block" ng-show="configForm.email.$error.required">
+           				Campo Requerido</span>
+           				<span class="help-block" ng-show="configForm.email.$error.email">
+           				Correo incorrecto</span>
+
+
+			</div>
+
+
+			<div class="form-group">
+				<label for="user" class="col-md-2 control-label input-sm">Usuario:</label>
+				<div class="col-sm-3">
+					<input type="text" ng-disabled="inInquiry || inEdit"
+						id="codUsuario" name="codUsuario" required
+						class="form-control input-sm" ng-model="user.codUsuario" autocomplete="off" maxlength="20"/>
+
+				</div>
+
+				     <small class='error'>*</small> 
+						<span class="help-block" ng-show="configForm.codUsuario.$error.required">
+           				Campo Requerido</span> 
+			</div>
+
+
+			<div class="form-group">
+				<label for="password" class="col-md-2 control-label input-sm">Password:</label>
+				<div class="col-sm-3">
+					<input type="password" autocomplete="off" ng-disabled="inInquiry"
+						id="password" name="password" required
+						class="form-control input-sm" ng-model="user.password"/>
+				</div>
+
+				<small class='error'>*</small> 
+						<span class="help-block" ng-show="configForm.password.$error.required">
+           				Campo Requerido</span>
+			</div>
+
+			<div class="form-group">
+				<label for="repeatpassword" class="col-md-2 control-label input-sm">Repetir
+					Password:</label>
+				<div class="col-sm-3">
+					<input type="password" ng-disabled="inInquiry" id="newPassword"
+						name="newPassword" required class="form-control input-sm"
+						ng-model="user.newPassword"/>
+				</div>
+
+				        <small class='error'>*</small> 
+						<span class="help-block" ng-show="configForm.newPassword.$error.required">
+           				Campo Requerido</span>
+
+			</div>
+
+
+
+			<button class="btn btn-success" type="submit"
+				ng-disabled="!configForm.$valid" disabled="disabled">Guardar</button>
+			<button class="btn btn-success" ng-click="clear()">Limpiar</button>
+
+			
+		</form>
+	</div>
+	-->
+
+
+	<!--
+	<br>
+	<form>
+	    <div class="form-group">
+		      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+			        <input type="text" class="form-control" placeholder="Busca un usuario" ng-model="searchUser">
+		      </div>      
+	    </div>
+	</form>
+	<br>
+	-->
+
+
+
+
+
+
+
+
+
+
+</div>

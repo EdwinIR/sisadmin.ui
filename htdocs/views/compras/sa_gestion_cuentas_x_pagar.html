@@ -1,0 +1,480 @@
+<div ng-controller='SaGestionCuentasXPagarCtrl' ng-init="loadPage()"
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+ <div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+
+	<h3>Gestión Cuentas X Pagar</h3>
+	<hr class="style1" />
+	<br />
+
+
+
+<form class="form-horizontal" role="form" name="abmForm" autocomplete="off">
+
+
+<div>
+	<div>
+		<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Gestión Cuentas X Pagar <span class="glyphicon glyphicon-add" /></button>
+	</div>
+	<div collapse="isCollapsed">
+
+		<div class="busqueda">
+				<!--<form class="form-horizontal" role="form" name="abmForm" ng-submit="save()" autocomplete="off">-->
+
+
+				<!--	<div class="row">-->
+						<!--form-group para la primera fila-->
+						<div class="form-group">
+							<!--Ruc/dni-->
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">
+								RUC/DNI.
+							</label>
+							<div class="col-md-3">
+								<select class="form-control input-sm" id="typeId" diasbled ng-options="i.ruc for i in proveedores" ng-model="proveedorSeleccionado" disabled ng-change="habilitarBotones()" >
+								</select>
+							</div>
+							<!--Dirección proveedor-->
+							<label class="col-md-1 control-label input-sm ">
+								Razon Social:
+							</label>
+							<label class="col-md-5 control-label input-sm">
+								{{proveedorSeleccionado.razonSocial}}
+							</label>
+
+					</div>
+			<!--	</div>-->
+				<!--Boton para mostrar detalle-->
+				<div class="form-group centrobot">
+					<!--<button class="btn btn-default botonbus" type="button" ng-click="mostrarDetalle()"  ng-disabled="botonesDeshabilitados">Detalle</button>
+					<button class="btn btn-default botonbus" type="button" ng-click="save()" ng-disabled="!abmForm.$valid" disabled="disabled" >Guardar</button>-->
+					<button class="btn btn-default botonbus" type="button" ng-click="clear()">Cancelar</button>
+				</div>
+			<!--</form>-->
+		</div>
+
+		</div>
+		<div class="row" collapse="isCollapsed">
+
+			<table  class="table table-striped">
+				<thead>
+					<tr>
+						<th class="col-md-1"></th>
+						<th class="col-md-1">Monto</th>
+						<th class="col-md-1">Documento</th>
+						<th class="col-md-1">Comentarios</th>
+						<th class="col-md-2">Fecha de Emision</th>
+						<th class="col-md-2">Fecha de Vencimiento</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="detalle in cuentapagar.detalles" >
+						<td text-align="center"><button ng-click="removeItem()" class="btn btn-warning" disabled>X</button></td>
+						<td ><input class="col-md-7" name="monto" type="text" ng-model="detalle.montoDeuda"  disabled />
+
+						</td>
+						<td ><input class="col-md-10" type="text" ng-model="detalle.documento" name="documento" disabled />
+						</td>
+						<td ><input type="text" ng-model="detalle.comentarios" disabled name="comentarios"/>
+						</td>
+
+						<td >
+								<div class="col-md-8" ng-controller="DatePickerController">
+									<p class="input-group">
+										<input id="fechaEmision" disabled required type="text" class="form-control input-sm" close-text="Cerrar" show-button-bar="false" is-open="openedBeginDate" datepicker-options="dateParamOptions" datepicker-popup="{{dateParamFormat}}" ng-model="detalle.fechaEmision"  />
+											<span class="input-group-btn">
+											<button type="button" class="btn btn-default input-sm" disabled
+											ng-click="openBeginDate($event)">
+											<i class="glyphicon glyphicon-calendar"> </i>
+										</button>
+									</span>
+								</p>
+								</div>
+						</td>
+
+						<td>
+								<div class="col-md-8" ng-controller="DatePickerController">
+									<p class="input-group">
+										<input id="fechaVencimiento" disabled type="text" class="form-control input-sm" close-text="Cerrar" show-button-bar="false" is-open="openedBeginDate" datepicker-options="dateParamOptions" datepicker-popup="{{dateParamFormat}}" ng-model="detalle.fechaVencimiento" />
+											<span class="input-group-btn">
+											<button type="button" class="btn btn-default input-sm" disabled
+											ng-click="openBeginDate($event)">
+											<i class="glyphicon glyphicon-calendar"> </i>
+										</button>
+									</span>
+								</p>
+								</div>
+						</td>
+
+					</tr>
+					<tr>
+						<td text-align="center"><button ng-click="addItem()" class="btn btn-primary" disabled>+</button></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+				<tr  >
+				<td></td>
+				<td></td>
+				<td></td>
+				<td> Total :</td>
+				<td>
+					<input class="col-md-4" type="text" ng-model="cuentapagar.total"  name="total" disabled/>
+				</td>
+			</tr>
+				</tbody>
+			</table>
+		</div>
+		<!--Fin del Detalle-->
+			<!--Inicio de Pago Total-->
+			<div ng-show="pagoTotal">
+					<div class="busqueda">
+						<!--	<form class="form-horizontal" role="form" name="formPagoTotal" autocomplete="off">-->
+									<div class="form-group" ng-controller="DatePickerController">
+
+											<label  for="inBeginDate" class="col-md-1 control-label input-sm">
+												Fecha:
+											</label>
+												<div class="col-md-3">
+													<p class="input-group">
+														<input id="fecha" type="text" required class="form-control input-sm"
+														close-text="Cerrar" show-button-bar="false"
+														is-open="openedBeginDate" datepicker-options="dateParamOptions"
+														datepicker-popup="{{dateParamFormat}}" ng-model="pagosTotal.fecha" />
+
+														<span class="input-group-btn">
+															<button type="button" class="btn btn-default input-sm"
+															ng-click="openBeginDate($event)">
+																<i class="glyphicon glyphicon-calendar">
+																</i>
+															</button>
+													</span>
+											</p>
+										</div>
+
+										<label class="col-md-1 control-label input-sm">Observaciones:</label>
+											<div class="col-md-5">
+												<input type="text"
+													id="observaciones" name="observaciones" required ng-pattern="/^[a-zA-Z0-9\s]*$/" autocomplete="false"
+													class="form-control input-sm" ng-model="pagosTotal.observaciones"/>
+													<p ng-show="abmForm.observaciones.$error.pattern">Porfavor ingresar solo numeros y letras</p>
+											</div>
+												<div class="col-md-2">
+													<button class="btn btn-default botonbus" type="button" ng-click="saveTotal()">Pagar</button>
+												</div>
+									</div>
+							<!--</form>-->
+					</div>
+			</div>
+			<!--Fin de Pago Total-->
+
+
+			<!--Inicio de Pago Parcial-->
+			<div ng-show="pagoParcial">
+					<div class="busqueda">
+							<!--<form class="form-horizontal" role="form" name="formPagoParcial" autocomplete="off">-->
+									<div class="form-group" ng-controller="DatePickerController">
+
+											<label  for="inBeginDate" class="col-md-1 control-label input-sm">
+												Fecha:
+											</label>
+												<div class="col-md-2">
+													<p class="input-group">
+														<input id="fecha" type="text" required class="form-control input-sm"
+														close-text="Cerrar" show-button-bar="false"
+														is-open="openedBeginDate" datepicker-options="dateParamOptions"
+														datepicker-popup="{{dateParamFormat}}" ng-model="pagosParcial.fecha" />
+
+														<span class="input-group-btn">
+															<button type="button" class="btn btn-default input-sm"
+															ng-click="openBeginDate($event)">
+																<i class="glyphicon glyphicon-calendar">
+																</i>
+															</button>
+													</span>
+											</p>
+										</div>
+
+
+										<label class="col-md-1 control-label input-sm">Monto:</label>
+											<div class="col-md-1">
+												<input type="text"
+													id="montoParcial" name="montoParcial" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" autocomplete="false"
+													class="form-control input-sm" ng-model="pagosParcial.montoParcial"/>
+													<p ng-show="abmForm.montoParcial.$error.pattern">Porfavor ingresar solo numeros</p>
+											</div>
+
+										<label class="col-md-1 control-label input-sm">Observaciones:</label>
+											<div class="col-md-4">
+													<input type="text"
+														id="observaciones" name="observaciones" required ng-pattern="/^[a-zA-Z0-9\s]*$/" autocomplete="false"
+														class="form-control input-sm" ng-model="pagosParcial.observaciones"/>
+														<p ng-show="abmForm.observaciones.$error.pattern">Porfavor ingresar solo numeros y letras</p>
+											</div>
+												<div class="col-md-2">
+													<button class="btn btn-default botonbus" type="button" ng-click="saveParcial()">Pagar</button>
+												</div>
+									</div>
+							<!--</form>-->
+					</div>
+			</div>
+			<!--Fin de Pago Parcial-->
+			<br />
+			<!--Inicio de Busqueda -->
+
+				<div>
+					<div>
+						<button class="btn btn-success" ng-click="mostrarBusqueda()">Busqueda Avanzada<span class="glyphicon glyphicon-add" /></button>
+					</div>
+							<div ng-show="busquedaCuenta">
+									<div class="busqueda">
+										<form class="form-horizontal" role="form" name="abmForm2"  autocomplete="off" >
+												<div class="form-group" ng-controller="DatePickerController">
+														<label  for="inBeginDate" class="col-md-3 control-label input-sm">
+																Fecha Desde:
+														</label>
+														<div class="col-md-3">
+															<p class="input-group">
+																<input id="fechaEmision" type="text" class="form-control input-sm"
+																close-text="Cerrar" show-button-bar="false"
+																is-open="openedBeginDate" datepicker-options="dateParamOptions"
+																datepicker-popup="{{dateParamFormat}}" ng-model="busquedaGestion.fechaDesde" />
+
+																<span class="input-group-btn">
+																	<button type="button" class="btn btn-default input-sm"
+																	ng-click="openBeginDate($event)"><i class="glyphicon glyphicon-calendar">
+																	</i></button>
+																</span>
+															</p>
+														</div>
+
+														<label for="inEndDate" class="col-md-3 control-label input-sm">
+															Fecha Hasta:
+														</label>
+														<div class="col-md-3">
+															<div>
+																<p class="input-group">
+																	<input id="fechaRecepcion" type="text"  class="form-control input-sm"
+																	close-text="Cerrar" show-button-bar="false"
+																	is-open="openedEndDate" datepicker-options="dateParamOptions"
+																	datepicker-popup="{{dateParamFormat}}" ng-model="busquedaGestion.fechaHasta" />
+
+																	<span class="input-group-btn">
+																		<button type="button" class="btn btn-default input-sm"
+																		ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar">
+																		</i></button>
+																	</span>
+																</p>
+															</div>
+														</div>
+													</div>
+
+													<div clas="form-group">
+
+														<label for="inDocumentType" class="col-md-3 control-label input-sm">
+															Proveedor:
+														</label>
+														<div class="col-md-3">
+															<select class="form-control input-sm" id="modelo" required
+																ng-options="i.razonSocial for i in proveedores"
+																ng-model="proveedorSel">
+															</select>
+														</div>
+
+														<!--<label for="inDocumentType" class="col-md-3 control-label input-sm">
+															Documento:
+													 	</label>
+														<div class="col-md-3">
+															<select class="form-control input-sm" id="typeId" required
+																	ng-options="i.detalles.documento for i in listado"
+																	ng-model="busqueda.marcaId">
+																</select>
+															</div>-->
+														</div>
+															<br/>
+
+														<div class="form-group centrobot">
+							 								<button class="btn btn-default botonbus" type="button" ng-click="filtroAvanzado()">Busqueda</button>
+							 								<button class="btn btn-default botonbus" type="button" ng-click="limpiar()">Limpiar</button>
+														</div>
+
+
+										</form>
+									</div>
+							</div>
+				</div>
+
+			<!--Fin de Busqueda -->
+
+</div>
+</form>
+
+<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Busca Cuenta" ng-model="filtro">
+			      </div>
+			    </div>
+</form>
+<br />
+
+
+<div ng-controller="GestionCuentaPagarPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'rucProveedor'; sortReverse = !sortReverse">
+					<label>RUC</label>
+					<span ng-show="sortType == 'rucProveedor' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'rucProveedor' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'razonSocialProveedor'; sortReverse = !sortReverse">
+					<label>Proveedor</label>
+					<span ng-show="sortType == 'razonSocialProveedor' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'razonSocialProveedor' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+
+
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'direccionProveedor'; sortReverse = !sortReverse">
+					<label>Direccion</label>
+					<span ng-show="sortType == 'direccionProveedor' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'direccionProveedor' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'documento'; sortReverse = !sortReverse">
+					<label>Documento</label>
+					<span ng-show="sortType == 'documento' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'documento' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'montoTotal'; sortReverse = !sortReverse">
+					<label>Monto Total</label>
+					<span ng-show="sortType == 'montoTotal' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'montoTotal' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'montoPagado'; sortReverse = !sortReverse">
+					<label>Monto Pagado</label>
+					<span ng-show="sortType == 'montoPagado' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'montoPagado' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'fechaVencimiento'; sortReverse = !sortReverse">
+					<label>Fecha Vencimiento</label>
+					<span ng-show="sortType == 'fechaVencimiento' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'fechaVencimiento' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'estado'; sortReverse = !sortReverse">
+					<label>Estado</label>
+					<span ng-show="sortType == 'estado' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+							<span ng-show="sortType == 'estado' && sortReverse">
+								<span class="glyphicon glyphicon-arrow-down" />
+							</span>
+						</a>
+			</div>
+
+
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaCuentasPagar | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-1 text-center input-sm">{{item.rucProveedor}}</div>
+			<div class="col-sm-2 text-center input-sm">{{item.razonSocialProveedor}}</div>
+			<div class="col-sm-2 text-center input-sm">{{item.direccionProveedor}}</div>
+			<div class="col-sm-1 text-center input-sm">{{item.documento}}</div>
+			<div class="col-sm-1 text-center input-sm">{{item.montoTotal}}</div>
+			<div class="col-sm-1 text-center input-sm">{{item.montoPagado}}</div>
+			<div class="col-sm-1 text-center input-sm">{{item.fechaVencimiento | date:'dd-MM-yyyy'}}</div>
+			<div class="col-sm-1 text-center input-sm">{{item.estado}}</div>
+
+
+			<div  class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button  type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				          				<li ng-if="item.estado.trim() == 'Ingresado' || item.estado == 'Pagado Totalmente' || item.estado == 'Pagado Parcialmente' ">
+											<a href ng-click="edit('{{item.id}}')">Ver
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          				</li>
+
+													<li ng-if="item.estado.trim() == 'Ingresado' || item.estado == 'Pagado Parcialmente' ">
+											<a href ng-click="editPagoTotal('{{item.id}}')">Pago Total
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          				</li>
+
+													<li ng-if="item.estado.trim() == 'Ingresado' || item.estado == 'Pagado Parcialmente' ">
+											<a href ng-click="editPagoParcial('{{item.id}}')">Pago Parcial
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          				</li>
+
+										<li ng-if="item.estado.trim() == 'Ingresado' || item.estado == 'Pagado Totalmente' || item.estado == 'Pagado Parcialmente' ">
+											<a href ng-click="delete({{item}})">Anular
+				          					<span class="glyphicon glyphicon-remove"></a>
+				          				</li>
+				    </ul>
+
+				</div>
+			</div>
+
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<div ng-include="'views/templates/sa_template_modals.html'"></div>
+	</div>
+</div>

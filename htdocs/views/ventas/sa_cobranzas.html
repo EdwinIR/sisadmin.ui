@@ -1,0 +1,277 @@
+<div ng-controller='SaCobranzasCtrl' ng-init="loadPage()"
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+ <div class="navbar-collapse collapse menulink">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-envelope" />
+                            Email</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-phone-alt" />
+                            Llamanos</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-off" />
+                            Salir</a></li>
+                   </ul>
+    </div>
+
+	<h3>Cobranzas</h3>
+	<hr class="style1" />
+	<br />
+
+
+
+
+
+
+<div>
+	<div>
+		<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Cobranzas <span class="glyphicon glyphicon-add" /></button>
+	</div>
+	<div collapse="isCollapsed">
+
+		<div class="busqueda">
+			<form class="form-horizontal" role="form" name="abmForm" ng-submit="save()" autocomplete="off">
+
+				<!--Ciro primera Fila-->
+				<div class="row">
+					<!--form-group para la primera fila-->
+					<div class="form-group">
+						<!--ruc/dni-->
+						<label for="inDocumentType" class="col-md-1 control-label input-sm">
+							RUC/DNI
+						</label>
+						<div class="col-md-3">
+							<input ng-disabled="codigoDeshabilitado" required type="text" id="identificador" autocomplete="false" name="identificador" class="form-control input-sm" ng-model="clientedeuda.identificadorCliente" />
+						</div>
+						<!--razonSocial-->
+						<label class="col-md-1 control-label input-sm">Razón Social</label>
+						<div class="col-md-6">
+							<input ng-disabled="codigoDeshabilitado" required type="text" id="razonsocial" autocomplete="false" name="razonsocial" class="form-control input-sm" ng-model="clientedeuda.razonSocialCliente" />
+						</div>
+
+				</div>
+				<!--form-group para la segunda fila-->
+				<div class="form-group">
+					<!--Moneda-->
+					<label for="inDocumentType" class="col-md-2 control-label input-sm">
+						Monto Total Deuda
+					</label>
+					<div class="col-md-2">
+					<input ng-disabled="codigoDeshabilitado" required type="text" id="montototal" autocomplete="false" name="montototal" class="form-control input-sm" ng-model="clientedeuda.montoAdeudado" />
+					</div>
+
+
+
+				</div>
+			</div>
+			<!--Boton para mostrar detalle-->
+			<div class="form-group centrobot">
+				<button class="btn btn-default botonbus" type="button" ng-click="mostrarDetalle()">Detalle</button>
+				<button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+			</div>
+		</form>
+	</div>
+
+		</div>
+		<div class="row" ng-show="displayDetail">
+			<table class="table table-striped col-md-12">
+				<thead>
+					<tr>
+						<th class="col-md-1"></th>
+						<th class="col-md-2">Documento</th>
+						<th class="col-md-2">Fecha Emision</th>
+						<th class="col-md-2">Monto Total Doc.</th>
+						<th class="col-md-2">Monto Adeudado Doc</th>
+						<th class="col-md-2">Fecha Vencimiento</th>
+						<th class="col-md-2">Observaciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="detalle in clientedeuda.detalles">
+						<td text-align="center"><button ng-click="removeItem()" class="btn btn-warning">X</button></td>
+						<div ng-controller="DatePickerController">
+						<td class="col-sm-1"><input type="text" disabled="disable" autocomplete="false" ng-model="detalle.nroDocumento"/></td>
+						<td class="col-md-2">
+								<input type="text" disabled="disable" class="form-control input-sm" datepicker-options="dateParamOptions" datepicker-popup="{{dateParamFormat}}" ng-model="detalle.fechaEmisionDoc"/>
+						</td>
+						<td class="col-md-2"><input type="text" disabled="disable" ng-model="detalle.montoTotalDoc"/></td>
+						<td class="col-md-2"><input type="text" disabled="disable" ng-model="detalle.montoAdeudadoDoc"/></td>
+						<td class="col-md-2">
+							<input type="text" disabled="disable" class="form-control input-sm" datepicker-options="dateParamOptions" datepicker-popup="{{dateParamFormat}}" ng-model="detalle.fechaVencimiento"/>
+						</td>
+						<td class="col-md-2"><input type="text" disabled="disable" ng-model="detalle.observaciones"/></td>
+						</div>
+					</tr>
+					<tr>
+						<td text-align="center"><button ng-click="addItem()" class="btn btn-primary">+</button></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+</div>
+
+
+<div ng-controller="MarcaPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'identificadorCliente'; sortReverse = !sortReverse">
+					<label>Ruc</label>
+					<span ng-show="sortType == 'identificadorCliente' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'identificadorCliente' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'razonSocialCliente'; sortReverse = !sortReverse">
+					<label>Razon Social</label>
+					<span ng-show="sortType == 'razonSocialCliente' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'razonSocialCliente' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+
+
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'montoAdeudado'; sortReverse = !sortReverse">
+					<label>Monto Total Adeudado</label>
+					<span ng-show="sortType == 'montoAdeudado' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'montoAdeudado' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+
+
+
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaClientesDeudas | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-2 text-center input-sm">{{item.identificadorCliente}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.razonSocialCliente}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.montoAdeudado}}</div>
+
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				          				<li>
+											<a href ng-click="edit('{{item.id}}')">Editar
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          				</li>
+
+										<li>
+											<a href ng-click="delete({{item}})">Anular
+				          					<span class="glyphicon glyphicon-remove"></a>
+				          				</li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<script type="text/ng-template" id="DelModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Eliminación de la Orden de Compra</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Esta seguro de eliminar la Orden de Compra N°: </span></div>
+						<div>
+							<ul>
+								<li>{{items[0].codigo}}</li>
+							</ul>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">OK</button>
+						<button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+					</div>
+				</script>
+
+			<script type="text/ng-template" id="AddModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Mensaje</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Datos de la Operacion de Compra: <strong>{{items[0].codigo}}</strong> registrados correctamente: </span></div>
+
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+
+					</div>
+			</script>
+
+
+			<script type="text/ng-template" id="ErrorModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Mensaje Error</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>Los password no coinciden, intente nuevamente por favor.</span></div>
+
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+
+					</div>
+			</script>
+	</div>
+
+	<script type="text/ng-template" id="AddModalContent.html">
+							<div class ="modal-header">
+								<h3 class="modal-title">Mensaje</h3>
+							</div>
+							<div class="modal-body">
+								<div><span>Detalles de la Orden de Compra registrados correctamente: </span></div>
+
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-primary" ng-click="ok()">Ok</button>
+
+
+							</div>
+						</script>
+</div>

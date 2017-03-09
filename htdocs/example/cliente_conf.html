@@ -1,0 +1,39 @@
+<div ng-controller="ClienteConfiguracionCtrl" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">			
+	<div>
+
+			<h3>Cambio de Contraseña</h4>
+			<div class="well well-lg">
+				
+				<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+				
+			<form class="form-horizontal" role="form" role="form" name="configForm" ng-submit="save()">
+				
+				<div class="form-group">
+							<label for="pass" class="col-md-2 control-label input-sm">Nueva contraseña:</label>
+							<div class="col-sm-3">
+								<input type="password" autocomplete="off" id="newPass" name="newPass" required ng-disabled="inInquiry" class="form-control input-sm" ng-model="client.newPass"/>
+							
+							</div>
+							<small class='error'>*</small> 
+						<span class="help-block" ng-show="configForm.newPass.$error.required">
+           				Campo Requerido</span> 
+				</div>
+
+				<div class="form-group">
+							<label for="pass" class="col-md-2 control-label input-sm">Repetir contraseña:</label>
+							<div class="col-sm-3">
+								<input type="password"  autocomplete="off" id="repeatPass" name="repeatPass" required ng-disabled="inInquiry" class="form-control input-sm" ng-model="client.repeatPass"/>
+								
+							</div>
+							<small class='error'>*</small> 
+						<span class="help-block" ng-show="configForm.repeatPass.$error.required">
+           				Campo Requerido</span> 
+				</div>
+
+						
+				<hr>
+				 <button class="btn btn-success" type="submit" ng-disabled="!configForm.$valid">Guardar</button>
+				<button class="btn btn-success" ng-click="clear()">Limpiar</button>
+				</form>
+			</div>
+		</div>

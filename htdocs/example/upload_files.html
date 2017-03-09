@@ -1,0 +1,278 @@
+
+<div ng-controller="uploadCtrl" 
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ng-init="paginaInicial()">
+	<h3>Recepci&oacute;n de Comprobantes Electronicos</h3>
+	<div>
+	
+		<div>
+			<div class="busqueda">
+				<form class="form-horizontal" name="formUpload">
+			
+					<div class="form-group">
+						<label for="inDocumento"
+							class="col-md-2 control-label input-sm">Carga de Archivo:</label>
+
+						<div class="col-md-3">
+						<input type="file" 
+						onchange="angular.element(this).scope().filesChanged(this)"	
+						file-input="files"
+						 multiple/>
+						</div>
+
+					</div>
+
+					<br>
+
+					<div class="form-group">
+					<button class="btn btn-default" ng-click="upload()" ng-disabled="disable()">
+                          <span class="glyphicon glyphicon-cloud-upload"></span>
+							Recepcion Manual
+					</button>
+
+					<button class="btn btn-default" ng-click="clear()">
+						<span class="glyphicon glyphicon-trash"></span>
+							Limpiar
+					</button>
+
+
+						<button class="btn btn-default" ng-click="dowloandEmail()">
+                          <span class="glyphicon glyphicon-envelope"></span>
+							Recepcion desde Correo
+					</button>					
+
+					</div>
+					<br>
+					<div ng-show="pbResultRefreshFiles">
+									<progressbar class="progress-striped active" value="pbValue"
+										type="success">Cargando archivos...</progressbar>
+					</div>
+
+					
+					<li ng-repeat="file in files">{{file.name}}</li>
+
+
+
+				
+				</form>
+
+			</div>
+
+				<br>
+				<form>
+					<div class="form-group busquedatam">
+						<div class="input-group">
+							<div class="input-group-addon">
+								<i class="fa fa-search">
+								<span class="glyphicon glyphicon-search" />
+								</i>
+							</div>
+							<input type="text" class="form-control"
+								placeholder="Busca un documento" ng-model="searchDoc">
+						</div>
+					</div>
+				</form>
+				<br>
+
+			<!--Aqui empieza table-->
+		<div ng-controller="PaginationCtrl" class="tabladatos">
+			
+			<div class="row headerTable">
+				<div class="col-sm-1 text-center">
+					<a class="menulink"
+						ng-click="sortType = 'tipoDocumento'; sortReverse = !sortReverse"><label>Tipo</label> 
+
+					<span ng-show="sortType == 'tipoDocumento' && !sortReverse"> 
+							 <span class="glyphicon glyphicon-arrow-up" />
+					</span> 
+					<span ng-show="sortType == 'tipoDocumento' && sortReverse"> 
+							 <span class="glyphicon glyphicon-arrow-down" />
+					</span>
+					</a>
+				</div>
+
+				<div class="col-sm-serie text-left">
+				<a class="menulink" 
+				ng-click="sortType = 'numeroLegal'; sortReverse = !sortReverse">
+				<label>Serie - Correlativo</label> 
+					<span ng-show="sortType == 'numeroLegal' && !sortReverse"> 
+							<span class="glyphicon glyphicon-arrow-up" />
+					</span> 
+					<span ng-show="sortType == 'numeroLegal' && sortReverse"> 
+							<span class="glyphicon glyphicon-arrow-down" />
+					</span> 
+				</a>
+				</div>
+
+
+			<div class="col-sm-3 text-center">
+			<a class="menulink" ng-click="sortType = 'emisorName'; sortReverse = !sortReverse"><label>Emisor</label> 
+					<span ng-show="sortType == 'emisorName' && !sortReverse"> 
+					   <span class="glyphicon glyphicon-arrow-up" />
+					</span>   
+					<span ng-show="sortType == 'emisorName' && sortReverse"> 
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+
+				
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'fechaEmision'; sortReverse = !sortReverse"> <label>Fecha</label> 
+					<span ng-show="sortType == 'fechaEmision' && !sortReverse"> 
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span> 
+					
+					<span ng-show="sortType == 'fechaEmision' && sortReverse"> 
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+				</a>
+			</div>
+				<!--				
+				<div class="col-sm-1 text-center">
+					<a ng-click="sortType = 'emisorIdentificacion'; sortReverse = !sortReverse">
+						<label>EmisorID</label> <span
+						ng-show="sortType == 'emisorIdentificacion' && !sortReverse"> <img
+							src="../images/up.png" /></span> <span
+						ng-show="sortType == 'emisorIdentificacion' && sortReverse"> <img
+							src="../images/do.png" /></span>					
+					</a>
+				</div>-->
+				<div class="col-sm-1 text-center">
+					<a class="menulink" ng-click="sortType = 'importeTotalVenta'; sortReverse = !sortReverse"> <label>Monto</label>
+					<span ng-show="sortType == 'importeTotalVenta' && !sortReverse"> 	<span class="glyphicon glyphicon-arrow-up" />
+					</span> 
+					<span ng-show="sortType == 'importeTotalVenta' && sortReverse"> 
+						<span class="glyphicon glyphicon-arrow-down" />
+					</span>
+					</a>
+				</div>
+
+				<!--<div class="col-sm-1 text-center"><label></label></div>-->
+				
+				<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+			</div>
+
+		<div id="resultset" class="row" ng-class-odd="'odd'"
+			ng-class-even="'even'"
+			ng-repeat="item in listDocuments | filter:searchDoc | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+
+			<div class="col-sm-1 text-center input-sm" style="font-size:11px;height: 42px">{{getTipo(item.tipoDocumento)}}</div>
+
+			<div class="col-sm-serie text-left input-sm" style="font-size:11px;height: 42px">{{item.numeroLegal}}</div>		
+			
+			<div class="col-sm-3 text-center input-sm" style="font-size:11px;height: 42px">{{item.emisorName}}</div>
+
+			<div class="col-sm-1 text-center input-sm" style="font-size:11px;height: 42px">{{item.fechaEmision | date:'dd-MM-yyyy'}}</div>
+
+			<!--	
+			<div class="col-sm-1 text-center input-sm" style="font-size:11px;height: 42px">{{item.emisorIdentificacion}}</div>-->
+						
+			<div class="col-sm-1 text-center input-sm" style="font-size:11px;height: 42px">{{getCurrencyPrefix(item.moneda)}} {{item.importeTotalVenta}}</div>
+	
+
+			<!--Inicio Botones de accion de descarga PDF-->
+			<div class="col-sm-2 text-center">
+			
+					<div class="btn-group" dropdown>
+
+					<button type="button" class="btn btn-primary"
+						ng-click="getDetails('{{item.id}}')" title="[Detalle del comprobante - {{item.numeroLegal}}]">
+						Detalle <span class="glyphicon glyphicon-zoom-in" ></span>
+					</button>
+
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a href ng-click="descargaPDF('{{item.emisorIdentificacion}}-{{item.tipoDocumento}}-{{item.numeroLegal}}')">Ver PDF <span class="glyphicon glyphicon-download-alt">
+							</a>
+						</li>
+
+					</ul>
+				</div>
+
+
+
+			</div>
+			<!--Fin Botones de accion de descarga PDF-->
+
+		
+		</div>
+
+		<div>
+			<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+	</div>
+			<!--Fin de table-->
+
+
+
+				<script type="text/ng-template" id="AddModalContent.html">
+					<div class ="modal-header">
+						<h3 class="modal-title">Mensaje de Carga de Archivo</h3>
+					</div>
+					<div class="modal-body">
+						<div><span>{{items}}</span></div>
+						
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">OK</button>
+						
+					</div>
+				</script>
+
+
+
+				<script type="text/ng-template" id="DetailsModalContent.html">
+				
+
+						<div class ="modal-header">
+							<h3 class="modal-title">Detalle del Comprobante</h3>
+						</div>
+						<div class="modal-body">
+							<table class="table table-striped table-bordered" style="font-size:11px">
+								 <thead>
+								  	<tr>
+								     	<th>Item</th>							    
+								    	<th>Descripcion</th>								   
+								    	<th>Cantidad</th>								    
+								    	<th>Importe</th>
+								 	 </tr>
+								 </thead>
+
+
+								  <tbody>
+								  	<tr ng-repeat="det in items">
+								     	<td>{{det.numeroFila}}</td>							    
+								    	<td>{{det.descripcion}}</td>								   
+								    	<td>{{det.cantidad}}</td>								    
+								    	<td>{{det.itemValorVenta}}</td>
+								 	 </tr>
+								 </tbody>
+							</table>
+
+							
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="ok()">Cerrar</button>
+							
+						</div>
+				</script>
+
+
+
+
+
+
+		</div>
+
+		
+	</div>
+
+	<br>
+
+
+</div>
+
+

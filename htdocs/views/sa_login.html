@@ -1,0 +1,91 @@
+
+<div class="pantallalogin" style="background-color: #F9F9F9; border: 1px solid #000000">
+
+		<div class="col-izquierda-login fisc panelizquierdologin">
+
+
+
+            <div class="panel panel-info" >
+                    <div class="panel-heading panelblanco">
+                        <div class="panel-title ingresosistema">Ingresar al Sistema</div>
+                        <div style="float:right; font-size: 80%; position: relative; top:-10px" >
+                        <a href="#">
+                        Olvido su Password?</a></div>
+                    </div>
+
+                    <div style="padding-top:30px" class="panel-body panelblanco" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+                        <form id="loginform" class="form-horizontal" role="form"
+                        name="loginForm" ng-submit="login(loginForm.$valid)" novalidate>
+
+
+                            <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="userName" ng-model="user.userName" type="text" class="form-control" name="username" value="" placeholder="nombre usuario o correo">
+                                    </div>
+
+                            <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="password" ng-model="user.password" type="password" class="form-control" name="password" placeholder="password">
+                                    </div>
+
+														<div style="margin-bottom: 25px" class="input-group">
+																			<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+																			<select class="form-control input-sm" id="destino"
+																							required ng-options="i.id as i.descripcion for i in almacenes"
+																							ng-model="user.almacenId">
+																			</select>
+														</div>
+
+                            <div class="input-group ingresosistema">
+                                      <div class="checkbox">
+                                        <label>
+                                          <input id="login-remember" type="checkbox" name="remember" value="1"> Recuerdame
+                                        </label>
+                                      </div>
+                                    </div>
+
+
+                                <div style="margin-top:10px" class="form-group">
+                                    <!-- Button -->
+
+                                    <div class="col-sm-12 controls">
+										<button class="btn btn-success btn-lg" type="submit"
+										ng-disabled="loginForm.$invalid">Ingresar</button>
+                                    </div>
+                                </div>
+
+
+
+
+                            </form>
+
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+		</div>
+
+		<div class="col-derecha-login fisc panelderechologin">
+			 	<div class="loginuno">
+		                  <span class="nombre-principallogin" style="font-size: 3.4em;border: none;">
+		                    <img class="logosisfelogin" src="images/sisfe_transp.png" />
+		                     SISADMIN
+		                 </span>
+	    		</div>
+	    		<div class="textopanelderechochico">Sistema de Administración </div>
+				<div class="textopanelderechogrande" style="margin: auto 0; text-align: center;">
+						Sistema de Administración
+				</div>
+		</div>
+
+
+</div>
+<!--container-->

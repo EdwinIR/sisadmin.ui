@@ -1,0 +1,112 @@
+
+<div ng-controller="ReporteCtrl" ng-init="loadPage()"
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">	
+ 	<div class="navbar-collapse collapse menulink">
+                    <ul class="nav navbar-nav navbar-right">                        
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-envelope" />
+                            Email</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-phone-alt" />
+                            Llamanos</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-off" />
+                            Salir</a></li>
+                   </ul>
+    </div>
+
+
+	<h3>Reporte Comprobantes Electronicos</h3>
+	<br />
+
+	<div>
+		<div>
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="formFilter"
+					novalidate>
+
+					<div class="form-group" ng-controller="DatePickerController">
+						<label for="inBeginDate" class="col-md-2 control-label input-sm">
+							Fecha Inicial:</label>
+						<div class="col-md-3">
+							<p class="input-group">
+								<input id="inBeginDate" type="text"
+									class="form-control input-sm" close-text="Cerrar"
+									show-button-bar="false" is-open="openedBeginDate"
+									datepicker-options="dateParamOptions"
+									datepicker-popup="{{dateParamFormat}}"
+									ng-model="filter.fechaInicio" /> <span
+									class="input-group-btn">
+									<button type="button" class="btn btn-default input-sm"
+										ng-click="openBeginDate($event)">
+										<i class="glyphicon glyphicon-calendar"> </i>
+									</button>
+								</span>
+							</p>
+						</div>
+
+
+						<label for="inEndDate" class="col-md-2 control-label input-sm">
+							Fecha Final:</label>
+						<div class="col-md-3">
+							<div>
+								<p class="input-group">
+									<input id="inEndDate" type="text" class="form-control input-sm"
+										close-text="Cerrar" show-button-bar="false"
+										is-open="openedEndDate" datepicker-options="dateParamOptions"
+										datepicker-popup="{{dateParamFormat}}"
+										ng-model="filter.fechaFinal" /> <span
+										class="input-group-btn">
+										<button type="button" class="btn btn-default input-sm"
+											ng-click="openEndDate($event)">
+											<i class="glyphicon glyphicon-calendar"> </i>
+										</button>
+									</span>
+
+								</p>
+							</div>
+						</div>
+					</div>
+
+					
+
+					<div class="form-group">
+						<label for="inDocumentType"
+							class="col-md-2 control-label input-sm">Surcursal:</label>
+						<div class="col-md-3">
+							<select class="form-control input-sm" id="filialId"
+								ng-options="i.description for i in listFilial"
+								ng-model="filter.filial">
+							</select>
+						</div>
+					</div>
+
+
+
+					<br>
+					<div class="form-group">
+					<button class="btn btn-default" ng-click="filterExcel()" ng-disabled="disableFilterExcel()">
+                          <span class="glyphicon glyphicon-save"></span>
+							Exportar Reporte
+
+						</button>
+						
+
+
+						<button class="btn btn-default" ng-click="clear()">Limpiar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		
+	</div>
+
+	<br>
+
+
+</div>
+
+

@@ -1,0 +1,105 @@
+<div ng-controller='SaExportacionVentasCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+		<h3>Reporte de Comprobantes</h3>
+		<hr class="style1" />
+		<br />
+
+		<div>
+		<!--<div>
+			<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Reporte Stock Min Max <span class="glyphicon glyphicon-add" /></button>
+		</div>-->
+		<!-- inicio div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA/EDICION -->
+		<div collapse="false">
+			<!-- inicia div formulario alta/edicion -->
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="abmForm" autocomplete ="off">
+          <div class="form-group">
+  					  <div ng-controller="DatePickerController" >
+  								<label class="col-md-2 control-label input-sm">Fecha Emision Inicio</label>
+  								<div class="col-md-3">
+  									<p class="input-group">
+  										<input id="fecha" type="text" ng-disabled="camposDeshabilitados" class="form-control input-sm" close-text="Cerrar" show-button-bar="false" is-open="openedBeginDate" datepicker-options="dateParamOptions"
+                      datepicker-popup="{{dateParamFormat}}" ng-model="comprobante.fechaInicio" />
+  									<span class="input-group-btn">
+  											<button type="button" class="btn btn-default input-sm"
+  												ng-click="openBeginDate($event)" ng-disabled="camposDeshabilitados">
+  												<i class="glyphicon glyphicon-calendar"> </i>
+  										</button>
+  									</span>
+  									</p>
+  								</div>
+                  <label for="inEndDate" class="col-md-2 control-label input-sm">
+										Fecha Emision Fin</label>
+										<div class="col-md-3">
+											<div>
+												<p class="input-group">
+													<input id="fechaRecepcion" type="text"  class="form-control input-sm"	close-text="Cerrar" show-button-bar="false" is-open="openedEndDate" datepicker-options="dateParamOptions"
+														datepicker-popup="{{dateParamFormat}}" ng-model="comprobante.fechaFin" />
+													<span class="input-group-btn">
+														<button type="button" class="btn btn-default input-sm"
+															ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar">
+														</i></button>
+													</span>
+												</p>
+											</div>
+										</div>
+  					  </div>
+
+  					</div>
+				<br>
+				<div class="form-group centrobot">
+					<button class="btn btn-default botonbus" type="button" ng-click="reportecomp()">Exportar Excel</button>
+				</div>
+			</form>
+		</div>
+		<!-- termina div formulario alta/edicion-->
+	</div>
+	 <!-- termina div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA/EDICION -->
+ </div>
+  <!-- termina div FORMULARIO ALTA/EDICION-->
+
+	<h3>Reporte de Clientes</h3>
+   <hr class="style1" />
+   <br/>
+   <div collapse="false">
+     <!-- inicia div formulario alta/edicion -->
+     <div class="busqueda">
+       <form class="form-horizontal" role="form" name="abmForm2" autocomplete ="off">
+         <div class="form-group">
+           <label class="col-md-2 control-label input-sm">Ciudad:</label>
+           <div class="col-md-3">
+             <input type="text"
+                   id="ciu" name="ciu"  autocomplete="false" class="form-control input-sm" ng-model="cliente.region" />
+           </div>
+
+         </div>
+       <br>
+       <div class="form-group centrobot">
+         <button class="btn btn-default botonbus" type="button" ng-click="reportecliente()">Exportar Excel</button>
+       </div>
+     </form>
+   </div>
+   <!-- termina div formulario alta/edicion-->
+ </div>
+
+ <h3>Reporte de Vendedores</h3>
+	<hr class="style1" />
+	<br/>
+	<div collapse="false">
+		<!-- inicia div formulario alta/edicion -->
+		<div class="busqueda">
+			<form class="form-horizontal" role="form" name="abmForm2" autocomplete ="off">
+				<div class="form-group">
+
+				</div>
+			<br>
+			<div class="form-group centrobot">
+				<button class="btn btn-default botonbus" type="button" ng-click="reportevendedores()">Exportar Excel</button>
+			</div>
+		</form>
+	</div>
+	<!-- termina div formulario alta/edicion-->
+</div>
+
+</div>

@@ -1,0 +1,87 @@
+<div ng-controller="EmitterCtrl" ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		<h3>Configuración Emisora</h3>
+		<!--  <pre><small>Ingrese datos de configuración de ambiente de una nueva empresa emisora, o seleccione una de la lista inferior si requiere modificar datos.</small></pre>-->
+		<hr>
+		<div class="well well-lg" style ="background-color: #FFFFFF">
+			<form class="form-horizontal" role="form">
+						<h3> <font size=4>Datos Generales</font></h3>
+						<div class="form-group">
+							<label for="inCompanyId" class="col-sm-3 control-label">RUC:</label>
+							<div class="col-sm-3">
+								<input type="text" disabled="disable" class="form-control input-sm" id="identification" name="identification"  ng-model="emitter.identification">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inCompanyName" class="col-sm-3 control-label">Razón Social:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable" class="form-control input-sm" id="name" name="name" ng-model="emitter.name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inCompanyCommercialName" class="col-sm-3 control-label">Razón Comercial:</label>
+							<div class="col-sm-8">
+								<input type="text" id="inCompanyCommercialName" disabled="disable"  class="form-control input-sm" ng-model="emitter.businessName">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inCompanyAddress" class="col-sm-3 control-label">Dirección:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable" class="form-control input-sm" id="address" name="address"  ng-model="emitter.address">
+							</div>
+						</div>
+						
+						<h3> <font size=4>Rutas de Procesamiento</font></h3>
+
+						<div class="form-group">
+							<label for="inPathGen" class="col-sm-3 control-label">Documentos Generados:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable"  class="form-control input-sm" id="pathGen" name="pathGen" ng-model="emitter.pathGen">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inPathRec" class="col-sm-3 control-label">Documentos Recibidos:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable" class="form-control input-sm" id="pathRec" name="pathRec" ng-model="emitter.pathRec">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inPathSig" class="col-sm-3 control-label">Documentos Firmados:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable"  class="form-control input-sm" id="pathSig" name="pathSig"  ng-model="emitter.pathSig">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inPathAut" class="col-sm-3 control-label">Documentos Autorizados:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable" class="form-control input-sm" id="pathAut" name="pathAut" ng-model="emitter.pathAut">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inPathRej" class="col-sm-3 control-label">Documentos Rechazados:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable" class="form-control input-sm" id="pathRej" name="pathRej" ng-model="emitter.pathRej">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inPathRep" class="col-sm-3 control-label">Documentos Impresos PDF:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable" class="form-control input-sm" id="pathJas" name="pathJas" ng-model="emitter.pathJas">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inPathRep" class="col-sm-3 control-label">Documentos Pendiente:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable" class="form-control input-sm" id="pathHold" name="pathHold" ng-model="emitter.pathHold">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inPathRep" class="col-sm-3 control-label">Guías de Remisión:</label>
+							<div class="col-sm-8">
+								<input type="text" disabled="disable" class="form-control input-sm" id="pathGuide" name="pathGuide" ng-model="emitter.pathGuide">
+							</div>
+						</div>
+			</form>
+
+		</div>
+				
+	</div>

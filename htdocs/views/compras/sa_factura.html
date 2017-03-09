@@ -1,0 +1,274 @@
+<div ng-controller='SaFacturaCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+	<h3>Catalogo Orden de Facturas</h3>
+	<hr class="style1" />
+	<br />
+<form class="form-horizontal" role="form" name="abmForm" autocomplete="off">
+	<div>
+		<div>
+			<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Factura<span class="glyphicon glyphicon-add" /></button>
+			<button class="btn btn-success" type="button" ng-click="exportar()">exportar</button>
+		</div>
+	<!--	<form role="form" name=formGeneral>-->
+		<div collapse="isCollapsed">
+			<div class="busqueda">
+			<!--	<form class="form-horizontal" role="form" name="abmForm" ng-submit="save()" autocomplete="off">-->
+
+					<!--Ciro primera Fila-->
+					<div class="row">
+						<!--form-group para la primera fila-->
+						<div class="form-group">
+							<!--Tipo de Documento-->
+							<label for="inDocumentType" class="col-md-1 control-label input-sm">
+								Tip. Doc.
+							</label>
+							<div class="col-md-2">
+								<select class="form-control input-sm" id="typeId" required ng-options="i.descripcion for i in documentos" ng-model="tipodocumentoSeleccionado">
+								</select>
+							</div>
+							<!--Serie-->
+							<label class="col-md-1 control-label input-sm">Serie</label>
+							<div class="col-md-2">
+								<input ng-disabled="codigoDeshabilitado" required placeholder="Serie"
+								ng-pattern="/^[a-zA-Z0-9]*$/" type="text" maxlength="4"  autocomplete="false"  name="serie"
+								class="form-control input-sm" ng-model="factura.serie" />
+								<p ng-show="abmForm.serie.$error.pattern">Ingresar solo numeros y letras</p>
+							</div>
+							<!--Número de Documento-->
+							<label class="col-md-1 control-label input-sm">N° Docum.</label>
+							<div class="col-md-2">
+								<input ng-disabled="codigoDeshabilitado" required placeholder="F001-00005"
+								ng-pattern="/^[a-zA-Z0-9\-]*$/" type="text" maxlength="11" autocomplete="false" name="numerodoc" class="form-control input-sm" ng-model="factura.numeracion" />
+							<p ng-show="abmForm.numerodoc.$error.pattern">Ingresar solo numeros y letras</p>
+							</div>
+							<!--Fecha de Factura-->
+							<!--Div para el DatePickerController-->
+							<div ng-controller="DatePickerController">
+								<label class="col-md-1 control-label input-sm">Fecha</label>
+								<div class="col-md-2">
+									<p class="input-group">
+										<input id="fechaEmision" type="text" class="form-control input-sm" close-text="Cerrar" show-button-bar="false" is-open="openedBeginDate" datepicker-options="dateParamOptions" datepicker-popup="{{dateParamFormat}}" ng-model="factura.fechaEmision" />										<span class="input-group-btn">
+											<button type="button" class="btn btn-default input-sm"
+											ng-click="openBeginDate($event)">
+											<i class="glyphicon glyphicon-calendar"> </i>
+										</button>
+									</span>
+								</p>
+							</div>
+						</div>
+					</div>
+					<!--form-group para la segunda fila-->
+					<div class="form-group">
+						<!--Moneda-->
+						<label for="inDocumentType" class="col-md-1 control-label input-sm">
+							Modena :
+						</label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="condicion" required ng-options="i.descripcion for i in monedas" ng-model="tipomonedaSeleccionado">
+							</select>
+						</div>
+						<!--Cambio-->
+						<label class="col-md-1 control-label input-sm">
+							Cambio
+						</label>
+						<div class="col-md-1">
+							<input id="numero" autocomplete="false" placeholder="0.00"
+							ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+							name="numero" class="form-control input-sm" ng-model="factura.cambio" />
+							<p ng-show="abmForm.numero.$error.pattern">Ingrese solo numeros</p>
+						</div>
+						<!--Proveedor era Razon Social-->
+						<label for="inDocumentType" class="col-md-1 control-label input-sm">
+							Proveedor
+						</label>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="condicion" required ng-options="i.razonSocial for i in proveedores" ng-model="proveedorSeleccionado">
+							</select>
+						</div>
+					</div>
+					<!--form-group de la tercera fila-->
+					<div class="form-group">
+						<!--RUC Desactivado-->
+						<label class="col-md-1 control-label input-sm">
+							RUC:
+						</label>
+						<label class="col-md-2 control-label input-sm ">
+							{{proveedorSeleccionado.ruc}}
+						</label>
+						<!--Dirección proveedor-->
+						<label class="col-md-1 control-label input-sm ">
+							Dirección:
+						</label>
+						<label class="col-md-5 control-label input-sm">
+							{{proveedorSeleccionado.direccion}}
+						</label>
+					</div>
+				</div>
+				<!--Boton para mostrar detalle-->
+				<div class="form-group centrobot">
+					<button class="btn btn-default botonbus" type="button" ng-click="mostrarDetalle()">Detalle</button>
+					<button class="btn btn-default botonbus" type="button"  ng-click="save()" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+				</div>
+		<!--	</form>-->
+		</div>
+	</div>
+
+</div>
+<div class="form-horizontal" class="row" ng-show="displayDetail" >
+<!--	<form  role="form" name=formDetalle>-->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Producto</th>
+				<th>Cantidad</th>
+				<th>Precio</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="detalle in factura.detalles">
+				<td text-align="center"><button ng-click="removeItem()" class="btn btn-warning">X</button></td>
+				<td>
+					<select class="form-control input-sm" id="condicion" required ng-options="producto.id as producto.descripcion for producto in listaProductos" ng-model="detalle.producto.id">
+					</select>
+				</td>
+				<td><input type="text" ng-model="detalle.cantidad" name="cantidad"  required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+					<p ng-show="abmForm.cantidad.$error.pattern">Ingresar solo numeros</p>
+				</td>
+
+				<td><input type="text" ng-model="detalle.precio" name="precio"  required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+					<p ng-show="abmForm.precio.$error.pattern">Ingresar solo numeros</p>
+				</td>
+				<td>{{detalle.cantidad*detalle.precio}}</td>
+			</tr>
+			<tr>
+				<td text-align="center"><button ng-click="addItem()" class="btn btn-primary">+</button></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>Sub Total :</td>
+				<td><input type="text" ng-model="factura.baseImponible" name="subtotal" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
+					<p ng-show="abmForm.subtotal.$error.pattern">Ingresar solo numeros</p>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<div>IGV: <input type="text" ng-model="factura.tasaIgv" /></div>
+				</td>
+				<td><input type="text" ng-model="factura.igv" name="igv" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
+					<p ng-show="abmForm.igv.$error.pattern">Ingresar solo numeros</p>
+				</td>
+			</tr>
+			<!--Otros Cargos-->
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>Otros Cargos: </td>
+				<td><input type="text" ng-model="factura.otrosCargos" name="otroscargos" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+					<p ng-show="abmForm.otroscargos.$error.pattern">Ingresar solo numeros</p>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>Suma Total :</td>
+				<td><input type="text" ng-model="factura.total" name"total" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+					<p ng-show="abmForm.total.$error.pattern">Ingresar solo numeros</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+<!--</form>-->
+</div>
+</form>
+
+<div ng-controller="MarcaPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'serie'; sortReverse = !sortReverse">
+					<label>Numero Serie</label>
+					<span ng-show="sortType == 'serie' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'serie' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'razonSocialProveedor'; sortReverse = !sortReverse">
+					<label>Proveedor</label>
+					<span ng-show="sortType == 'razonSocialProveedor' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'razonSocialProveedor' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+
+
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'fechaEmision'; sortReverse = !sortReverse">
+					<label>Fecha</label>
+					<span ng-show="sortType == 'fechaEmision' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'fechaEmision' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+
+
+
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaFacturas | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-2 text-center input-sm">{{item.serie}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.razonSocialProveedor}}</div>
+			<div class="col-sm-2 text-center input-sm">{{item.fechaEmision | date:'dd-MM-yyyy'}}</div>
+
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				          				<li>
+											<a href ng-click="edit('{{item.id}}')">Editar
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          				</li>
+
+										<li>
+											<a href ng-click="delete({{item}})">Anular
+				          					<span class="glyphicon glyphicon-remove"></a>
+				          				</li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<div ng-include="'views/templates/sa_template_modals.html'"></div>
+
+</div>

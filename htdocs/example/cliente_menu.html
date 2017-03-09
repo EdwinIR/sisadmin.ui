@@ -1,0 +1,59 @@
+
+<div class="navbar navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+          <img src="images/menu.png"/>
+    </div>
+    <div class="navbar-header padding-title" ng-controller="varEmpresa">
+              <a class="navbar-brand">{{nombreEmpresa}}<br>Portal Factura Electronica</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href>Bienvenido: {{loggedUser}}</a></li>
+                  <li><a href ng-click='logout()'>Salir</a></li>
+                </ul>
+        </div>
+
+
+
+  </div>  
+</div>
+
+
+<div class="row">
+  <div class="col-sm-3 col-md-2 sidebar menu-margen">
+    <div class="nav nav-sidebar">
+    <accordion close-others="accordionOneAtATime">
+      <accordion-group is-open="accordionStatus.open1">
+        <accordion-heading>
+          <a href><strong>Consulta</strong></a><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': accordionStatus.open1, 'glyphicon-chevron-right': !accordionStatus.open1}"></i>
+        </accordion-heading>
+      
+        <div>
+          <a ng-click='selSeccion(0)' href>Documentos Electronicos</a>
+        </div>
+
+         <div>
+          <a ng-click='selSeccion(1)' href>Cambio de Contraseña</a>
+        </div>
+      
+
+      </accordion-group>
+
+
+    </accordion>
+    
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container-fluid">
+  <!--<div ng-if="seccion[0]" ng-include src="'views/autorizados.html'"></div>--> 
+  <div ng-if="seccion[0]" ng-include src="'views/cliente_emitidos.html'"></div>
+  <div ng-if="seccion[1]" ng-include src="'views/cliente_conf.html'"></div> 
+  
+
+</div>

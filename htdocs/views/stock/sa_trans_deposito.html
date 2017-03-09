@@ -1,0 +1,266 @@
+<div ng-controller='SaTransDepositoCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+	<h3>Ingresar Transferencia Deposito</h3>
+	<hr class="style1" />
+	<br />
+  <!--inicia div FORMULARIO ALTA/EDICION-->
+<form class="form-horizontal" role="form" name="abmForm" autocomplete ="off">
+  <div>
+
+	   <div>
+		     <button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Transferencia Deposito <span class="glyphicon glyphicon-add" /></button>
+	    </div>
+      <!-- inicio div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA/EDICION -->
+	     <div collapse="isCollapsed">
+        <!-- inicia div formulario alta/edicion -->
+			  <div class="busqueda">
+
+					<div class="form-group">
+					  <div ng-controller="DatePickerController" >
+								<label class="col-md-1 control-label input-sm">Fecha</label>
+								<div class="col-md-3">
+									<p class="input-group">
+										<input id="fecha" type="text" ng-disabled="camposDeshabilitados" class="form-control input-sm" close-text="Cerrar" show-button-bar="false" is-open="openedBeginDate"
+                    datepicker-options="dateParamOptions" datepicker-popup="{{dateParamFormat}}" ng-model="transdeposito.fecha" ng-change ="habilitados()" readonly />
+									<span class="input-group-btn">
+											<button type="button" class="btn btn-default input-sm"
+												ng-click="openBeginDate($event)" ng-disabled="camposDeshabilitados">
+												<i class="glyphicon glyphicon-calendar"> </i>
+										</button>
+									</span>
+									</p>
+								</div>
+					  </div>
+							<label for="inDocumentType" class="col-md-2 control-label input-sm">
+								Deposito Destino
+							</label>
+							<div class="col-md-2">
+									<select class="form-control input-sm" id="destino" required ng-options="i.id as i.descripcion for i in almacenes"
+                  ng-model="fil.almacen" ng-disabled="camposDeshabilitados"  ng-change ="habilitados()">
+									</select>
+							</div>
+					</div>
+						<br>
+					<div class="form-group centrobot">
+						<!--<button class="btn btn-default botonbus" type="button" ng-click="mostrarDetalle()">Detalle</button>-->
+						<button class="btn btn-default botonbus" ng-click="save()" ng-disabled="botonDeshabilitado" >Iniciar Transferencia</button>
+						<button class="btn btn-default botonbus" type="button" ng-click="clear()">Cancelar</button>
+					</div>
+
+			</div>
+      <!-- fin div formulario alta/edicion -->
+	</div>
+  <!-- fin div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA/EDICION -->
+  <!-- inicio FORMULARIO BUSQUEDA -->
+	<br />
+	<form>
+		<div class="form-group busquedatam">
+			<div class="input-group">
+				<div class="input-group-addon"><i class="fa fa-search">
+					<span class="glyphicon glyphicon-search" />
+				</i></div>
+				<input type="text" class="form-control" placeholder="Busqueda" ng-model="filtro">
+			</div>
+		</div>
+	</form>
+	<br />
+<!-- fin FORMULARIO BUSQUEDA -->
+
+		<div class="row" collapse="isCollapsed">
+			<table class="table table-striped col-md-12">
+				<thead>
+					<tr>
+						<th class="col-md-1"></th>
+						<th class="col-md-1">Codigo</th>
+						<th class="col-md-3">Producto</th>
+						<th class="col-md-1">UnidadMedida</th>
+						<th class="col-md-1">Cantidad</th>
+						<th class="col-md-1">Stock</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="detalle in transdeposito.detalles">
+						<td text-align="center"><button type="button" ng-click="removeItem()" class="btn btn-warning" ng-disabled="camposDeshabilitados">X</button></td>
+						<td class="col-sm-1">
+						<input style="width:100px;" type="text" name="codigo" ng-model="detalle.codigo" 
+								ng-keypress="changeProducto($event,detalle,detalle.codigo)"></input>
+						</td>
+						<td class="col-sm-3">
+						<input id="condicion" style="width:300px;"
+							ng-model="detalle.descripcionProducto" ng-disabled="camposDeshabilitados" readonly >
+						</input>
+						</td>
+						<td class="col-md-1">
+						<input type="text" ng-model="detalle.descripcionUnidadMedida" ng-disabled="camposDeshabilitados" readonly></input>
+						</td>
+						<td class="col-md-1">
+              <input type="number" ng-model="detalle.cantidad"  ng-keyup="getValidacion()" step="0.01" placeholder="0,00"
+              ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-disabled="camposDeshabilitados"/>
+              <p ng-show="abmForm.margenbase.$error.pattern">Solo numeros</p>
+            </td>
+            <td>
+            	<input type="text" name="stock" ng-model="detalle.stock" readonly ng-disabled="camposDeshabilitados"/>
+            </td>
+            <td>
+            	<label ng-model="mensaje.mensaje"></label>
+            </td>
+					</tr>
+					<tr>
+						<td text-align="center"><button type="button" ng-click="addItem()" class="btn btn-primary" ng-disabled="camposDeshabilitados">+</button></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+</div>
+  </form>
+
+  <form class="form-horizontal" role="form" name="abmForm2" autocomplete ="off">
+
+    <!--Inicio de guia-->
+        <div ng-show="guiashow">
+            <div class="busqueda">
+                  <div class="form-group">
+                          <label class="col-md-2 control-label input-sm">Numero de Documento:</label>
+                            <div class="col-md-2">
+                                <input type="text"
+                                id="numeroguia" name="numeroguia" required autocomplete="false" ng-pattern="/^[a-zA-Z0-9\-]*$/"
+                                  class="form-control input-sm" ng-model="guia.numeroGuia"/>
+                                  <p ng-show="abmForm2.numeroguia.$error.pattern">Porfavor ingresar solo numeros y letras</p>
+                            </div>
+                  </div>
+
+                    <div class="form-group">
+                      <label class="col-md-2 control-label input-sm">Nombres Transportista:</label>
+                        <div class="col-md-3">
+                            <input type="text"
+                              id="nomtrans" name="nomtrans" required  autocomplete="false" ng-pattern="/^[a-zA-Z0-9\s]*$/"
+                              class="form-control input-sm" ng-model="guia.nombresTransportista"/>
+                              <p ng-show="abmForm2.nomtrans.$error.pattern">Porfavor ingresar solo numeros y letras</p>
+                        </div>
+                        <label class="col-md-2 control-label input-sm">Licencia de Conducir:</label>
+                          <div class="col-md-3">
+                              <input type="text"
+                                id="lic" name="lic" required  autocomplete="false" ng-pattern="/^[a-zA-Z0-9\-]*$/"
+                                class="form-control input-sm" ng-model="guia.licenciaTransportista"/>
+                                <p ng-show="abmForm2.lic.$error.pattern">Porfavor ingresar solo numeros y letras</p>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="col-md-2 control-label input-sm">Marca Transporte:</label>
+                            <div class="col-md-3">
+                                <input type="text"
+                                  id="marcatrans" name="marcatrans" required  autocomplete="false" ng-pattern="/^[a-zA-Z0-9\-]*$/"
+                                  class="form-control input-sm" ng-model="guia.marcaTransporte"/>
+                                  <p ng-show="abmForm2.marcatrans.$error.pattern">Porfavor ingresar solo numeros y letras</p>
+                            </div>
+                            <label class="col-md-2 control-label input-sm">Placa:</label>
+                              <div class="col-md-3">
+                                  <input type="text"
+                                    id="plac" name="plac" required  autocomplete="false" ng-pattern="/^[a-zA-Z0-9\-]*$/"
+                                    class="form-control input-sm" ng-model="guia.placa"/>
+                                    <p ng-show="abmForm2.plac.$error.pattern">Porfavor ingresar solo numeros y letras</p>
+                              </div>
+                            </div>
+
+                            <div class="form-group centrobot">
+    							                   <button class="btn btn-default botonbus" type="button" ng-disabled="!abmForm2.$valid" ng-click="generarpdf()">Generar Guia</button>
+    						            </div>
+            </div>
+        </div>
+    <!--fin de guia-->
+
+  </form>
+<!--fin div FORMULARIO ALTA/EDICION-->
+<div ng-controller="TransDepositoPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'codigo'; sortReverse = !sortReverse">
+					<label>Fecha</label>
+					<span ng-show="sortType == 'codigo' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'codigo' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'razonSocialProveedor'; sortReverse = !sortReverse">
+					<label>Deposito Origen</label>
+					<span ng-show="sortType == 'razonSocialProveedor' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'razonSocialProveedor' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'fechaEmision'; sortReverse = !sortReverse">
+					<label>Deposito Destino</label>
+					<span ng-show="sortType == 'fechaEmision' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'fechaEmision' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'estado'; sortReverse = !sortReverse">
+					<label>Estado</label>
+					<span ng-show="sortType == 'estado' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'estado' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+      <div class="col-sm-1 text-center">
+				<a class="menulink"> <label>Funciones</label></a>
+			</div>		</div>
+
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaTransDeposito | filter:filtro | orderBy:'-fecha' | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-2 text-center input-sm">{{item.fecha | date:'dd-MM-yyyy'}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.descripcionAlmacenOrigen}}</div>
+			<div class="col-sm-2 text-center input-sm">{{item.descripcionAlmacenDestino}}</div>
+			<div class="col-sm-2 text-center input-sm">{{item.estado}}</div>
+      <div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+							<span class="caret"></span>
+						</button>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a href ng-click="edit('{{item.id}}')">Ver
+									<span class="glyphicon glyphicon-pencil"></a>
+						</li>
+						<li>
+							<a href ng-click="crearGuia('{{item.id}}')">Crear Guia
+									<span class="glyphicon glyphicon-pencil"></a>
+						</li>
+						<li ng-if="item.estado.trim() == 'PENDIENTE' && validarAlmacen(item.almacenDestinoId)"  >
+							<a href ng-click="finalizar('{{item.id}}')">Finalizar Transferencia
+									<span class="glyphicon glyphicon-pencil"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+    <div ng-include="'views/templates/sa_template_modals.html'"></div>
+</div>
+<!-- fin div MarcaPaginationCtrl -->
+</div>

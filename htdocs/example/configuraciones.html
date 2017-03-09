@@ -1,0 +1,151 @@
+<div ng-controller="ConfigCtrl" ng-init="loadPage()" 
+	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+	 <div class="navbar-collapse collapse menulink">
+                    <ul class="nav navbar-nav navbar-right">                        
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-envelope" />
+                            Email</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-phone-alt" />
+                            Llamanos</a></li>
+
+                        <li><a href ng-click='logout()' class="menulinkb">
+                            <span class="glyphicon glyphicon-off" />
+                            Salir</a></li>
+                   </ul>
+    </div>
+    
+	<h3>Mi Cuenta</h3>
+	<br />
+
+<tabs>
+    <pane title="Datos Fiscales" class="panelverde">
+
+		<div id="fiscales" class="panel current ">
+			
+				<div class="col-md-6 fisc panelverde">								
+					<label class="milab" for="registration_name">Nombre o razón social:</label>
+					<input id="registration_name" class="form-control" type="text" ng-model="emisor.razonSocial">
+					<label class="milab" for="name">Nombre comercial:</label>
+					<input id="name" class="form-control" type="text" 
+					 ng-model="emisor.razonComercial">
+
+					<label class="milab" for="ruc">RUC:</label>
+					<input id="ruc" class="form-control" type="text" 
+					ng-model="emisor.ruc">
+
+					<label class="milab" for="no_aprobacion">Resolucion SUNAT:</label>
+					<input id="no_aprobacion" class="form-control" type="text" 
+					ng-model="emisor.resolucion">			
+
+				</div>
+				<div class="col-md-6 fisc panelverde">
+						
+						<label class="milab" for="street_name">Dirección completa y detallada:</label>
+						<input id="street_name" class="form-control" type="text" ng-model="emisor.calle">
+						
+						<label class="milab" for="city_subdivision_name">Urbanización o zona (opcional):</label>
+						<input id="city_subdivision_name" class="form-control" type="text"  
+									ng-model="emisor.urbanizacion">
+						
+						<label class="milab" for="city_name">Departamento:</label>
+						<input id="city_name" class="form-control" type="text" ng-model="emisor.departamento">
+						
+						<label class="milab" for="country">País:</label>
+						<input id="country_name" class="form-control" 
+						type="text" ng-model="emisor.pais">
+
+				</div>
+			
+		</div>
+    </pane>
+    <pane title="Certificado">	
+    	      <div class="form-horizontal confesp panelverde">
+      						<div class="form-group">
+								<label for="pathCer" class="col-sm-3 control-label">Path Certificado:</label>
+								<div class="col-sm-4">
+									<input type="text" id="pathCer" name="pathCer" 
+										disabled="disabled"
+										class="form-control input-sm" 
+										ng-model="emisor.certificado">
+								</div>
+							</div>		
+
+
+							<div class="form-group">
+								<label for="expiredDate" class="col-sm-3 control-label">Fecha de Vencimiento:</label>
+								<div class="col-sm-4">
+									<input type="text" id="expiredDate" placeholder="Fecha Expiracion Certificado"
+									class="form-control input-sm"  
+									style="background-color: #5cb85c; color: #fff"
+									 ng-model="emisor.vencimientoCertificado">	
+								</div>
+							</div>
+      			</div>
+    </pane>
+	<pane title="Usuario SUNAT">
+
+				<div class="form-horizontal confesp panelverde">
+      						<div class="form-group">
+								<label for="usuarioSunat" class="col-sm-3 control-label">Usuario Secundario:</label>
+								<div class="col-sm-4">
+									<input type="text" id="usuarioSunat" name="usuarioSunat" 
+										disabled="disabled"	class="form-control input-sm" 
+										ng-model="emisor.usuarioSunat">
+								</div>
+							</div>		
+
+
+							<div class="form-group">
+								<label for="passUsuarioSunat" class="col-sm-3 control-label">Password Usuario Secundario:</label>
+								<div class="col-sm-4">
+									<input type="text" id="passUsuarioSunat" class="form-control input-sm"  
+									style="background-color: #5cb85c; color: #fff" ng-model="emisor.passUsuarioSunat">	
+								</div>
+							</div>
+      			</div>
+
+
+	</pane>
+	
+</tabs>
+
+	<!--
+	<div class="well well-lg" style = 'background-color: #FFFFFF'>
+			<form class="form-horizontal" role="form" name="configForm" ng-submit="save()">
+					
+					<br />			
+		
+				
+				<button class="btn btn-success" type="submit" ng-disabled="!configForm.$valid">Guardar Configuracion</button>
+						
+			</form>
+	</div>-->
+</div>
+<!--
+      <div class="form-horizontal">
+      				<h3> <font size=4>Certificado</font></h3>
+
+							<div class="form-group">
+								<label for="pathCer" class="col-sm-3 control-label">Path Certificado:</label>
+								<div class="col-sm-4">
+									<input type="text" id="pathCer" name="pathCer" 
+										disabled="disabled"
+										class="form-control input-sm" ng-model="emitterSelected.pathCert">
+								</div>
+							</div>		
+
+
+							<div class="form-group">
+								<label for="expiredDate" class="col-sm-3 control-label">Fecha de Vencimiento:</label>
+								<div class="col-sm-4">
+									<input type="text" id="expiredDate" placeholder="Fecha Expiracion Certificado"
+									class="form-control input-sm"  
+									style="background-color: #5cb85c; color: #fff"
+									 ng-model="emitterSelected.expiredDate">						
+								</div>
+							</div>
+      </div>
+	-->

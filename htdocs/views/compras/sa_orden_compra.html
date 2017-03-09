@@ -1,0 +1,279 @@
+<div ng-controller='SaOrdenCompraCtrl' ng-init="loadPage()"	class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+ <div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+ 	<h3>Ingresar Orden de Compra</h3>
+	<hr class="style1" />
+	<br />
+	<form class="form-horizontal" role="form" name="abmForm" autocomplete="off">
+<!--inicia div FORMULARIO ALTA/EDICION-->
+<div>
+	<div>
+		<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Orden Compra <span class="glyphicon glyphicon-add" /></button>
+	</div>
+	<!-- inicia div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA/EDICION -->
+	<div collapse="isCollapsed">
+		  <!-- inicia div formulario alta/edicion -->
+			<div class="busqueda">
+				<!--<form class="form-horizontal" role="form" name="abmForm" ng-submit="save()" autocomplete ="off">-->
+				    <div class="form-group" >
+              <label class="col-md-1 control-label input-sm">Proveedor: </label>
+              <div class="col-md-2">
+                  <select class="form-control input-sm"
+                      id="proveedorSeleccionado" name="proveedorSeleccionado" ng-disabled="camposDeshabilitados"
+                      ng-options="i.razonSocial for i in proveedores" ng-model="proveedorSeleccionado">
+                  </select>
+              </div>
+            </div>
+  					<div class="form-group" ng-controller="DatePickerController">
+  									<label  for="inBeginDate" class="col-md-1 control-label input-sm">Fec Emision:</label>
+										<div class="col-md-2"><p class="input-group">
+												<input id="fechaEmision" type="text" required class="form-control input-sm" ng-disabled="camposDeshabilitados"
+													close-text="Cerrar" show-button-bar="false" is-open="openedBeginDate" datepicker-options="dateParamOptions"
+													datepicker-popup="{{dateParamFormat}}" ng-model="ordenCompra.fechaEmision" />
+												<span class="input-group-btn">
+													 <button type="button" class="btn btn-default input-sm" ng-click="openBeginDate($event)" ng-disabled="camposDeshabilitados">
+                            <i class="glyphicon glyphicon-calendar"></i></button>
+												</span></p>
+										</div>
+										<label for="inEndDate" class="col-md-2 control-label input-sm">Fec Recepcion:</label>
+										<div class="col-md-2">
+											<div><p class="input-group">
+													<input id="fechaRecepcion" type="text" required class="form-control input-sm" ng-disabled="camposDeshabilitados"
+														close-text="Cerrar" show-button-bar="false" is-open="openedEndDate" datepicker-options="dateParamOptions"
+														datepicker-popup="{{dateParamFormat}}" ng-model="ordenCompra.fechaRecepcion"  />
+													<span class="input-group-btn">
+														<button type="button" class="btn btn-default input-sm" ng-disabled="camposDeshabilitados"
+															ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar">
+														</i></button>
+													</span></p>
+											</div>
+										</div>
+            </div>
+						<div class="form-group" >
+              <label for="inDocumentType" class="col-md-1 control-label input-sm">Moneda:</label>
+              <div class="col-md-2">
+                        <select class="form-control input-sm" id="tipos" required ng-disabled="camposDeshabilitados"
+                           ng-options="i.descripcion for i in tiposmonedas" ng-model="tipoMonedaSeleccionado" >
+                        </select>
+              </div>
+							<label for="inDocumentType" class="col-md-2 control-label input-sm">Condiciones: </label>
+							<div class="col-md-2">
+												<select class="form-control input-sm" id="condicion" required ng-disabled="camposDeshabilitados"
+														ng-options="i.descripcion for i in condicionespagos" ng-model="condicionSeleccionado">
+												</select>
+							</div>
+						</div> <br/>
+						<div class="form-group centrobot">
+								<!--<button class="btn btn-default botonbus" type="button" ng-click="mostrarDetalle()">Detalle</button>-->
+                <button class="btn btn-default botonbus" type="button" ng-click="salvadoParcial()" ng-disabled="!abmForm.$valid">Salvado Parcial</button>
+                <button class="btn btn-default botonbus" type="button" ng-click="salvadoPendiente()" ng-disabled="!abmForm.$valid">Salvado Total</button>
+								<button class="btn btn-default botonbus" type="button" ng-click="limpiar()">Limpiar</button>
+						</div>
+				<!--</form>-->
+			</div>
+			<!-- termina div formulario alta/edicion -->
+	</div>
+	<!-- termina div isCollapsed OCULTA/MUESTRA FORMULARIO ALTA -->
+	<!-- inicia div formulario DETALLES DE ALTA/EDICION -->
+	<div class="row" collapse="isCollapsed">
+			<table class="table table-striped col-md-12" >
+				<thead>
+					<tr>
+						<th class="col-md-1"></th>
+						<th class="col-md-1">Producto</th>
+						<th class="col-md-1">Unidades</th>
+						<th class="col-md-1">Bonif</th>
+						<th class="col-md-1">Costo Unitario</th>
+						<th class="col-md-1">%Dscto1</th>
+						<th class="col-md-1">%Dscto2</th>
+						<th class="col-md-1">%Dscto3</th>
+						<th class="col-md-1">%Dscto4</th>
+						<th class="col-md-1">Cto. Unitario Neto</th>
+						<th class="col-md-1">Cantidad Compra</th>
+						<th class="col-md-1">Total Compra</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="detalle in ordenCompra.detalles">
+						<td text-align="center"><button ng-click="removeItem()" class="btn btn-warning" ng-disabled="camposDeshabilitados">X</button></td>
+						<td style="width:270px;">
+						<select  required style="width:270px; height: 25px;" ng-disabled="camposDeshabilitados"
+							ng-options="producto as producto.descripcion for producto in listaProductos" ng-model="detalle.productoLeido"
+              ng-change ="changeProducto(detalle,detalle.productoLeido)">
+						</select>
+						</td>
+						<!--Combo Unidades-->
+						<td style="width:90px;">
+							<input style="width:90px;" type="text" ng-model="detalle.descripcionUnidadMedida" disabled></input>
+						</td>
+						<!--Bonificado-->
+						<td style="width:10px;"><input style="width:10px;"  type="checkbox" autocomplete="false" ng-model="detalle.bonificado" ng-disabled="camposDeshabilitados"/></td>
+						<td style="width:80px;"><input style="width:80px;" type="text" ng-model="detalle.precioUnitario" name="preciounitario" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-disabled="camposDeshabilitados"/>
+              <p ng-show="abmForm.preciounitario.$error.pattern">Ingresar solo numeros</p>
+            </td>
+						<td style="width:50px;"><input style="width:50px;" type="text" ng-model="detalle.descuento1" name="descuento1" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-disabled="camposDeshabilitados"/>
+              <p ng-show="abmForm.descuento1.$error.pattern">Ingresar solo numeros</p>
+            </td>
+						<td style="width:50px;"><input style="width:50px;" type="text" ng-model="detalle.descuento2" name="descuento2" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-disabled="camposDeshabilitados"/>
+              <p ng-show="abmForm.descuento2.$error.pattern">Ingresar solo numeros</p>
+            </td>
+						<td style="width:50px;"><input style="width:50px;" type="text" ng-model="detalle.descuento3" name="descuento3" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-disabled="camposDeshabilitados"/>
+              <p ng-show="abmForm.descuento3.$error.pattern">Ingresar solo numeros</p>
+            </td>
+						<td style="width:50px;"><input style="width:50px;" type="text" ng-model="detalle.descuento4" name="descuento4" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-disabled="camposDeshabilitados"/>
+              <p ng-show="abmForm.descuento4.$error.pattern">Ingresar solo numeros</p>
+            </td>
+						<td style="width:80px;"><input style="width:80px;" type="text" ng-model="detalle.precioNeto" name="precioNeto" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-disabled="camposDeshabilitados"/>
+              <p ng-show="abmForm.precioNeto.$error.pattern">Ingresar solo numeros</p>
+            </td>
+						<td style="width:100px;"><input style="width:100px;" type="text" ng-model="detalle.cantidad" name="cantidad" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-disabled="camposDeshabilitados"/>
+              <p ng-show="abmForm.cantidad.$error.pattern">Ingresar solo numeros</p>
+            </td>
+						<td style="width:100px;"><input style="width:100px;" type="text" ng-model="detalle.totalCompra" name="totalCompra" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-disabled="camposDeshabilitados"/>
+              <p ng-show="abmForm.totalCompra.$error.pattern">Ingresar solo numeros</p>
+            </td>
+					</tr>
+					<tr>
+						<td text-align="center"><button ng-click="addItem()" class="btn btn-primary" ng-disabled="camposDeshabilitados">+</button></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+	</div>
+	<!-- termina div formulario DETALLES DE ALTA/EDICION -->
+</div>
+</form>
+<!--termina div FORMULARIO ALTA/EDICION-->
+
+
+<form>
+			    <div class="form-group busquedatam">
+			      <div class="input-group">
+			        <div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+			        <input type="text" class="form-control" placeholder="Busca Orden Compra" ng-model="filtro">
+			      </div>
+			    </div>
+</form>
+<br />
+
+
+<!-- inicio div MarcaPaginationCtrl -->
+<div ng-controller="OrdenCompraPaginationCtrl" class="tabladatos">
+		<!-- inicio div CABECERA LISTADO -->
+		<div class="row headerTable">
+			<div class="col-sm-1 text-center">
+				<a class="menulink" ng-click="sortType = 'codigo'; sortReverse = !sortReverse">
+					<label>Nro. OC</label>
+					<span ng-show="sortType == 'codigo' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'codigo' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'razonSocialProveedor'; sortReverse = !sortReverse">
+					<label>Proveedor</label>
+					<span ng-show="sortType == 'razonSocialProveedor' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'razonSocialProveedor' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'fechaEmision'; sortReverse = !sortReverse">
+					<label>Fecha Emision</label>
+					<span ng-show="sortType == 'fechaEmision' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'fechaEmision' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+			<div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'fechaRecepcion'; sortReverse = !sortReverse">
+					<label>Fecha Recepcion</label>
+					<span ng-show="sortType == 'fechaRecepcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'fechaRecepcion' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+      <div class="col-sm-2 text-center">
+				<a class="menulink" ng-click="sortType = 'estado'; sortReverse = !sortReverse">
+					<label>Estado</label>
+					<span ng-show="sortType == 'estado' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+	         		<span ng-show="sortType == 'estado' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+	        	</a>
+			</div>
+
+
+
+
+			<div class="col-sm-1 text-center"><a class="menulink"> <label>Funciones</label></a></div>
+		</div>
+		<!-- fin div CABECERA LISTADO -->
+		<!-- inicio div RESULTADO LISTADO -->
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'"
+			ng-repeat="item in listaOrdenesCompras | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-1 text-center input-sm">{{item.id}}</div>
+			<div class="col-sm-3 text-center input-sm">{{item.razonSocialProveedor}}</div>
+			<div class="col-sm-2 text-center input-sm">{{item.fechaEmision | date:'dd-MM-yyyy'}}</div>
+			<div class="col-sm-2 text-center input-sm">{{item.fechaRecepcion | date:'dd-MM-yyyy'}}</div>
+      <div class="col-sm-2 text-center input-sm">{{item.estado}}</div>
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+				          		<li  ng-if="item.estado === 'Parcial'">
+											<a href ng-click="editar('{{item.id}}')">Editar
+				          					<span class="glyphicon glyphicon-pencil"></a>
+				          				</li>
+
+										<li ng-if="item.estado !== 'Ingresada'">
+											<a href ng-click="borrar({{item}})">Borrar
+				          					<span class="glyphicon glyphicon-remove"></a>
+				          				</li>
+                    <li>
+      									<a href ng-click="ver({{item.id}})">Ver
+      				      		<span class="glyphicon glyphicon-view"></a>
+      				      </li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<!-- fin div RESULTADO LISTADO -->
+		<div>
+				<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<div ng-include="'views/templates/sa_template_modals.html'"></div>
+
+</div>
+<!-- fin div MarcaPaginationCtrl -->
+</div>
+<!-- fin div SA_MARCACTRL -->

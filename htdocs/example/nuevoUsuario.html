@@ -1,0 +1,109 @@
+<div class="well well-lg">
+
+	<form class="form-horizontal" role="form" name="configForm" ng-submit="saveUser()" autocomplete ="off">
+
+
+		<div class="form-group">
+			<label for="roles" class="col-md-2 control-label input-sm">Rol:</label>
+
+
+			<div class="col-sm-3">
+				<select class="form-control" id="role" name="role" required
+					ng-disabled="inInquiry"
+					ng-options="i.descripcion for i in listRole" ng-model="role" ></select>
+
+
+			</div>
+				<small class='error'>*</small> 
+					<span class="help-block" ng-show="configForm.role.$error.required">
+       				Campo Requerido</span>
+
+
+
+		</div>
+
+		<div class="form-group">
+			<label for="nomReal" class="col-md-2 control-label input-sm">Nombre
+				Real:</label>
+			<div class="col-sm-5">
+				<input type="text" ng-disabled="inInquiry || inEdit" id="nombre"
+				name="nombre" required autocomplete="false" class="form-control input-sm"
+				ng-model="user.nombre"
+			/>
+
+			</div>
+					<small class='error'>*</small> 
+					<span class="help-block" ng-show="configForm.nombre.$error.required">
+       				Campo Requerido</span>
+		</div>
+
+		<div class="form-group">
+			<label for="email" class="col-md-2 control-label input-sm">Email:</label>
+			<div class="col-sm-4">
+				<input type="email" autocomplete="false" ng-disabled="inInquiry"
+					id="email" name="email" required class="form-control input-sm"
+					ng-model="user.email" />
+			</div>
+			<small class='error'>*</small> 
+					<span class="help-block" ng-show="configForm.email.$error.required">
+       				Campo Requerido</span>
+       				<span class="help-block" ng-show="configForm.email.$error.email">
+       				Correo incorrecto</span>
+
+		</div>
+
+
+		<div class="form-group">
+			<label for="user" class="col-md-2 control-label input-sm">Usuario:</label>
+			<div class="col-sm-3">
+				<input type="text" ng-disabled="inInquiry || inEdit"
+					id="codUsuario" autocomplete="false" name="codUsuario" required
+					class="form-control input-sm" ng-model="user.codUsuario" maxlength="20"/>
+
+			</div>
+
+			<small class='error'>*</small> 
+					<span class="help-block" ng-show="configForm.codUsuario.$error.required">
+       				Campo Requerido</span> 
+		</div>
+
+
+		<div class="form-group">
+			<label for="password" class="col-md-2 control-label input-sm">Password:</label>
+			<div class="col-sm-3">
+				<input type="password" autocomplete="false" ng-disabled="inInquiry"
+					id="password" name="password" required
+					class="form-control input-sm" ng-model="user.password" />
+			</div>
+
+			<small class='error'>*</small> 
+					<span class="help-block" ng-show="configForm.password.$error.required">
+       				Campo Requerido</span>
+		</div>
+
+		<div class="form-group">
+			<label for="repeatpassword" class="col-md-2 control-label input-sm">Repetir
+				Password:</label>
+			<div class="col-sm-3">
+				<input type="password" autocomplete="false" ng-disabled="inInquiry" id="newPassword"
+					name="newPassword" required class="form-control input-sm"
+					ng-model="user.newPassword" />
+			</div>
+
+			     <small class='error'>*</small> 
+					<span class="help-block" ng-show="configForm.newPassword.$error.required">
+       				Campo Requerido</span>
+
+
+		</div>
+
+
+
+		<button class="btn btn-success" type="submit"
+			ng-disabled="!configForm.$valid" disabled="disabled">Guardar</button>
+
+		<button class="btn btn-success" ng-click="clear()">Limpiar</button>
+
+
+	</form>
+</div>

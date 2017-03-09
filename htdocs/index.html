@@ -1,0 +1,155 @@
+ <!doctype html>
+<html ng-app="SisAdminApp">
+    <head>
+        <meta charset="utf-8" lang="es">
+        <title ng-controller="varEmpresa">SISADMIN</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link type="image/x-icon" href="favicone.ico" rel="shortcut icon">
+        <link rel="stylesheet" href="styles/bootstrap.css" />
+        <link rel="stylesheet" href="styles/estilorig.css">
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/custom.css" rel="stylesheet">-->
+
+
+  <!--
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/bootstrap-select.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/bootstrap-table.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/flat-ui-pro.min.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/base.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/index.css">
+  <link media="all" type="text/css" rel="stylesheet" href="css/add/registro.css">-->
+     </head>
+  <body>
+        <div ng-view=""></div>
+
+
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+        <!--
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+         <script src="js/customs.js"></script>
+        -->
+
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-captcha/captcha.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-touch/angular-touch.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+        <script src="bower_components/restangular/dist/restangular.js"></script>
+        <script src="bower_components/FileSaver/FileSaver.js"></script>
+        <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
+        <script src="scripts/controllers/rcSubmit.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/util.js"></script>
+        <script src="scripts/controllers/SaMenuCtrl.js"></script>
+        <script src="scripts/controllers/SaLoginCtrl.js"></script>
+
+        <!-- INICIO STOCK -->
+        <script src="scripts/controllers/stock/SaMarcaCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaFamiliaCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaMarcaFamiliaCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaUnidadMedidaCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaAlmacenCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaUbicacionCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaZonaCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaProductoCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaTransDepositoCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaAjusteInventarioCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaProdMovimientosCtrl.js"></script>
+        <!--<script src="scripts/controllers/stock/SaStockFaltanteCtrl.js"></script>-->
+        <script src="scripts/controllers/stock/SaSaldoXProductoCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaKardexXProductoCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaStockMinMaxCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaStockValorizadoCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaListaXInventarioCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaListaXPrecioCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaActualizarPrecioCtrl.js"></script>
+        <script src="scripts/controllers/stock/SaExpStockCtrl.js"></script>
+        <!-- FIN STOCK -->
+
+        <!-- INICIO COMPRAS -->
+        <script src="scripts/controllers/compras/SaProveedorCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaOrdenCompraCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaParteIngresoAlmacenCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaFacturaCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaFacturaConceptoCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaCuentasXPagarCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaGestionCuentasXPagarCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaIngresoPagosCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaCancelacionDocsCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaDeudasVencidasCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaVencimientoDocsCtrl.js"></script>
+        <script src="scripts/controllers/compras/SaExportCtrl.js"></script>
+        <!-- FIN COMPRAS -->
+
+        <!-- INICIO VENTAS -->
+        <script src="scripts/controllers/ventas/SaVendedorCtrl.js"></script>
+		<script src="scripts/controllers/ventas/SaClienteCtrl.js"></script>
+     	<script src="scripts/controllers/ventas/SaOfertaCtrl.js"></script>
+        <script src="scripts/controllers/ventas/SaActualizacionPreciosCtrl.js"></script>
+        <script src="scripts/controllers/ventas/SaComprobantesPtoVtaCtrl.js"></script>
+        <script src="scripts/controllers/ventas/SaCuentasXCobrarCtrl.js"></script>
+        <script src="scripts/controllers/ventas/SaCobranzasCtrl.js"></script>
+        <!--<script src="scripts/controllers/ventas/SaSegCuentasDeudorasCtrl.js"></script>-->
+        <script src="scripts/controllers/ventas/SaGestionCuentasXCobrarCtrl.js"></script>
+        <script src="scripts/controllers/ventas/SaAnulacionesCtrl.js"></script>
+        <script src="scripts/controllers/ventas/SaExportacionVentasCtrl.js"></script>
+        <!-- FIN VENTAS -->
+
+     	<!-- INICIO ADMIN -->
+		<script src="scripts/controllers/admin/SaTipoCambioCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaEmpresaCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaSedeCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaPeriodoCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaConceptoCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaAfpPeriodoCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaDepartamentoCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaTrabajadorCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaOperacionProveedorCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaLetraPagarCtrl.js"></script>
+        <script src="scripts/controllers/admin/SaAsientoDiarioCtrl.js"></script>
+
+        <!-- FIN ADMIN -->
+
+
+        <!--
+        <script src="scripts/controllers/SaSaldoArticuloCtrl.js"></script>
+        <script src="scripts/controllers/SaStockAlmacenCtrl.js"></script>
+        <script src="scripts/controllers/SaPlanCuentaCtrl.js"></script>
+        <script src="scripts/controllers/SaCuentaDivisionariaCtrl.js"></script>
+        <script src="scripts/controllers/SaCuentaContableCtrl.js"></script>
+        <script src="scripts/controllers/SaCentroCostoCtrl.js"></script>
+        <script src="scripts/controllers/SaSubCentroCostoCtrl.js"></script>
+        <script src="scripts/controllers/SaRelacionSeisNueveCtrl.js"></script>
+        <script src="scripts/controllers/SaRelacion979Ctrl.js"></script>
+         -->
+
+
+
+
+
+
+
+
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<script src="js/add/bootbox.min.js"></script>
+<script src="js/add/jquery_default_settings.js"></script>
+<script src="js/add/jquery-ui.min.js"></script>
+<script src="js/add/bootstrap-select.js"></script>
+<script src="js/add/bootstrap-table.js"></script>
+<script src="js/add/locale/bootstrap-table-es.js"></script>
+<script src="js/add/init-table-clientes.js"></script>
+
+</body>
+</html>

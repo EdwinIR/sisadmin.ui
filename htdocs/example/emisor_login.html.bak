@@ -1,0 +1,24 @@
+<!-- <div class="jumbotron"> -->
+<div class= "jumbotron">
+  <p class="lead">
+    <img src="images/intro.png"><br>
+  </p>
+</div>
+  
+<div class="container">
+  <form class="form-signin" name="loginForm" ng-submit="login(loginForm.$valid)" novalidate rol="form">
+      
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Usuario" id="userName" ng-model="user.userName" required>
+      <p ng-show="loginForm.userName.$invalid && !loginForm.userName.$pristine" class="help-block">Nombre de usuario requerido.</p>
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" placeholder="Contraseña" id="password" ng-model="user.password" required>
+      <p ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="help-block">Password requerido.</p>
+    </div>
+    <div class="text-center" ng-show="incorrectCredentials">{{loginMessage}}</div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="loginForm.$invalid">Ingresar</button>
+    <br>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" onclick = "location='/#/intro.html'">Volver</button>
+  </form>
+  </div>

@@ -1,0 +1,127 @@
+<div ng-controller='SaAlmacenCtrl' ng-init="loadPage()" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div ng-include="'views/templates/sa_template_cabecera.html'"></div>
+	<h3>Catalogo Almacen</h3>
+	<hr class="style1" />
+	<br />
+	<div>
+		<div>
+			<button class="btn btn-success" ng-click="isCollapsed = !isCollapsed">Agregar Almacen <span class="glyphicon glyphicon-add" /></button>
+		</div>
+		<div collapse="isCollapsed">
+			<div class="busqueda">
+				<form class="form-horizontal" role="form" name="abmForm" ng-submit="save()" autocomplete="off">
+					<div class="form-group">
+						<label class="col-md-1 control-label input-sm">Descripción:</label>
+						<div class="col-md-2">
+							<input type="text" id="desc" name="desc" required placeholder="Descripción.."
+							ng-pattern="/^[a-zA-Z0-9\s]*$/" autocomplete="false" class="form-control input-sm" ng-model="almacen.descripcion" />
+							<p ng-show="abmForm.desc.$error.pattern">Porfavor ingresar solo números y letras</p>
+						</div>
+						<label class="col-md-1 control-label input-sm">Dirección:</label>
+						<div class="col-md-3">
+							<input type="text" id="direccion" name="direccion" required placeholder="Dirección"
+							 ng-pattern="/^[a-zA-Z0-9\-\.\s]*$/" autocomplete="false"
+							 class="form-control input-sm" ng-model="almacen.direccion" />
+							<p ng-show="abmForm.direccion.$error.pattern">Porfavor ingresar solo números y letras</p>
+						</div>
+						<label class="col-md-1 control-label input-sm">Teléfono:</label>
+						<div class="col-md-2">
+							<input type="text" id="telefono" name="telefono" minlength="9" maxlength="9" required placeholder="000-0000"
+							ng-pattern="/^[0-9\-]*$/" autocomplete="false" class="form-control input-sm" ng-model="almacen.telefono" />
+							<p ng-show="abmForm.telefono.$error.pattern">Porfavor ingresar solo números</p>
+							</div>
+					</div>
+					<br>
+					<div class="form-group centrobot">
+						<button class="btn btn-default botonbus" type="submit" ng-disabled="!abmForm.$valid" disabled="disabled">Guardar</button>
+						<button class="btn btn-default botonbus" type="button" ng-click="clear()">Cancelar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<br />
+	<form>
+		<div class="form-group busquedatam">
+			<div class="input-group">
+				<div class="input-group-addon"><i class="fa fa-search">
+			        	<span class="glyphicon glyphicon-search" />
+			        </i></div>
+				<input type="text" class="form-control" placeholder="Buscar Almacen" ng-model="filtro">
+			</div>
+		</div>
+	</form>
+	<br />
+
+	<div ng-controller="AlmacenPaginationCtrl" class="tabladatos">
+		<div class="row headerTable">
+			<div class="col-sm-3 text-center">
+				<a class="menulink" ng-click="sortType = 'descripcion'; sortReverse = !sortReverse">
+					<label>Descripción</label>
+					<span ng-show="sortType == 'descripcion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+					<span ng-show="sortType == 'descripcion' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+				</a>
+			</div>
+			<div class="col-sm-4 text-center">
+				<a class="menulink" ng-click="sortType = 'direccion'; sortReverse = !sortReverse">
+					<label>Dirección</label>
+					<span ng-show="sortType == 'direccion' && !sortReverse">
+						<span class="glyphicon glyphicon-arrow-up" />
+					</span>
+					<span ng-show="sortType == 'direccion' && sortReverse">
+	         			<span class="glyphicon glyphicon-arrow-down" />
+	         		</span>
+				</a>
+			</div>
+			<div class="col-sm-3 text-center">
+						<a class="menulink" ng-click="sortType = 'direccion'; sortReverse = !sortReverse">
+							<label>Teléfono</label>
+								<span ng-show="sortType == 'direccion' && !sortReverse">
+									<span class="glyphicon glyphicon-arrow-up" />
+								</span>
+								<span ng-show="sortType == 'direccion' && sortReverse">
+				         			<span class="glyphicon glyphicon-arrow-down" />
+				         		</span>
+							</a>
+			</div>
+			<div class="col-sm-1 text-center">
+				<a class="menulink"> <label>Funciones</label></a>
+			</div>
+		</div>
+		<div id="resultset" class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="item in listaAlmacenes | filter:filtro | orderBy:sortType:sortReverse | offset: (currentPage-1) * itemsPerPage | limitTo: itemsPerPage">
+			<div class="col-sm-3 text-center">{{item.descripcion}}</div>
+			<div class="col-sm-4 text-center">{{item.direccion}}</div>
+			<div class="col-sm-3 text-center">{{item.telefono}}</div>
+
+			<div class="col-sm-1 text-center">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a href ng-click="edit('{{item.id}}')">Editar
+				          					<span class="glyphicon glyphicon-pencil"></a>
+						</li>
+
+						<!-- Por el momento no vamos a permitir eliminar 
+						<li>
+							<a href ng-click="delete({{item}})">Eliminar
+				          					<span class="glyphicon glyphicon-remove"></a>
+						</li>
+						-->
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div>
+			<pagination total-items="totalItems" rotate="false" max-size="maxSize" num-pages="numPages" class="pagination-sm" ng-model="currentPage" previous-text="Anterior" next-text="Siguiente" last-text="Ultimo" first-text="Primero" boundary-links="true"></pagination>
+		</div>
+		<div ng-include="'views/templates/sa_template_modals.html'"></div>
+	</div>
+</div>

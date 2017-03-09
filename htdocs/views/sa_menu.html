@@ -1,0 +1,395 @@
+<div class="row">
+
+    <div class="col-sm-3 col-md-2 sidebar">
+
+        <div class="logon">
+                <span class="nombre-principal" style="font-size: 3.4em;border: none;">
+                    <img class="logosisfe" src="images/sisfe_transp.png" />
+                    <div class="bienvenido">SISADMIN</div>
+                 </span>
+        </div>
+        <br />
+        <div class="logueado">
+                    <span class="bienvenido">Bienvenido:</span>
+                    <span class="nombreusuario">{{loggedUser}}</span>
+                    <span class="bienvenido">Rol Usuario:</span>
+                    <span class="nombreusuario">Administrador</span>
+                    <span class="bienvenido">Razon Social:</span>
+                    <span class="nombreusuario">Plasticos 2000</span>
+                    <br />
+                    <span class="bienvenido">Sucursal:</span>
+                    <span class="nombreusuario">Principal</span>
+        </div>
+        <br/>
+        <div class="tituloraiz"><span class="bienvenido">Menu</span></div>
+        <div class="nav nav-sidebar">
+           <accordion close-others="accordionOneAtATime">
+
+                <accordion-group is-open="accordionStatus.open1" ng-if="displayField('01')">
+                        <accordion-heading>
+                         <a href class="menulink"><strong>Stock</strong></a>
+                         <i class="pull-right glyphicon"
+                         ng-class="{'glyphicon glyphicon-folder-open': accordionStatus.open1,
+                                    'glyphicon glyphicon-folder-close': !accordionStatus.open1}"></i>
+                        </accordion-heading>
+
+                        <div ng-if="displayField('09')">
+                            <a ng-click='selSeccion(9)' href class="menulink">Productos</a>
+                        </div>
+                        <div ng-if="displayField('10')">
+                            <a ng-click='selSeccion(10)' href class="menulink">Trans. Depositos</a>
+                        </div>
+                        <div ng-if="displayField('11')">
+                            <a ng-click='selSeccion(11)' href class="menulink">Ajuste Invent.</a>
+                        </div>
+                        <div ng-if="displayField('04')">
+                            <a ng-click='selSeccion(4)' href class="menulink">Margen Mar-Fam</a>
+                        </div>
+                        <div ng-if="displayField('02')">
+                            <a ng-click='selSeccion(2)' href class="menulink">Marcas</a>
+                        </div>
+                        <div ng-if="displayField('03')">
+                            <a ng-click='selSeccion(3)' href class="menulink">Familias</a>
+                        </div>
+                        
+                        <div ng-if="displayField('05')">
+                            <a ng-click='selSeccion(5)' href class="menulink">Uni. Medida</a>
+                        </div>
+                        <div ng-if="displayField('06')">
+                            <a ng-click='selSeccion(6)' href class="menulink">Almacenes</a>
+                        </div>
+                        <div ng-if="displayField('07')" >
+                            <a ng-click='selSeccion(7)' href class="menulink">Zonas</a>
+                        </div>
+                        <div ng-if="displayField('08')">
+                            <a ng-click='selSeccion(8)' href class="menulink">Ubicaciones</a>
+                        </div>
+                       
+                        <!-- por el momento no va
+
+                        
+
+                        <div ng-if="displayField('12')">
+                            <a ng-click='selSeccion(12)' href class="menulink">Prod. Movimientos</a>
+                        </div>
+                        
+                        <div ng-if="displayField('14')">
+                            <a ng-click='selSeccion(14)' href class="menulink">SaldoXProd</a>
+                        </div>
+                        <div ng-if="displayField('15')">
+                            <a ng-click='selSeccion(15)' href class="menulink">KardexXProd</a>
+                        </div>
+                        <div ng-if="displayField('16')">
+                            <a ng-click='selSeccion(16)' href class="menulink">Stock MixMax</a>
+                        </div>
+                        <div ng-if="displayField('17')">
+                            <a ng-click='selSeccion(17)' href class="menulink">Stock Valozdo</a>
+                        </div>
+                        <div ng-if="displayField('18')">
+                            <a ng-click='selSeccion(18)' href class="menulink">List X Inv</a>
+                        </div>
+                        <div ng-if="displayField('19')">
+                            <a ng-click='selSeccion(19)' href class="menulink">List X Prec</a>
+                        </div>
+                        -->
+                        <div ng-if="displayField('20')">
+                            <a ng-click='selSeccion(20)' href class="menulink">Reportes</a>
+                        </div>
+                </accordion-group>
+
+                <accordion-group is-open="accordionStatus.open2" ng-if="displayField('26')">
+                        <accordion-heading>
+                               <a href class="menulink"><strong>Compras</strong></a>
+                               <i class="pull-right glyphicon"
+                               ng-class="{'glyphicon glyphicon-folder-open': accordionStatus.open2,
+                                        'glyphicon glyphicon-folder-close': !accordionStatus.open2}"></i>
+                        </accordion-heading>
+                        
+                        <div ng-if="displayField('28')">
+                            <a ng-click='selSeccion(28)' href class="menulink">Orden Compra</a>
+                        </div>
+                        <!--
+                        <div ng-if="displayField('29')">
+                            <a ng-click='selSeccion(29)' href class="menulink">OC-Anulacion</a>
+                        </div> -->
+                        <div ng-if="displayField('30')">
+                            <a ng-click='selSeccion(30)' href class="menulink">Parte Ingreso</a>
+                        </div>
+                        <div ng-if="displayField('13')">
+                            <a ng-click='selSeccion(13)' href class="menulink">Actualizar Precio Producto</a>
+                        </div>
+                        <div ng-if="displayField('27')">
+                            <a ng-click='selSeccion(27)' href class="menulink">Proveedores</a>
+                        </div>
+                        <!--
+                        <div ng-if="displayField('31')">
+                            <a ng-click='selSeccion(31)' href class="menulink">Dev. Mercaderia</a>
+                        </div>
+                        <div ng-if="displayField('32')">
+                            <a ng-click='selSeccion(32)' href class="menulink">Rec Cje Mercad</a>
+                        </div>-->
+                        <!-- por ahora no va
+                        <div ng-if="displayField('33')">
+                            <a ng-click='selSeccion(33)' href class="menulink">Fac Rmto</a>
+                        </div>
+                        <div ng-if="displayField('34')">
+                            <a ng-click='selSeccion(34)' href class="menulink">Factura</a>
+                        </div>
+                        <div ng-if="displayField('35')">
+                            <a ng-click='selSeccion(35)' href class="menulink">Fac Cpto</a>
+                        </div>
+                        <div ng-if="displayField('36')">
+                            <a ng-click='selSeccion(36)' href class="menulink">CmpI CtaXPagar</a>
+                        </div>
+                        <div ng-if="displayField('37')">
+                            <a ng-click='selSeccion(37)' href class="menulink">Gest CtaXPagar</a>
+                        </div>
+                        ->
+                        <!--
+                        <div ng-if="displayField('37')">
+                            <a ng-click='selSeccion(37)' href class="menulink">Ingreso Pagos</a>
+                        </div>
+                        <div ng-if="displayField('38')">
+                            <a ng-click='selSeccion(38)' href class="menulink">Cancel. Docs</a>
+                        </div>
+                      -->
+                      <!--
+                        <div ng-if="displayField('39')">
+                            <a ng-click='selSeccion(39)' href class="menulink">Deudas X Venc</a>
+                        </div>
+                        <div ng-if="displayField('40')">
+                            <a ng-click='selSeccion(40)' href class="menulink">Venc Docs</a>
+                        </div> -->
+                        <div ng-if="displayField('41')">
+                            <a ng-click='selSeccion(41)' href class="menulink">Reportes</a>
+                        </div>
+                </accordion-group>
+
+                <accordion-group is-open="accordionStatus.open3" ng-if="displayField('45')">
+                        <accordion-heading>
+                            <a href class="menulink"><strong>Ventas</strong></a>
+                            <i class="pull-right glyphicon"
+                            ng-class="{'glyphicon glyphicon-folder-open': accordionStatus.open3,
+                                        'glyphicon glyphicon-folder-close': !accordionStatus.open3}"></i>
+                        </accordion-heading>
+                        <div ng-if="displayField('51')">
+                            <a ng-click='selSeccion(51)' href class="menulink">Comprobantes</a>
+                        </div>
+                        <!--<div ng-if="displayField('50')">
+                            <a ng-click='selSeccion(50)' href class="menulink">Act Precios</a>
+                        </div>
+                        
+                        <div ng-if="displayField('48')">
+                            <a ng-click='selSeccion(48)' href class="menulink">Ofertas</a>
+                        </div>-->
+                        <div ng-if="displayField('47')">
+                             <a ng-click='selSeccion(47)' href class="menulink">Clientes</a>
+                        </div>
+                        <div ng-if="displayField('46')">
+                            <a ng-click='selSeccion(46)' href class="menulink">Vendedores</a>
+                        </div>
+                        <!--
+                        <div ng-if="displayField('49')">
+                            <a ng-click='selSeccion(49)' href class="menulink">Precios</a>
+                        </div>-->
+                        
+                        
+
+                        <!--
+                        <div ng-if="displayField('52')">
+                            <a ng-click='selSeccion(52)' href class="menulink">NC PtoV</a>
+                        </div>
+                        <div ng-if="displayField('53')">
+                            <a ng-click='selSeccion(53)' href class="menulink">ND PtoV</a>
+                        </div> -->
+
+
+                        <!--
+                        <div ng-if="displayField('54')">
+                            <a ng-click='selSeccion(54)' href class="menulink">CmpI CtaXCobrar</a>
+                        </div>
+                        -->
+
+                        <!--<div ng-if="displayField('55')">
+                            <a ng-click='selSeccion(55)' href class="menulink">Cobranzas</a>
+                        </div>-->
+
+                        <!--<div ng-if="displayField('56')">
+                            <a ng-click='selSeccion(56)' href class="menulink">Seg Deudoras</a>
+                        </div>-->
+                        <!--
+                        <div ng-if="displayField('56')">
+                            <a ng-click='selSeccion(56)' href class="menulink">Gest CtaXCobrar</a>
+                        </div>
+                        -->
+                        <!--<div ng-if="displayField('57')">
+                            <a ng-click='selSeccion(57)' href class="menulink">Anulaciones</a>
+                        </div>-->
+
+                        <div ng-if="displayField('58')">
+                            <a ng-click='selSeccion(58)' href class="menulink">Reportes</a>
+                        </div>
+                </accordion-group>
+
+                <accordion-group is-open="accordionStatus.open4" ng-if="displayField('65')">
+                        <accordion-heading>
+                            <a href class="menulink"><strong>Admin</strong></a>
+                            <i class="pull-right glyphicon"
+                            ng-class="{'glyphicon glyphicon-folder-open': accordionStatus.open4,
+                                    'glyphicon glyphicon-folder-close': !accordionStatus.open4}"></i>
+                        </accordion-heading>
+                        <!-- verificar que funciona
+                        <div ng-if="displayField('66')">
+                            <a ng-click='selSeccion(66)' href class="menulink">Usuarios</a>
+                        </div>
+                        <div ng-if="displayField('67')">
+                            <a ng-click='selSeccion(67)' href class="menulink">Roles</a>
+                        </div>
+                        <div ng-if="displayField('68')">
+                            <a ng-click='selSeccion(68)' href class="menulink">Permisos</a>
+                        </div>
+                        <div ng-if="displayField('69')">
+                            <a ng-click='selSeccion(69)' href class="menulink">Tipo Cambio</a>
+                        </div>
+                        <div ng-if="displayField('70')">
+                            <a ng-click='selSeccion(70)' href class="menulink">Empresa</a>
+                        </div>
+                        <div ng-if="displayField('71')">
+                            <a ng-click='selSeccion(71)' href class="menulink">Sede</a>
+                        </div>
+                        <div ng-if="displayField('72')">
+                            <a ng-click='selSeccion(72)' href class="menulink">Periodo</a>
+                        </div>
+                        <div ng-if="displayField('73')">
+                            <a ng-click='selSeccion(73)' href class="menulink">Concepto</a>
+                        </div>
+                        <div ng-if="displayField('74')">
+                            <a ng-click='selSeccion(74)' href class="menulink">Afp</a>
+                        </div>
+                        <div ng-if="displayField('75')">
+                            <a ng-click='selSeccion(75)' href class="menulink">Dpto</a>
+                        </div>
+                        <div ng-if="displayField('76')">
+                            <a ng-click='selSeccion(76)' href class="menulink">Trabajador</a>
+                        </div>
+                        <div ng-if="displayField('77')">
+                            <a ng-click='selSeccion(77)' href class="menulink">Ope Prov</a>
+                        </div>
+                        <div ng-if="displayField('78')">
+                            <a ng-click='selSeccion(78)' href class="menulink">Letra Pagar</a>
+                        </div>
+                        <div ng-if="displayField('79')">
+                            <a ng-click='selSeccion(79)' href class="menulink">Asto Diario</a>
+                        </div>
+                        -->
+                </accordion-group>
+
+            </accordion>
+        </div> <!-- termina div de sidebar-->
+
+
+        <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+
+
+
+                          <li><a href ng-click='logout()' class="menulink">
+                            <span class="glyphicon glyphicon-envelope" />
+                            </a></li>
+
+                        <li><a href ng-click='logout()' class="menulink">
+                            <span class="glyphicon glyphicon-phone-alt" />
+                            </a></li>
+
+                        <li><a href ng-click='logout()' class="menulink">
+                            <span class="glyphicon glyphicon-off" />
+                            </a></li>
+
+
+
+
+                    </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+    <!-- INICIO STOCK -->
+    <div ng-if="seccion[0]" ng-include src="'views/stock/sa_marca.html'"></div>
+    <div ng-if="seccion[1]" ng-include src="'views/stock/sa_marca.html'"></div>
+    <div ng-if="seccion[2]" ng-include src="'views/stock/sa_marca.html'"></div>
+    <div ng-if="seccion[3]" ng-include src="'views/stock/sa_familia.html'"></div>
+    <div ng-if="seccion[4]" ng-include src="'views/stock/sa_marca_familia.html'"></div>
+    <div ng-if="seccion[5]" ng-include src="'views/stock/sa_unidad_medida.html'"></div>
+    <div ng-if="seccion[6]" ng-include src="'views/stock/sa_almacen.html'"></div>
+    <div ng-if="seccion[7]" ng-include src="'views/stock/sa_zona.html'"></div>
+    <div ng-if="seccion[8]" ng-include src="'views/stock/sa_ubicacion.html'"></div>
+    <div ng-if="seccion[9]" ng-include src="'views/stock/sa_producto.html'"></div>
+    <div ng-if="seccion[10]" ng-include src="'views/stock/sa_trans_deposito.html'"></div>
+    <div ng-if="seccion[11]" ng-include src="'views/stock/sa_ajuste_inventario.html'"></div>
+    <div ng-if="seccion[12]" ng-include src="'views/stock/sa_prod_movimientos.html'"></div>
+    <div ng-if="seccion[13]" ng-include src="'views/stock/sa_actualizar_precio.html'"></div>
+    <div ng-if="seccion[14]" ng-include src="'views/stock/sa_saldo_x_producto.html'"></div>
+    <div ng-if="seccion[15]" ng-include src="'views/stock/sa_kardex_x_producto.html'"></div>
+    <div ng-if="seccion[16]" ng-include src="'views/stock/sa_stock_min_max.html'"></div>
+    <div ng-if="seccion[17]" ng-include src="'views/stock/sa_stock_valorizado.html'"></div>
+    <div ng-if="seccion[18]" ng-include src="'views/stock/sa_lista_x_inventario.html'"></div>
+    <div ng-if="seccion[19]" ng-include src="'views/stock/sa_lista_x_precio.html'"></div>
+    <div ng-if="seccion[20]" ng-include src="'views/stock/sa_exp_stock.html'"></div>
+	<!-- FIN STOCK -->
+
+	<!-- INICIO COMPRAS -->
+    <div ng-if="seccion[27]" ng-include src="'views/compras/sa_proveedor.html'"></div>
+    <div ng-if="seccion[28]" ng-include src="'views/compras/sa_orden_compra.html'"></div>
+    <div ng-if="seccion[30]" ng-include src="'views/compras/sa_parte_ingreso_almacen.html'"></div>
+    <div ng-if="seccion[34]" ng-include src="'views/compras/sa_factura.html'"></div>
+    <div ng-if="seccion[35]" ng-include src="'views/compras/sa_factura_concepto.html'"></div>
+    <div ng-if="seccion[36]" ng-include src="'views/compras/sa_cuentas_x_pagar.html'"></div>
+    <div ng-if="seccion[37]" ng-include src="'views/compras/sa_gestion_cuentas_x_pagar.html'"></div>
+    <div ng-if="seccion[38]" ng-include src="'views/compras/sa_cancelacion_docs.html'"></div>
+    <div ng-if="seccion[39]" ng-include src="'views/compras/sa_deudas_vencidas.html'"></div>
+    <div ng-if="seccion[40]" ng-include src="'views/compras/sa_vencimiento_docs.html'"></div>
+    <div ng-if="seccion[41]" ng-include src="'views/compras/sa_export.html'"></div>
+    <!-- FIN COMPRAS -->
+
+    <!-- INICIO VENTAS -->
+    <div ng-if="seccion[46]" ng-include src="'views/ventas/sa_vendedor.html'"></div>
+    <div ng-if="seccion[47]" ng-include src="'views/ventas/sa_cliente.html'"></div>
+    <div ng-if="seccion[48]" ng-include src="'views/ventas/sa_oferta.html'"></div>
+    <div ng-if="seccion[50]" ng-include src="'views/ventas/sa_actualiz_precios.html'"></div>
+    <div ng-if="seccion[51]" ng-include src="'views/ventas/sa_comprobantes_ptovta.html'"></div>
+    <div ng-if="seccion[54]" ng-include src="'views/ventas/sa_cuentas_x_cobrar.html'"></div>
+    <!--<div ng-if="seccion[55]" ng-include src="'views/ventas/sa_cobranzas.html'"></div>-->
+    <<div ng-if="seccion[56]" ng-include src="'views/ventas/sa_gestion_cuentas_x_cobrar.html'"></div>-->
+    <!--<div ng-if="seccion[57]" ng-include src="'views/ventas/sa_anulaciones.html'"></div>-->
+    <div ng-if="seccion[58]" ng-include src="'views/ventas/sa_exp_ventas.html'"></div>
+	<!-- FIN VENTAS -->
+
+	<!-- INICIO ADMIN -->
+    <div ng-if="seccion[69]" ng-include src="'views/admin/sa_tipo_cambio.html'"></div>
+    <div ng-if="seccion[70]" ng-include src="'views/admin/sa_empresa.html'"></div>
+    <div ng-if="seccion[71]" ng-include src="'views/admin/sa_sede.html'"></div>
+    <div ng-if="seccion[72]" ng-include src="'views/admin/sa_periodo.html'"></div>
+    <div ng-if="seccion[73]" ng-include src="'views/admin/sa_concepto.html'"></div>
+    <div ng-if="seccion[74]" ng-include src="'views/admin/sa_afp_periodo.html'"></div>
+    <div ng-if="seccion[75]" ng-include src="'views/admin/sa_departamento.html'"></div>
+    <div ng-if="seccion[76]" ng-include src="'views/admin/sa_trabajador.html'"></div>
+    <div ng-if="seccion[77]" ng-include src="'views/admin/sa_operacion_proveedor.html'"></div>
+    <div ng-if="seccion[78]" ng-include src="'views/admin/sa_letra_pagar.html'"></div>
+    <div ng-if="seccion[79]" ng-include src="'views/admin/sa_asiento_diario.html'"></div>
+    <!-- FIN ADMIN -->
+
+    </div>
+
+</div>
+
+<!--
+<div ng-if="seccion[16]" ng-include src="'views/sa_saldo_articulo.html'"></div>
+<div ng-if="seccion[19]" ng-include src="'views/sa_stock_almacen.html'"></div>
+<div ng-if="seccion[68]" ng-include src="'views/sa_plan_cuenta.html'"></div>
+<div ng-if="seccion[43]" ng-include src="'views/sa_cuenta_divisionaria.html'"></div>
+<div ng-if="seccion[44]" ng-include src="'views/sa_cuenta_contable.html'"></div>
+<div ng-if="seccion[45]" ng-include src="'views/sa_centro_costo.html'"></div>
+<div ng-if="seccion[46]" ng-include src="'views/sa_sub_centro_costo.html'"></div>
+<div ng-if="seccion[47]" ng-include src="'views/sa_relacion_seis_nueve.html'"></div>
+<div ng-if="seccion[48]" ng-include src="'views/sa_relacion_979.html'"></div>
+-->
